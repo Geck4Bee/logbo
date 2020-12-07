@@ -3,6 +3,10 @@ type User @model {
   cognitoID: String!
   identityID: String!
   name: String!
+  viewName: String
+  description: String
+  iconUrl: String
+  email: AWSEmail!
   posts: [Post] @connection(keyName: "byUser", fields: ["id"])
   comments: [Comment] @connection(keyName: "byUser", fields: ["id"])
 }

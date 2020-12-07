@@ -1,91 +1,213 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
+    <v-app dark>
+        <v-navigation-drawer
+            v-model="drawer"
+            :clipped="clipped"
+            fixed
+            app
         >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
-    </v-app-bar>
-    <v-main>
-      <v-container>
-        <nuxt />
-      </v-container>
-    </v-main>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light> mdi-repeat </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :absolute="!fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
-  </v-app>
+            <v-list class="mt-1 ml-2" v-if="isLoggedIn">
+                <div style="display: flex;flex-wrap: nowrap;align-items: center;">
+                    <v-avatar
+                        color="indigo"
+                        size="40"
+                    >
+                        <v-icon dark v-if="!$store.state.showPreviewImg">mdi-account-circle</v-icon>
+                        <v-img
+                        :src="$store.state.imgPreview"
+                        v-if="$store.state.showPreviewImg"
+                        alt="ユーザアイコン"
+                        @error="removeImg"
+                        class="profileIcon"
+                        :max-width="50"
+                        />
+                    </v-avatar>
+                    <span class="mx-2">{{$store.state.currentUserInfo.username}}</span>
+                </div>
+                <amplify-sign-out class="mx-auto" v-if="isLoggedIn" />
+            </v-list>
+            <v-list class="pt-2" dense>
+                <v-btn class="ml-4" text nuxt to="/signin" v-if="!isLoggedIn">サインイン</v-btn>
+            </v-list>
+            <v-list class="pt-2" dense>
+                <v-divider></v-divider>
+                <v-list-item
+                    v-for="(item, i) in filteredItems"
+                    :key="i"
+                    :to="item.to"
+                    router
+                    exact
+                >
+                    <v-list-item-action>
+                        <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title v-text="item.title" />
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+        </v-navigation-drawer>
+        <v-app-bar :clipped-left="clipped" fixed app>
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+            <v-btn icon @click.stop="clipped = !clipped">
+                <v-icon>mdi-application</v-icon>
+            </v-btn>
+            <v-btn icon @click.stop="fixed = !fixed">
+                <v-icon>mdi-minus</v-icon>
+            </v-btn>
+            <nuxt-link
+            style="text-decoration: none;color: white;"
+            to="/">
+            <h3>{{ title }}</h3>
+            </nuxt-link>
+        </v-app-bar>
+        <v-main>
+            <v-container>
+                <nuxt />
+            </v-container>
+        </v-main>
+        <v-footer :absolute="!fixed" app>
+            <span>&copy; {{ new Date().getFullYear() }}</span>
+        </v-footer>
+    </v-app>
 </template>
 
 <script>
+import API, { graphqlOperation } from '@aws-amplify/api'
+import { AmplifyEventBus } from 'aws-amplify-vue'
+import * as Common from '~/assets/js/common.js'
+
 export default {
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
+    data() {
+        return {
+            clipped: false,
+            drawer: false,
+            fixed: false,
+            items: [
+                {
+                    icon: 'mdi-home',
+                    title: 'ホーム',
+                    to: '/',
+                    status: ['loggedIn', 'loggedOut']
+                },
+                {
+                    icon: 'mdi-account',
+                    title: 'プロフィール',
+                    to: '/profile',
+                    status: ['loggedIn']
+                },
+            ],
+            title: 'LOGBO',
+            isLoggedIn: false,
+            currentUserInfo: {},
+            img: {
+                imgURL: null,
+                imgPreview: null,
+                showPreviewImg: false
+            },
+        }
+    },
+    async beforeCreate() {
+        AmplifyEventBus.$on('authState', (info) => {
+            if (info === 'signedIn') {
+                this.$router.push('/')
+                this.getUserInfo()
+            } else if (info === 'signedOut') {
+                this.$router.push('/signin')
+                this.logout()
+            }
+        })
+    },
+    async created () {
+        this.getUserInfo()
+    },
+    computed: {
+        filteredItems () {
+            const self = this
+            return self.items.filter((item) => {
+                if (self.isLoggedIn) {
+                    return item.status.indexOf('loggedIn') !== -1
+                } else {
+                    return item.status.indexOf('loggedOut') !== -1
+                }
+            })
+        }
+    },
+    methods: {
+        async getUserInfo () {
+            this.currentUserInfo = this.$store.state.currentUserInfo
+            if (!this.currentUserInfo) {
+                this.currentUserInfo = await this.$Amplify.Auth.currentUserInfo()
+                this.$store.commit('login', this.currentUserInfo)
+            }
+            this.isLoggedIn = Boolean(this.currentUserInfo)
+            if (this.isLoggedIn) {
+                this.getProfile()
+            }
         },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
+        logout () {
+            this.$store.commit('logout')
+            this.$store.commit('removeImg')
+            this.isLoggedIn = false
         },
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js',
+        async getProfile () {
+            if (!this.currentUserInfo) {
+                this.currentUserInfo = await this.$Amplify.Auth.currentUserInfo()
+            }
+            const getProfile = `
+                query GetProfile {
+                    getProfile(id: "${this.currentUserInfo.attributes.sub}") {
+                        id
+                        iconUrl
+                    }
+                }
+            `
+            try {
+                await API.graphql(graphqlOperation(getProfile))
+                    .then(async (res) => {
+                        const items = res.data.getProfile
+                        if (items == null || items == undefined || items == []) {
+                            throw "Profile not found"
+                        }
+                        this.img.imgURL = ("iconUrl" in items) ? items.iconUrl : null
+                        Common.setImgFile(this.img)
+                            .then((res) => this.$store.commit("setImg", res.imgPreview))
+                    })
+            } catch (e) {
+                console.log("Profile not found: " + e)
+                this.createProfile(this.currentUserInfo)
+            }
+        },
+        removeImg () {
+            this.$store.commit("removeImg")
+            this.img.imgURL = null
+        },
+        createProfile (currentUserInfo) {
+            const nowUnix = Common.getNow()
+            const createProfile = `
+                mutation CreateProfile {
+                    createProfile(input: {
+                        id: "${currentUserInfo.attributes.sub}",
+                        name: "${currentUserInfo.username}",
+                        email: "${currentUserInfo.attributes.email}",
+                        description: "",
+                    }) {
+                        id
+                        name
+                        email
+                        description
+                    }
+                }
+            `
+            try {
+                API.graphql(graphqlOperation(createProfile))
+                    .then((res)=> {
+                        console.log("プロフィールを作成しました")
+                    })
+            } catch (e) {
+                console.log("プロフィールの作成に失敗しました: " + e)
+            }
+        }
     }
-  },
 }
 </script>
