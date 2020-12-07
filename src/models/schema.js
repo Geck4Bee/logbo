@@ -21,7 +21,7 @@ export const schema = {
                     "name": "identityID",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "name": {
@@ -94,6 +94,16 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byCognitoID",
+                        "fields": [
+                            "cognitoID"
+                        ],
+                        "queryField": "userByCognitoID"
+                    }
                 }
             ]
         },
@@ -155,7 +165,8 @@ export const schema = {
                         "name": "byUser",
                         "fields": [
                             "userID"
-                        ]
+                        ],
+                        "queryField": "postByUserID"
                     }
                 }
             ]
@@ -218,7 +229,8 @@ export const schema = {
                         "fields": [
                             "postID",
                             "content"
-                        ]
+                        ],
+                        "queryField": "commentByPostID"
                     }
                 },
                 {
@@ -227,7 +239,8 @@ export const schema = {
                         "name": "byUser",
                         "fields": [
                             "userID"
-                        ]
+                        ],
+                        "queryField": "userByUserID"
                     }
                 }
             ]
@@ -235,5 +248,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "768fb16262a8a3ab04ac886edaad96fa"
+    "version": "75f1078d7ec082e6537884ecce4c2ac4"
 };

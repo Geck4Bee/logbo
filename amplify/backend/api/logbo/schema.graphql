@@ -1,7 +1,7 @@
-type User @model {
+type User @model @key(name: "byCognitoID", fields: ["cognitoID"], queryField: "userByCognitoID") {
   id: ID!
   cognitoID: String!
-  identityID: String!
+  identityID: String
   name: String!
   viewName: String
   description: String
@@ -11,7 +11,7 @@ type User @model {
   comments: [Comment] @connection(keyName: "byUser", fields: ["id"])
 }
 
-type Post @model @key(name: "byUser", fields: ["userID"]) {
+type Post @model @key(name: "byUser", fields: ["userID"], queryField: "postByUserID") {
   id: ID!
   title: String!
   userID: ID!
@@ -19,7 +19,9 @@ type Post @model @key(name: "byUser", fields: ["userID"]) {
   comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
 }
 
-type Comment @model @key(name: "byPost", fields: ["postID", "content"]) @key(name: "byUser", fields: ["userID"]) {
+type Comment @model
+@key(name: "byPost", fields: ["postID", "content"], queryField: "commentByPostID")
+@key(name: "byUser", fields: ["userID"], queryField: "userByUserID") {
   id: ID!
   postID: ID!
   post: Post @connection(fields: ["postID"])

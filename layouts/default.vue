@@ -76,6 +76,7 @@
 import API, { graphqlOperation } from '@aws-amplify/api'
 import { AmplifyEventBus } from 'aws-amplify-vue'
 import * as Common from '~/assets/js/common.js'
+import { nanoid } from 'nanoid'
 
 export default {
     data() {
@@ -154,24 +155,35 @@ export default {
             if (!this.currentUserInfo) {
                 this.currentUserInfo = await this.$Amplify.Auth.currentUserInfo()
             }
-            const getProfile = `
-                query GetProfile {
-                    getProfile(id: "${this.currentUserInfo.attributes.sub}") {
-                        id
-                        iconUrl
+            const userByCognitoId = `
+                query UserByCognitoId {
+                    userByCognitoID(
+                        cognitoID: "${this.currentUserInfo.attributes.sub}",
+                        limit: 1,
+                        nextToken: null
+                    ) {
+                        items {
+                            id
+                            iconUrl
+                        },
+                        nextToken
                     }
                 }
             `
             try {
-                await API.graphql(graphqlOperation(getProfile))
+                await API.graphql(graphqlOperation(userByCognitoId))
                     .then(async (res) => {
-                        const items = res.data.getProfile
+                        const items = res.data.userByCognitoID.items[0]
                         if (items == null || items == undefined || items == []) {
                             throw "Profile not found"
                         }
                         this.img.imgURL = ("iconUrl" in items) ? items.iconUrl : null
                         Common.setImgFile(this.img)
-                            .then((res) => this.$store.commit("setImg", res.imgPreview))
+                            .then((res) => {
+                                if (res != null || res != undefined) {
+                                    this.$store.commit("setImg", res.imgPreview)
+                                }
+                            })
                     })
             } catch (e) {
                 console.log("Profile not found: " + e)
@@ -184,11 +196,14 @@ export default {
         },
         createProfile (currentUserInfo) {
             const nowUnix = Common.getNow()
-            const createProfile = `
-                mutation CreateProfile {
-                    createProfile(input: {
-                        id: "${currentUserInfo.attributes.sub}",
+            const id = nanoid()
+            const createUser = `
+                mutation CreateUser {
+                    createUser(input: {
+                        id: "${id}",
+                        cognitoID: "${currentUserInfo.attributes.sub}",
                         name: "${currentUserInfo.username}",
+                        viewName: "${currentUserInfo.username}",
                         email: "${currentUserInfo.attributes.email}",
                         description: "",
                     }) {
@@ -200,7 +215,7 @@ export default {
                 }
             `
             try {
-                API.graphql(graphqlOperation(createProfile))
+                API.graphql(graphqlOperation(createUser))
                     .then((res)=> {
                         console.log("プロフィールを作成しました")
                     })
@@ -211,3 +226,16 @@ export default {
     }
 }
 </script>
+
+<style>
+.main-footer {
+    background-color: #616161;
+    box-shadow: 5px 5px 20px black;
+}
+#openConnectList {
+    position: fixed;
+    z-index: 90;
+    right: 30px;
+    bottom: 40px;
+}
+</style>
