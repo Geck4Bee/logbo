@@ -31,6 +31,34 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "viewName": {
+                    "name": "viewName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "iconUrl": {
+                    "name": "iconUrl",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "AWSEmail",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "posts": {
                     "name": "posts",
                     "isArray": true,
@@ -207,5 +235,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "82e239454ffc57c009ba32eef18f5785"
+    "version": "768fb16262a8a3ab04ac886edaad96fa"
 };

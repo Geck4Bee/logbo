@@ -20,6 +20,10 @@ export const syncUsers = /* GraphQL */ `
         cognitoID
         identityID
         name
+        viewName
+        description
+        iconUrl
+        email
         posts {
           nextToken
           startedAt
@@ -46,6 +50,10 @@ export const getUser = /* GraphQL */ `
       cognitoID
       identityID
       name
+      viewName
+      description
+      iconUrl
+      email
       posts {
         items {
           id
@@ -95,6 +103,10 @@ export const listUsers = /* GraphQL */ `
         cognitoID
         identityID
         name
+        viewName
+        description
+        iconUrl
+        email
         posts {
           nextToken
           startedAt
@@ -136,6 +148,10 @@ export const syncPosts = /* GraphQL */ `
           cognitoID
           identityID
           name
+          viewName
+          description
+          iconUrl
+          email
           _version
           _deleted
           _lastChangedAt
@@ -168,6 +184,10 @@ export const getPost = /* GraphQL */ `
         cognitoID
         identityID
         name
+        viewName
+        description
+        iconUrl
+        email
         posts {
           nextToken
           startedAt
@@ -221,6 +241,10 @@ export const listPosts = /* GraphQL */ `
           cognitoID
           identityID
           name
+          viewName
+          description
+          iconUrl
+          email
           _version
           _deleted
           _lastChangedAt
@@ -274,6 +298,10 @@ export const syncComments = /* GraphQL */ `
           cognitoID
           identityID
           name
+          viewName
+          description
+          iconUrl
+          email
           _version
           _deleted
           _lastChangedAt
@@ -306,6 +334,10 @@ export const getComment = /* GraphQL */ `
           cognitoID
           identityID
           name
+          viewName
+          description
+          iconUrl
+          email
           _version
           _deleted
           _lastChangedAt
@@ -328,6 +360,10 @@ export const getComment = /* GraphQL */ `
         cognitoID
         identityID
         name
+        viewName
+        description
+        iconUrl
+        email
         posts {
           nextToken
           startedAt
@@ -377,6 +413,10 @@ export const listComments = /* GraphQL */ `
           cognitoID
           identityID
           name
+          viewName
+          description
+          iconUrl
+          email
           _version
           _deleted
           _lastChangedAt

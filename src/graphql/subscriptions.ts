@@ -9,6 +9,10 @@ export const onCreateUser = /* GraphQL */ `
       cognitoID
       identityID
       name
+      viewName
+      description
+      iconUrl
+      email
       posts {
         items {
           id
@@ -53,6 +57,10 @@ export const onUpdateUser = /* GraphQL */ `
       cognitoID
       identityID
       name
+      viewName
+      description
+      iconUrl
+      email
       posts {
         items {
           id
@@ -97,6 +105,10 @@ export const onDeleteUser = /* GraphQL */ `
       cognitoID
       identityID
       name
+      viewName
+      description
+      iconUrl
+      email
       posts {
         items {
           id
@@ -145,6 +157,10 @@ export const onCreatePost = /* GraphQL */ `
         cognitoID
         identityID
         name
+        viewName
+        description
+        iconUrl
+        email
         posts {
           nextToken
           startedAt
@@ -193,6 +209,10 @@ export const onUpdatePost = /* GraphQL */ `
         cognitoID
         identityID
         name
+        viewName
+        description
+        iconUrl
+        email
         posts {
           nextToken
           startedAt
@@ -241,6 +261,10 @@ export const onDeletePost = /* GraphQL */ `
         cognitoID
         identityID
         name
+        viewName
+        description
+        iconUrl
+        email
         posts {
           nextToken
           startedAt
@@ -292,6 +316,10 @@ export const onCreateComment = /* GraphQL */ `
           cognitoID
           identityID
           name
+          viewName
+          description
+          iconUrl
+          email
           _version
           _deleted
           _lastChangedAt
@@ -314,6 +342,10 @@ export const onCreateComment = /* GraphQL */ `
         cognitoID
         identityID
         name
+        viewName
+        description
+        iconUrl
+        email
         posts {
           nextToken
           startedAt
@@ -351,6 +383,10 @@ export const onUpdateComment = /* GraphQL */ `
           cognitoID
           identityID
           name
+          viewName
+          description
+          iconUrl
+          email
           _version
           _deleted
           _lastChangedAt
@@ -373,6 +409,10 @@ export const onUpdateComment = /* GraphQL */ `
         cognitoID
         identityID
         name
+        viewName
+        description
+        iconUrl
+        email
         posts {
           nextToken
           startedAt
@@ -410,6 +450,10 @@ export const onDeleteComment = /* GraphQL */ `
           cognitoID
           identityID
           name
+          viewName
+          description
+          iconUrl
+          email
           _version
           _deleted
           _lastChangedAt
@@ -432,6 +476,10 @@ export const onDeleteComment = /* GraphQL */ `
         cognitoID
         identityID
         name
+        viewName
+        description
+        iconUrl
+        email
         posts {
           nextToken
           startedAt

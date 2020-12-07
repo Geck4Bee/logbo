@@ -9,6 +9,10 @@ export declare class User {
   readonly cognitoID: string;
   readonly identityID: string;
   readonly name: string;
+  readonly viewName?: string;
+  readonly description?: string;
+  readonly iconUrl?: string;
+  readonly email: string;
   readonly posts?: (Post | null)[];
   readonly comments?: (Comment | null)[];
   constructor(init: ModelInit<User>);

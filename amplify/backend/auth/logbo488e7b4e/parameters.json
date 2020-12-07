@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "logbo46fc3fc2_identitypool_46fc3fc2",
+    "identityPoolName": "logbo488e7b4e_identitypool_488e7b4e",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "logbo46fc3fc2",
-    "userPoolName": "logbo46fc3fc2_userpool_46fc3fc2",
+    "resourceNameTruncated": "logbo488e7b4e",
+    "userPoolName": "logbo488e7b4e_userpool_488e7b4e",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -14,12 +14,9 @@
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": true,
+    "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
-    "passwordPolicyCharacters": [
-        "Requires Lowercase",
-        "Requires Numbers"
-    ],
+    "passwordPolicyCharacters": [],
     "requiredAttributes": [
         "email"
     ],
@@ -31,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "logbo446fc3fc2_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": true,
-    "sharedId": "46fc3fc2",
-    "resourceName": "logbo46fc3fc2",
+    "userpoolClientLambdaRole": "logbo4488e7b4e_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": false,
+    "sharedId": "488e7b4e",
+    "resourceName": "logbo488e7b4e",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -48,21 +45,13 @@
             "Arn"
         ]
     },
-    "useDefault": "manual",
+    "useDefault": "default",
     "triggers": "{}",
-    "userPoolGroupList": [
-        "Editor",
-        "Admin"
-    ],
+    "userPoolGroupList": [],
     "serviceName": "Cognito",
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": [],
-    "thirdPartyAuth": false,
-    "userPoolGroups": true,
-    "adminQueries": true,
-    "hostedUI": false,
-    "adminQueryGroup": "Admin"
+    "dependsOn": []
 }
