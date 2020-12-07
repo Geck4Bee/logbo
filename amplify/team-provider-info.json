@@ -1,0 +1,42 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-logbo-dev-153815-authRole",
+      "UnauthRoleArn": "arn:aws:iam::028095336055:role/amplify-logbo-dev-153815-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::028095336055:role/amplify-logbo-dev-153815-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-logbo-dev-153815-deployment",
+      "UnauthRoleName": "amplify-logbo-dev-153815-unauthRole",
+      "StackName": "amplify-logbo-dev-153815",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:028095336055:stack/amplify-logbo-dev-153815/0fe9e5f0-37d9-11eb-8a7c-06e06928d272",
+      "AmplifyAppId": "d366h17pft3ztu"
+    },
+    "categories": {
+      "auth": {
+        "logbo46fc3fc2": {}
+      }
+    }
+  },
+  "devsec": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-logbo-devsec-162620-authRole",
+      "UnauthRoleArn": "arn:aws:iam::028095336055:role/amplify-logbo-devsec-162620-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::028095336055:role/amplify-logbo-devsec-162620-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-logbo-devsec-162620-deployment",
+      "UnauthRoleName": "amplify-logbo-devsec-162620-unauthRole",
+      "StackName": "amplify-logbo-devsec-162620",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:028095336055:stack/amplify-logbo-devsec-162620/c7207580-37df-11eb-90e3-0ee767856a0c",
+      "AmplifyAppId": "d366h17pft3ztu"
+    },
+    "categories": {
+      "auth": {
+        "logbo46fc3fc2": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries4b4e6226": {}
+      }
+    }
+  }
+}

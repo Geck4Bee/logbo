@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "logbo",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authlogbo46fc3fc2",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
