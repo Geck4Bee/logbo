@@ -73,11 +73,11 @@ export const schema = {
                         "associatedWith": "user"
                     }
                 },
-                "comments": {
-                    "name": "comments",
+                "replies": {
+                    "name": "replies",
                     "isArray": true,
                     "type": {
-                        "model": "Comment"
+                        "model": "Reply"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -124,6 +124,41 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "URL": {
+                    "name": "URL",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "tag": {
+                    "name": "tag",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "date": {
+                    "name": "date",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "user": {
                     "name": "user",
                     "isArray": false,
@@ -137,11 +172,11 @@ export const schema = {
                         "targetName": "userID"
                     }
                 },
-                "comments": {
-                    "name": "comments",
+                "replies": {
+                    "name": "replies",
                     "isArray": true,
                     "type": {
-                        "model": "Comment"
+                        "model": "Reply"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -164,15 +199,27 @@ export const schema = {
                     "properties": {
                         "name": "byUser",
                         "fields": [
-                            "userID"
+                            "userID",
+                            "createdAt"
                         ],
                         "queryField": "postByUserID"
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byDate",
+                        "fields": [
+                            "date",
+                            "createdAt"
+                        ],
+                        "queryField": "postByDate"
                     }
                 }
             ]
         },
-        "Comment": {
-            "name": "Comment",
+        "Reply": {
+            "name": "Reply",
             "fields": {
                 "id": {
                     "name": "id",
@@ -194,6 +241,41 @@ export const schema = {
                         "targetName": "postID"
                     }
                 },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "content": {
+                    "name": "content",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "request": {
+                    "name": "request",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "user": {
                     "name": "user",
                     "isArray": false,
@@ -206,17 +288,10 @@ export const schema = {
                         "connectionType": "BELONGS_TO",
                         "targetName": "userID"
                     }
-                },
-                "content": {
-                    "name": "content",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
                 }
             },
             "syncable": true,
-            "pluralName": "Comments",
+            "pluralName": "Replies",
             "attributes": [
                 {
                     "type": "model",
@@ -225,22 +300,23 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byPost",
+                        "name": "byUser",
                         "fields": [
-                            "postID",
-                            "content"
+                            "userID",
+                            "createdAt"
                         ],
-                        "queryField": "commentByPostID"
+                        "queryField": "replyByUserID"
                     }
                 },
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byUser",
+                        "name": "byPost",
                         "fields": [
-                            "userID"
+                            "postID",
+                            "createdAt"
                         ],
-                        "queryField": "userByUserID"
+                        "queryField": "replyByPostID"
                     }
                 }
             ]
@@ -248,5 +324,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "75f1078d7ec082e6537884ecce4c2ac4"
+    "version": "fe0268f164310b54189bf1e7bcbf80c0"
 };

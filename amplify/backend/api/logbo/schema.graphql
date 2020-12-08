@@ -8,24 +8,36 @@ type User @model @key(name: "byCognitoID", fields: ["cognitoID"], queryField: "u
   iconUrl: String
   email: AWSEmail!
   posts: [Post] @connection(keyName: "byUser", fields: ["id"])
-  comments: [Comment] @connection(keyName: "byUser", fields: ["id"])
+  replies: [Reply] @connection(keyName: "byUser", fields: ["id"])
 }
 
-type Post @model @key(name: "byUser", fields: ["userID"], queryField: "postByUserID") {
+type Post @model
+@key(name: "byUser", fields: ["userID", "createdAt"], queryField: "postByUserID")
+@key(name: "byDate", fields: ["date", "createdAt"], queryField: "postByDate")
+{
   id: ID!
   title: String!
+  URL: String
+  tag: String
+  date: AWSDate
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
   userID: ID!
   user: User @connection(fields: ["userID"])
-  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+  replies: [Reply] @connection(keyName: "byPost", fields: ["id"])
 }
 
-type Comment @model
-@key(name: "byPost", fields: ["postID", "content"], queryField: "commentByPostID")
-@key(name: "byUser", fields: ["userID"], queryField: "userByUserID") {
+type Reply @model
+@key(name: "byUser", fields: ["userID", "createdAt"], queryField: "replyByUserID")
+@key(name: "byPost", fields: ["postID", "createdAt"], queryField: "replyByPostID") {
   id: ID!
   postID: ID!
   post: Post @connection(fields: ["postID"])
+  type: String!
+  content: String!
+  request: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
   userID: ID!
   user: User @connection(fields: ["userID"])
-  content: String!
 }

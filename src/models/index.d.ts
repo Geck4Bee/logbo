@@ -14,7 +14,7 @@ export declare class User {
   readonly iconUrl?: string;
   readonly email: string;
   readonly posts?: (Post | null)[];
-  readonly comments?: (Comment | null)[];
+  readonly replies?: (Reply | null)[];
   constructor(init: ModelInit<User>);
   static copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
 }
@@ -22,17 +22,26 @@ export declare class User {
 export declare class Post {
   readonly id: string;
   readonly title: string;
+  readonly URL?: string;
+  readonly tag?: string;
+  readonly date?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   readonly user?: User;
-  readonly comments?: (Comment | null)[];
+  readonly replies?: (Reply | null)[];
   constructor(init: ModelInit<Post>);
   static copyOf(source: Post, mutator: (draft: MutableModel<Post>) => MutableModel<Post> | void): Post;
 }
 
-export declare class Comment {
+export declare class Reply {
   readonly id: string;
   readonly post?: Post;
-  readonly user?: User;
+  readonly type: string;
   readonly content: string;
-  constructor(init: ModelInit<Comment>);
-  static copyOf(source: Comment, mutator: (draft: MutableModel<Comment>) => MutableModel<Comment> | void): Comment;
+  readonly request?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  readonly user?: User;
+  constructor(init: ModelInit<Reply>);
+  static copyOf(source: Reply, mutator: (draft: MutableModel<Reply>) => MutableModel<Reply> | void): Reply;
 }

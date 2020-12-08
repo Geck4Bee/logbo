@@ -28,7 +28,7 @@ export const syncUsers = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -58,27 +58,32 @@ export const getUser = /* GraphQL */ `
         items {
           id
           title
+          URL
+          tag
+          date
+          createdAt
+          updatedAt
           userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      comments {
+      replies {
         items {
           id
           postID
-          userID
+          type
           content
+          request
+          createdAt
+          updatedAt
+          userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -111,7 +116,7 @@ export const listUsers = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -142,6 +147,11 @@ export const syncPosts = /* GraphQL */ `
       items {
         id
         title
+        URL
+        tag
+        date
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -158,15 +168,13 @@ export const syncPosts = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt
@@ -178,6 +186,11 @@ export const getPost = /* GraphQL */ `
     getPost(id: $id) {
       id
       title
+      URL
+      tag
+      date
+      createdAt
+      updatedAt
       userID
       user {
         id
@@ -192,7 +205,7 @@ export const getPost = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -202,17 +215,19 @@ export const getPost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      comments {
+      replies {
         items {
           id
           postID
-          userID
+          type
           content
+          request
+          createdAt
+          updatedAt
+          userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -220,8 +235,6 @@ export const getPost = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -235,6 +248,11 @@ export const listPosts = /* GraphQL */ `
       items {
         id
         title
+        URL
+        tag
+        date
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -251,29 +269,27 @@ export const listPosts = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt
     }
   }
 `;
-export const syncComments = /* GraphQL */ `
-  query SyncComments(
-    $filter: ModelCommentFilterInput
+export const syncReplies = /* GraphQL */ `
+  query SyncReplies(
+    $filter: ModelReplyFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncComments(
+    syncReplies(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -285,13 +301,21 @@ export const syncComments = /* GraphQL */ `
         post {
           id
           title
+          URL
+          tag
+          date
+          createdAt
+          updatedAt
           userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
+        type
+        content
+        request
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -308,26 +332,28 @@ export const syncComments = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        content
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt
     }
   }
 `;
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
+export const getReply = /* GraphQL */ `
+  query GetReply($id: ID!) {
+    getReply(id: $id) {
       id
       postID
       post {
         id
         title
+        URL
+        tag
+        date
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -344,16 +370,19 @@ export const getComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
       }
+      type
+      content
+      request
+      createdAt
+      updatedAt
       userID
       user {
         id
@@ -368,7 +397,7 @@ export const getComment = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -378,35 +407,40 @@ export const getComment = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      content
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
-export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
+export const listReplys = /* GraphQL */ `
+  query ListReplys(
+    $filter: ModelReplyFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listReplys(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         postID
         post {
           id
           title
+          URL
+          tag
+          date
+          createdAt
+          updatedAt
           userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
+        type
+        content
+        request
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -423,12 +457,9 @@ export const listComments = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        content
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt
@@ -463,7 +494,7 @@ export const userByCognitoId = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -481,6 +512,7 @@ export const userByCognitoId = /* GraphQL */ `
 export const postByUserId = /* GraphQL */ `
   query PostByUserId(
     $userID: ID
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPostFilterInput
     $limit: Int
@@ -488,6 +520,7 @@ export const postByUserId = /* GraphQL */ `
   ) {
     postByUserID(
       userID: $userID
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -496,6 +529,11 @@ export const postByUserId = /* GraphQL */ `
       items {
         id
         title
+        URL
+        tag
+        date
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -512,33 +550,31 @@ export const postByUserId = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt
     }
   }
 `;
-export const commentByPostId = /* GraphQL */ `
-  query CommentByPostId(
-    $postID: ID
-    $content: ModelStringKeyConditionInput
+export const postByDate = /* GraphQL */ `
+  query PostByDate(
+    $date: AWSDate
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
-    $filter: ModelCommentFilterInput
+    $filter: ModelPostFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    commentByPostID(
-      postID: $postID
-      content: $content
+    postByDate(
+      date: $date
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -546,17 +582,12 @@ export const commentByPostId = /* GraphQL */ `
     ) {
       items {
         id
-        postID
-        post {
-          id
-          title
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
+        title
+        URL
+        tag
+        date
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -573,28 +604,31 @@ export const commentByPostId = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        content
+        replies {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt
     }
   }
 `;
-export const userByUserId = /* GraphQL */ `
-  query UserByUserId(
+export const replyByUserId = /* GraphQL */ `
+  query ReplyByUserId(
     $userID: ID
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
-    $filter: ModelCommentFilterInput
+    $filter: ModelReplyFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    userByUserID(
+    replyByUserID(
       userID: $userID
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -606,13 +640,21 @@ export const userByUserId = /* GraphQL */ `
         post {
           id
           title
+          URL
+          tag
+          date
+          createdAt
+          updatedAt
           userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
+        type
+        content
+        request
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -629,12 +671,72 @@ export const userByUserId = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        content
         _version
         _deleted
         _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const replyByPostId = /* GraphQL */ `
+  query ReplyByPostId(
+    $postID: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelReplyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    replyByPostID(
+      postID: $postID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        postID
+        post {
+          id
+          title
+          URL
+          tag
+          date
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        type
+        content
+        request
         createdAt
         updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
       }
       nextToken
       startedAt

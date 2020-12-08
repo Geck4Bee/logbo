@@ -17,27 +17,32 @@ export const onCreateUser = /* GraphQL */ `
         items {
           id
           title
+          URL
+          tag
+          date
+          createdAt
+          updatedAt
           userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      comments {
+      replies {
         items {
           id
           postID
-          userID
+          type
           content
+          request
+          createdAt
+          updatedAt
+          userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -65,27 +70,32 @@ export const onUpdateUser = /* GraphQL */ `
         items {
           id
           title
+          URL
+          tag
+          date
+          createdAt
+          updatedAt
           userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      comments {
+      replies {
         items {
           id
           postID
-          userID
+          type
           content
+          request
+          createdAt
+          updatedAt
+          userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -113,27 +123,32 @@ export const onDeleteUser = /* GraphQL */ `
         items {
           id
           title
+          URL
+          tag
+          date
+          createdAt
+          updatedAt
           userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      comments {
+      replies {
         items {
           id
           postID
-          userID
+          type
           content
+          request
+          createdAt
+          updatedAt
+          userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -151,6 +166,11 @@ export const onCreatePost = /* GraphQL */ `
     onCreatePost {
       id
       title
+      URL
+      tag
+      date
+      createdAt
+      updatedAt
       userID
       user {
         id
@@ -165,7 +185,7 @@ export const onCreatePost = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -175,17 +195,19 @@ export const onCreatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      comments {
+      replies {
         items {
           id
           postID
-          userID
+          type
           content
+          request
+          createdAt
+          updatedAt
+          userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -193,8 +215,6 @@ export const onCreatePost = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -203,6 +223,11 @@ export const onUpdatePost = /* GraphQL */ `
     onUpdatePost {
       id
       title
+      URL
+      tag
+      date
+      createdAt
+      updatedAt
       userID
       user {
         id
@@ -217,7 +242,7 @@ export const onUpdatePost = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -227,17 +252,19 @@ export const onUpdatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      comments {
+      replies {
         items {
           id
           postID
-          userID
+          type
           content
+          request
+          createdAt
+          updatedAt
+          userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -245,8 +272,6 @@ export const onUpdatePost = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -255,6 +280,11 @@ export const onDeletePost = /* GraphQL */ `
     onDeletePost {
       id
       title
+      URL
+      tag
+      date
+      createdAt
+      updatedAt
       userID
       user {
         id
@@ -269,7 +299,7 @@ export const onDeletePost = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -279,17 +309,19 @@ export const onDeletePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      comments {
+      replies {
         items {
           id
           postID
-          userID
+          type
           content
+          request
+          createdAt
+          updatedAt
+          userID
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -297,19 +329,22 @@ export const onDeletePost = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
-export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment {
-    onCreateComment {
+export const onCreateReply = /* GraphQL */ `
+  subscription OnCreateReply {
+    onCreateReply {
       id
       postID
       post {
         id
         title
+        URL
+        tag
+        date
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -326,16 +361,19 @@ export const onCreateComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
       }
+      type
+      content
+      request
+      createdAt
+      updatedAt
       userID
       user {
         id
@@ -350,7 +388,7 @@ export const onCreateComment = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -360,23 +398,25 @@ export const onCreateComment = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      content
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
-export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment {
-    onUpdateComment {
+export const onUpdateReply = /* GraphQL */ `
+  subscription OnUpdateReply {
+    onUpdateReply {
       id
       postID
       post {
         id
         title
+        URL
+        tag
+        date
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -393,16 +433,19 @@ export const onUpdateComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
       }
+      type
+      content
+      request
+      createdAt
+      updatedAt
       userID
       user {
         id
@@ -417,7 +460,7 @@ export const onUpdateComment = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -427,23 +470,25 @@ export const onUpdateComment = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      content
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
-export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment {
-    onDeleteComment {
+export const onDeleteReply = /* GraphQL */ `
+  subscription OnDeleteReply {
+    onDeleteReply {
       id
       postID
       post {
         id
         title
+        URL
+        tag
+        date
+        createdAt
+        updatedAt
         userID
         user {
           id
@@ -460,16 +505,19 @@ export const onDeleteComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
         _version
         _deleted
         _lastChangedAt
-        createdAt
-        updatedAt
       }
+      type
+      content
+      request
+      createdAt
+      updatedAt
       userID
       user {
         id
@@ -484,7 +532,7 @@ export const onDeleteComment = /* GraphQL */ `
           nextToken
           startedAt
         }
-        comments {
+        replies {
           nextToken
           startedAt
         }
@@ -494,12 +542,9 @@ export const onDeleteComment = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      content
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;

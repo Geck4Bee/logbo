@@ -87,12 +87,22 @@ export type DeleteUserInput = {
 export type CreatePostInput = {
   id?: string | null,
   title: string,
+  URL?: string | null,
+  tag?: string | null,
+  date?: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
   userID: string,
   _version?: number | null,
 };
 
 export type ModelPostConditionInput = {
   title?: ModelStringInput | null,
+  URL?: ModelStringInput | null,
+  tag?: ModelStringInput | null,
+  date?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   userID?: ModelIDInput | null,
   and?: Array< ModelPostConditionInput | null > | null,
   or?: Array< ModelPostConditionInput | null > | null,
@@ -118,6 +128,11 @@ export type ModelIDInput = {
 export type UpdatePostInput = {
   id: string,
   title?: string | null,
+  URL?: string | null,
+  tag?: string | null,
+  date?: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
   userID?: string | null,
   _version?: number | null,
 };
@@ -127,32 +142,44 @@ export type DeletePostInput = {
   _version?: number | null,
 };
 
-export type CreateCommentInput = {
+export type CreateReplyInput = {
   id?: string | null,
   postID: string,
-  userID: string,
+  type: string,
   content: string,
+  request?: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  userID: string,
   _version?: number | null,
 };
 
-export type ModelCommentConditionInput = {
+export type ModelReplyConditionInput = {
   postID?: ModelIDInput | null,
-  userID?: ModelIDInput | null,
+  type?: ModelStringInput | null,
   content?: ModelStringInput | null,
-  and?: Array< ModelCommentConditionInput | null > | null,
-  or?: Array< ModelCommentConditionInput | null > | null,
-  not?: ModelCommentConditionInput | null,
+  request?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  userID?: ModelIDInput | null,
+  and?: Array< ModelReplyConditionInput | null > | null,
+  or?: Array< ModelReplyConditionInput | null > | null,
+  not?: ModelReplyConditionInput | null,
 };
 
-export type UpdateCommentInput = {
+export type UpdateReplyInput = {
   id: string,
   postID?: string | null,
-  userID?: string | null,
+  type?: string | null,
   content?: string | null,
+  request?: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  userID?: string | null,
   _version?: number | null,
 };
 
-export type DeleteCommentInput = {
+export type DeleteReplyInput = {
   id?: string | null,
   _version?: number | null,
 };
@@ -174,20 +201,29 @@ export type ModelUserFilterInput = {
 export type ModelPostFilterInput = {
   id?: ModelIDInput | null,
   title?: ModelStringInput | null,
+  URL?: ModelStringInput | null,
+  tag?: ModelStringInput | null,
+  date?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   userID?: ModelIDInput | null,
   and?: Array< ModelPostFilterInput | null > | null,
   or?: Array< ModelPostFilterInput | null > | null,
   not?: ModelPostFilterInput | null,
 };
 
-export type ModelCommentFilterInput = {
+export type ModelReplyFilterInput = {
   id?: ModelIDInput | null,
   postID?: ModelIDInput | null,
-  userID?: ModelIDInput | null,
+  type?: ModelStringInput | null,
   content?: ModelStringInput | null,
-  and?: Array< ModelCommentFilterInput | null > | null,
-  or?: Array< ModelCommentFilterInput | null > | null,
-  not?: ModelCommentFilterInput | null,
+  request?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  userID?: ModelIDInput | null,
+  and?: Array< ModelReplyFilterInput | null > | null,
+  or?: Array< ModelReplyFilterInput | null > | null,
+  not?: ModelReplyFilterInput | null,
 };
 
 export enum ModelSortDirection {
@@ -228,29 +264,34 @@ export type CreateUserMutation = {
         __typename: "Post",
         id: string,
         title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
         userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -285,29 +326,34 @@ export type UpdateUserMutation = {
         __typename: "Post",
         id: string,
         title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
         userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -342,29 +388,34 @@ export type DeleteUserMutation = {
         __typename: "Post",
         id: string,
         title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
         userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -387,6 +438,11 @@ export type CreatePostMutation = {
     __typename: "Post",
     id: string,
     title: string,
+    URL: string | null,
+    tag: string | null,
+    date: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -403,8 +459,8 @@ export type CreatePostMutation = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -414,19 +470,21 @@ export type CreatePostMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -434,8 +492,6 @@ export type CreatePostMutation = {
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -449,6 +505,11 @@ export type UpdatePostMutation = {
     __typename: "Post",
     id: string,
     title: string,
+    URL: string | null,
+    tag: string | null,
+    date: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -465,8 +526,8 @@ export type UpdatePostMutation = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -476,19 +537,21 @@ export type UpdatePostMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -496,8 +559,6 @@ export type UpdatePostMutation = {
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -511,6 +572,11 @@ export type DeletePostMutation = {
     __typename: "Post",
     id: string,
     title: string,
+    URL: string | null,
+    tag: string | null,
+    date: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -527,8 +593,8 @@ export type DeletePostMutation = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -538,19 +604,21 @@ export type DeletePostMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -558,25 +626,28 @@ export type DeletePostMutation = {
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
-export type CreateCommentMutationVariables = {
-  input: CreateCommentInput,
-  condition?: ModelCommentConditionInput | null,
+export type CreateReplyMutationVariables = {
+  input: CreateReplyInput,
+  condition?: ModelReplyConditionInput | null,
 };
 
-export type CreateCommentMutation = {
-  createComment:  {
-    __typename: "Comment",
+export type CreateReplyMutation = {
+  createReply:  {
+    __typename: "Reply",
     id: string,
     postID: string,
     post:  {
       __typename: "Post",
       id: string,
       title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -594,17 +665,20 @@ export type CreateCommentMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
+    type: string,
+    content: string,
+    request: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -621,8 +695,8 @@ export type CreateCommentMutation = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -632,29 +706,31 @@ export type CreateCommentMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    content: string,
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
-export type UpdateCommentMutationVariables = {
-  input: UpdateCommentInput,
-  condition?: ModelCommentConditionInput | null,
+export type UpdateReplyMutationVariables = {
+  input: UpdateReplyInput,
+  condition?: ModelReplyConditionInput | null,
 };
 
-export type UpdateCommentMutation = {
-  updateComment:  {
-    __typename: "Comment",
+export type UpdateReplyMutation = {
+  updateReply:  {
+    __typename: "Reply",
     id: string,
     postID: string,
     post:  {
       __typename: "Post",
       id: string,
       title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -672,17 +748,20 @@ export type UpdateCommentMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
+    type: string,
+    content: string,
+    request: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -699,8 +778,8 @@ export type UpdateCommentMutation = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -710,29 +789,31 @@ export type UpdateCommentMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    content: string,
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
-export type DeleteCommentMutationVariables = {
-  input: DeleteCommentInput,
-  condition?: ModelCommentConditionInput | null,
+export type DeleteReplyMutationVariables = {
+  input: DeleteReplyInput,
+  condition?: ModelReplyConditionInput | null,
 };
 
-export type DeleteCommentMutation = {
-  deleteComment:  {
-    __typename: "Comment",
+export type DeleteReplyMutation = {
+  deleteReply:  {
+    __typename: "Reply",
     id: string,
     postID: string,
     post:  {
       __typename: "Post",
       id: string,
       title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -750,17 +831,20 @@ export type DeleteCommentMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
+    type: string,
+    content: string,
+    request: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -777,8 +861,8 @@ export type DeleteCommentMutation = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -788,12 +872,9 @@ export type DeleteCommentMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    content: string,
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -822,8 +903,8 @@ export type SyncUsersQuery = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -859,29 +940,34 @@ export type GetUserQuery = {
         __typename: "Post",
         id: string,
         title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
         userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -918,8 +1004,8 @@ export type ListUsersQuery = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -948,6 +1034,11 @@ export type SyncPostsQuery = {
       __typename: "Post",
       id: string,
       title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -965,16 +1056,14 @@ export type SyncPostsQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken: string | null,
     startedAt: number | null,
@@ -990,6 +1079,11 @@ export type GetPostQuery = {
     __typename: "Post",
     id: string,
     title: string,
+    URL: string | null,
+    tag: string | null,
+    date: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -1006,8 +1100,8 @@ export type GetPostQuery = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1017,19 +1111,21 @@ export type GetPostQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -1037,8 +1133,6 @@ export type GetPostQuery = {
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1055,6 +1149,11 @@ export type ListPostsQuery = {
       __typename: "Post",
       id: string,
       title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -1072,47 +1171,53 @@ export type ListPostsQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken: string | null,
     startedAt: number | null,
   } | null,
 };
 
-export type SyncCommentsQueryVariables = {
-  filter?: ModelCommentFilterInput | null,
+export type SyncRepliesQueryVariables = {
+  filter?: ModelReplyFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
   lastSync?: number | null,
 };
 
-export type SyncCommentsQuery = {
-  syncComments:  {
-    __typename: "ModelCommentConnection",
+export type SyncRepliesQuery = {
+  syncReplies:  {
+    __typename: "ModelReplyConnection",
     items:  Array< {
-      __typename: "Comment",
+      __typename: "Reply",
       id: string,
       postID: string,
       post:  {
         __typename: "Post",
         id: string,
         title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
         userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
+      type: string,
+      content: string,
+      request: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -1130,31 +1235,33 @@ export type SyncCommentsQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      content: string,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken: string | null,
     startedAt: number | null,
   } | null,
 };
 
-export type GetCommentQueryVariables = {
+export type GetReplyQueryVariables = {
   id: string,
 };
 
-export type GetCommentQuery = {
-  getComment:  {
-    __typename: "Comment",
+export type GetReplyQuery = {
+  getReply:  {
+    __typename: "Reply",
     id: string,
     postID: string,
     post:  {
       __typename: "Post",
       id: string,
       title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -1172,17 +1279,20 @@ export type GetCommentQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
+    type: string,
+    content: string,
+    request: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -1199,8 +1309,8 @@ export type GetCommentQuery = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1210,39 +1320,44 @@ export type GetCommentQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    content: string,
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
-export type ListCommentsQueryVariables = {
-  filter?: ModelCommentFilterInput | null,
+export type ListReplysQueryVariables = {
+  filter?: ModelReplyFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListCommentsQuery = {
-  listComments:  {
-    __typename: "ModelCommentConnection",
+export type ListReplysQuery = {
+  listReplys:  {
+    __typename: "ModelReplyConnection",
     items:  Array< {
-      __typename: "Comment",
+      __typename: "Reply",
       id: string,
       postID: string,
       post:  {
         __typename: "Post",
         id: string,
         title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
         userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
+      type: string,
+      content: string,
+      request: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -1260,12 +1375,9 @@ export type ListCommentsQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      content: string,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken: string | null,
     startedAt: number | null,
@@ -1298,8 +1410,8 @@ export type UserByCognitoIdQuery = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1316,6 +1428,7 @@ export type UserByCognitoIdQuery = {
 
 export type PostByUserIdQueryVariables = {
   userID?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelPostFilterInput | null,
   limit?: number | null,
@@ -1329,6 +1442,11 @@ export type PostByUserIdQuery = {
       __typename: "Post",
       id: string,
       title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -1346,49 +1464,41 @@ export type PostByUserIdQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken: string | null,
     startedAt: number | null,
   } | null,
 };
 
-export type CommentByPostIdQueryVariables = {
-  postID?: string | null,
-  content?: ModelStringKeyConditionInput | null,
+export type PostByDateQueryVariables = {
+  date?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
-  filter?: ModelCommentFilterInput | null,
+  filter?: ModelPostFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type CommentByPostIdQuery = {
-  commentByPostID:  {
-    __typename: "ModelCommentConnection",
+export type PostByDateQuery = {
+  postByDate:  {
+    __typename: "ModelPostConnection",
     items:  Array< {
-      __typename: "Comment",
+      __typename: "Post",
       id: string,
-      postID: string,
-      post:  {
-        __typename: "Post",
-        id: string,
-        title: string,
-        userID: string,
-        _version: number,
-        _deleted: boolean | null,
-        _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
+      title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -1406,44 +1516,55 @@ export type CommentByPostIdQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      content: string,
+      replies:  {
+        __typename: "ModelReplyConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken: string | null,
     startedAt: number | null,
   } | null,
 };
 
-export type UserByUserIdQueryVariables = {
+export type ReplyByUserIdQueryVariables = {
   userID?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
-  filter?: ModelCommentFilterInput | null,
+  filter?: ModelReplyFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type UserByUserIdQuery = {
-  userByUserID:  {
-    __typename: "ModelCommentConnection",
+export type ReplyByUserIdQuery = {
+  replyByUserID:  {
+    __typename: "ModelReplyConnection",
     items:  Array< {
-      __typename: "Comment",
+      __typename: "Reply",
       id: string,
       postID: string,
       post:  {
         __typename: "Post",
         id: string,
         title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
         userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null,
+      type: string,
+      content: string,
+      request: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -1461,12 +1582,70 @@ export type UserByUserIdQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      content: string,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+    startedAt: number | null,
+  } | null,
+};
+
+export type ReplyByPostIdQueryVariables = {
+  postID?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelReplyFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ReplyByPostIdQuery = {
+  replyByPostID:  {
+    __typename: "ModelReplyConnection",
+    items:  Array< {
+      __typename: "Reply",
+      id: string,
+      postID: string,
+      post:  {
+        __typename: "Post",
+        id: string,
+        title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+      } | null,
+      type: string,
+      content: string,
+      request: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
+      userID: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        cognitoID: string,
+        identityID: string | null,
+        name: string,
+        viewName: string | null,
+        description: string | null,
+        iconUrl: string | null,
+        email: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
     } | null > | null,
     nextToken: string | null,
     startedAt: number | null,
@@ -1490,29 +1669,34 @@ export type OnCreateUserSubscription = {
         __typename: "Post",
         id: string,
         title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
         userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -1542,29 +1726,34 @@ export type OnUpdateUserSubscription = {
         __typename: "Post",
         id: string,
         title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
         userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -1594,29 +1783,34 @@ export type OnDeleteUserSubscription = {
         __typename: "Post",
         id: string,
         title: string,
+        URL: string | null,
+        tag: string | null,
+        date: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
         userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -1634,6 +1828,11 @@ export type OnCreatePostSubscription = {
     __typename: "Post",
     id: string,
     title: string,
+    URL: string | null,
+    tag: string | null,
+    date: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -1650,8 +1849,8 @@ export type OnCreatePostSubscription = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1661,19 +1860,21 @@ export type OnCreatePostSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -1681,8 +1882,6 @@ export type OnCreatePostSubscription = {
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1691,6 +1890,11 @@ export type OnUpdatePostSubscription = {
     __typename: "Post",
     id: string,
     title: string,
+    URL: string | null,
+    tag: string | null,
+    date: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -1707,8 +1911,8 @@ export type OnUpdatePostSubscription = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1718,19 +1922,21 @@ export type OnUpdatePostSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -1738,8 +1944,6 @@ export type OnUpdatePostSubscription = {
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1748,6 +1952,11 @@ export type OnDeletePostSubscription = {
     __typename: "Post",
     id: string,
     title: string,
+    URL: string | null,
+    tag: string | null,
+    date: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -1764,8 +1973,8 @@ export type OnDeletePostSubscription = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1775,19 +1984,21 @@ export type OnDeletePostSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    comments:  {
-      __typename: "ModelCommentConnection",
+    replies:  {
+      __typename: "ModelReplyConnection",
       items:  Array< {
-        __typename: "Comment",
+        __typename: "Reply",
         id: string,
         postID: string,
-        userID: string,
+        type: string,
         content: string,
+        request: string | null,
+        createdAt: string | null,
+        updatedAt: string | null,
+        userID: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
       startedAt: number | null,
@@ -1795,20 +2006,23 @@ export type OnDeletePostSubscription = {
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
-export type OnCreateCommentSubscription = {
-  onCreateComment:  {
-    __typename: "Comment",
+export type OnCreateReplySubscription = {
+  onCreateReply:  {
+    __typename: "Reply",
     id: string,
     postID: string,
     post:  {
       __typename: "Post",
       id: string,
       title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -1826,17 +2040,20 @@ export type OnCreateCommentSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
+    type: string,
+    content: string,
+    request: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -1853,8 +2070,8 @@ export type OnCreateCommentSubscription = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1864,24 +2081,26 @@ export type OnCreateCommentSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    content: string,
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
-export type OnUpdateCommentSubscription = {
-  onUpdateComment:  {
-    __typename: "Comment",
+export type OnUpdateReplySubscription = {
+  onUpdateReply:  {
+    __typename: "Reply",
     id: string,
     postID: string,
     post:  {
       __typename: "Post",
       id: string,
       title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -1899,17 +2118,20 @@ export type OnUpdateCommentSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
+    type: string,
+    content: string,
+    request: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -1926,8 +2148,8 @@ export type OnUpdateCommentSubscription = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1937,24 +2159,26 @@ export type OnUpdateCommentSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    content: string,
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
-export type OnDeleteCommentSubscription = {
-  onDeleteComment:  {
-    __typename: "Comment",
+export type OnDeleteReplySubscription = {
+  onDeleteReply:  {
+    __typename: "Reply",
     id: string,
     postID: string,
     post:  {
       __typename: "Post",
       id: string,
       title: string,
+      URL: string | null,
+      tag: string | null,
+      date: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
       userID: string,
       user:  {
         __typename: "User",
@@ -1972,17 +2196,20 @@ export type OnDeleteCommentSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
       _version: number,
       _deleted: boolean | null,
       _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
+    type: string,
+    content: string,
+    request: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
     userID: string,
     user:  {
       __typename: "User",
@@ -1999,8 +2226,8 @@ export type OnDeleteCommentSubscription = {
         nextToken: string | null,
         startedAt: number | null,
       } | null,
-      comments:  {
-        __typename: "ModelCommentConnection",
+      replies:  {
+        __typename: "ModelReplyConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -2010,11 +2237,8 @@ export type OnDeleteCommentSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    content: string,
     _version: number,
     _deleted: boolean | null,
     _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
