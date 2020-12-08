@@ -6,7 +6,7 @@
             fixed
             app
         >
-            <v-list class="mt-1 ml-2" v-if="isLoggedIn">
+            <v-list class="mt-1 ml-2" v-if="$store.state.isLoggedIn">
                 <div style="display: flex;flex-wrap: nowrap;align-items: center;">
                     <v-avatar
                         color="indigo"
@@ -24,10 +24,10 @@
                     </v-avatar>
                     <span class="mx-2">{{$store.state.currentUserInfo.username}}</span>
                 </div>
-                <amplify-sign-out class="mx-auto" v-if="isLoggedIn" />
+                <amplify-sign-out class="mx-auto" v-if="$store.state.isLoggedIn" />
             </v-list>
             <v-list class="pt-2" dense>
-                <v-btn class="ml-4" text nuxt to="/signin" v-if="!isLoggedIn">サインイン</v-btn>
+                <v-btn class="ml-4" text nuxt to="/signin" v-if="!$store.state.isLoggedIn">サインイン</v-btn>
             </v-list>
             <v-list class="pt-2" dense>
                 <v-divider></v-divider>
@@ -97,9 +97,14 @@ export default {
                     to: '/profile',
                     status: ['loggedIn']
                 },
+                {
+                    icon: "mdi-post",
+                    title: "投稿",
+                    to: "/newPost",
+                    status: ['loggedIn']
+                }
             ],
             title: 'LOGBO',
-            isLoggedIn: false,
             currentUserInfo: {},
             img: {
                 imgURL: null,
@@ -126,7 +131,7 @@ export default {
         filteredItems () {
             const self = this
             return self.items.filter((item) => {
-                if (self.isLoggedIn) {
+                if (self.$store.state.isLoggedIn) {
                     return item.status.indexOf('loggedIn') !== -1
                 } else {
                     return item.status.indexOf('loggedOut') !== -1
@@ -141,15 +146,13 @@ export default {
                 this.currentUserInfo = await this.$Amplify.Auth.currentUserInfo()
                 this.$store.commit('login', this.currentUserInfo)
             }
-            this.isLoggedIn = Boolean(this.currentUserInfo)
-            if (this.isLoggedIn) {
+            if (this.$store.state.isLoggedIn) {
                 this.getProfile()
             }
         },
         logout () {
             this.$store.commit('logout')
             this.$store.commit('removeImg')
-            this.isLoggedIn = false
         },
         async getProfile () {
             if (!this.currentUserInfo) {
@@ -177,6 +180,7 @@ export default {
                         if (items == null || items == undefined || items == []) {
                             throw "Profile not found"
                         }
+                        this.$store.commit('setUserID', items.id)
                         this.img.imgURL = ("iconUrl" in items) ? items.iconUrl : null
                         Common.setImgFile(this.img)
                             .then((res) => {

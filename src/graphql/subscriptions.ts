@@ -20,6 +20,7 @@ export const onCreateUser = /* GraphQL */ `
           URL
           tag
           date
+          imgUrl
           createdAt
           updatedAt
           userID
@@ -73,6 +74,7 @@ export const onUpdateUser = /* GraphQL */ `
           URL
           tag
           date
+          imgUrl
           createdAt
           updatedAt
           userID
@@ -126,6 +128,7 @@ export const onDeleteUser = /* GraphQL */ `
           URL
           tag
           date
+          imgUrl
           createdAt
           updatedAt
           userID
@@ -169,6 +172,7 @@ export const onCreatePost = /* GraphQL */ `
       URL
       tag
       date
+      imgUrl
       createdAt
       updatedAt
       userID
@@ -226,6 +230,7 @@ export const onUpdatePost = /* GraphQL */ `
       URL
       tag
       date
+      imgUrl
       createdAt
       updatedAt
       userID
@@ -283,6 +288,7 @@ export const onDeletePost = /* GraphQL */ `
       URL
       tag
       date
+      imgUrl
       createdAt
       updatedAt
       userID
@@ -343,6 +349,7 @@ export const onCreateReply = /* GraphQL */ `
         URL
         tag
         date
+        imgUrl
         createdAt
         updatedAt
         userID
@@ -415,6 +422,7 @@ export const onUpdateReply = /* GraphQL */ `
         URL
         tag
         date
+        imgUrl
         createdAt
         updatedAt
         userID
@@ -487,6 +495,7 @@ export const onDeleteReply = /* GraphQL */ `
         URL
         tag
         date
+        imgUrl
         createdAt
         updatedAt
         userID

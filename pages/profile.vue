@@ -13,7 +13,7 @@
                     <v-img
                     :src="icon.imgPreview"
                     alt="アイコンのプレビュー"
-                    @error="resetImgURL(icon)"
+                    @error="Common.resetImgURL(icon)"
                     class="profileIcon ml-6"
                     :max-width="100"
                     />
@@ -133,11 +133,6 @@ export default {
         this.getProfile()
     },
     methods: {
-        failed (e, message) {
-            console.log(e)
-            alert(message)
-            this.overlay = false
-        },
         validation () {
             try {
                 if(!this.$refs.formProfile.validate()) {
@@ -186,11 +181,6 @@ export default {
                 this.description = ""
             }
         },
-        resetImgURL (obj) {
-            obj.showPreviewImg = false
-            obj.imgURL = null
-            obj.imgFile = null
-        },
         storeImgIcon (file) {
             this.icon.imgPreview = null
             this.icon.imgFile = null
@@ -216,42 +206,11 @@ export default {
             this.overlay = true
             if (this.icon.imgFile != null) {
                 if (this.icon.imgURL != null && this.icon.imgURL != undefined && this.icon.imgURL != "null") {
-                    await this.S3Remove(this.icon)
+                    await Common.S3Remove(this.icon, this.overlay)
                 }
-                await this.S3Upload(this.icon)
+                await Common.S3Upload(this.icon, this.id, this.overlay)
             }
             this.updateProfile()
-        },
-        async S3Remove (obj) {
-            try{
-                await Storage.remove(obj.imgURL, { level: 'protected' })
-                .then(result => {
-                    obj.imgURL = null
-                })
-                .catch(e => {
-                    this.failed(e, "アイコンの削除に失敗しました")
-                })
-            } catch (e) {
-                this.failed(e, "アイコンの削除に失敗しました")
-            }
-        },
-        async S3Upload (obj) {
-            const imgExtension = obj.imgType.replace('image/', '')
-            const key = 'icon-' + obj.name + '/' + this.id + '.' + imgExtension
-            try {
-                await Storage.put(key, obj.imgFile, {
-                    level: 'protected',
-                    contentType: obj.imgType
-                })
-                .then (result => {
-                    obj.imgURL = result.key
-                })
-                .catch(e => {
-                    this.failed(e, "アイコンのアップロードに失敗しました")
-                })
-            } catch (e) {
-                this.failed(e, "アイコンのアップロードに失敗しました")
-            }
         },
         async updateProfile () {
             this.overlay = true
@@ -288,7 +247,7 @@ export default {
                         this.$store.commit("setImg", this.icon.imgPreview)
                     })
             } catch (e) {
-                this.failed(e + "プロフィールの更新に失敗しました")
+                Common.failed(e + "プロフィールの更新に失敗しました", this.overlay)
             }
             this.overlay = false
         },

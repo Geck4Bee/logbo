@@ -48,3 +48,48 @@ export function getNow () {
     const unixtimenow = Math.floor(date.getTime() / 1000)
     return unixtimenow
 }
+
+export function failed (e, message, overlay) {
+    console.log(e)
+    alert(message)
+    overlay = false
+}
+
+export function resetImgURL (obj) {
+    obj.showPreviewImg = false
+    obj.imgURL = null
+    obj.imgFile = null
+}
+
+export async function S3Upload (obj, id, overlay) {
+    const imgExtension = obj.imgType.replace('image/', '')
+    const key = 'icon-' + obj.name + '/' + id + '.' + imgExtension
+    try {
+        await Storage.put(key, obj.imgFile, {
+            level: 'protected',
+            contentType: obj.imgType
+        })
+        .then (result => {
+            obj.imgURL = result.key
+        })
+        .catch(e => {
+            Common.failed(e, "アイコンのアップロードに失敗しました", overlay)
+        })
+    } catch (e) {
+        Common.failed(e, "アイコンのアップロードに失敗しました", overlay)
+    }
+}
+
+export async function S3Remove (obj, overlay) {
+    try{
+        await Storage.remove(obj.imgURL, { level: 'protected' })
+        .then(result => {
+            obj.imgURL = null
+        })
+        .catch(e => {
+            Common.failed(e, "アイコンの削除に失敗しました", overlay)
+        })
+    } catch (e) {
+        Common.failed(e, "アイコンの削除に失敗しました", overlay)
+    }
+}

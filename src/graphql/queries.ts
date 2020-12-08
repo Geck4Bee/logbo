@@ -61,6 +61,7 @@ export const getUser = /* GraphQL */ `
           URL
           tag
           date
+          imgUrl
           createdAt
           updatedAt
           userID
@@ -150,6 +151,7 @@ export const syncPosts = /* GraphQL */ `
         URL
         tag
         date
+        imgUrl
         createdAt
         updatedAt
         userID
@@ -189,6 +191,7 @@ export const getPost = /* GraphQL */ `
       URL
       tag
       date
+      imgUrl
       createdAt
       updatedAt
       userID
@@ -251,6 +254,7 @@ export const listPosts = /* GraphQL */ `
         URL
         tag
         date
+        imgUrl
         createdAt
         updatedAt
         userID
@@ -304,6 +308,7 @@ export const syncReplies = /* GraphQL */ `
           URL
           tag
           date
+          imgUrl
           createdAt
           updatedAt
           userID
@@ -352,6 +357,7 @@ export const getReply = /* GraphQL */ `
         URL
         tag
         date
+        imgUrl
         createdAt
         updatedAt
         userID
@@ -429,6 +435,7 @@ export const listReplys = /* GraphQL */ `
           URL
           tag
           date
+          imgUrl
           createdAt
           updatedAt
           userID
@@ -532,6 +539,7 @@ export const postByUserId = /* GraphQL */ `
         URL
         tag
         date
+        imgUrl
         createdAt
         updatedAt
         userID
@@ -586,6 +594,7 @@ export const postByDate = /* GraphQL */ `
         URL
         tag
         date
+        imgUrl
         createdAt
         updatedAt
         userID
@@ -643,6 +652,7 @@ export const replyByUserId = /* GraphQL */ `
           URL
           tag
           date
+          imgUrl
           createdAt
           updatedAt
           userID
@@ -706,6 +716,7 @@ export const replyByPostId = /* GraphQL */ `
           URL
           tag
           date
+          imgUrl
           createdAt
           updatedAt
           userID
