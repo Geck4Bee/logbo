@@ -26,6 +26,7 @@ export declare class Post {
   readonly tag?: string;
   readonly date?: string;
   readonly imgUrl?: string;
+  readonly imgIdentityID?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   readonly user?: User;

@@ -21,6 +21,7 @@ type Post @model
   tag: String
   date: AWSDate
   imgUrl: String
+  imgIdentityID: String
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
   userID: ID!

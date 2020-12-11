@@ -62,6 +62,7 @@ export const getUser = /* GraphQL */ `
           tag
           date
           imgUrl
+          imgIdentityID
           createdAt
           updatedAt
           userID
@@ -152,6 +153,7 @@ export const syncPosts = /* GraphQL */ `
         tag
         date
         imgUrl
+        imgIdentityID
         createdAt
         updatedAt
         userID
@@ -192,6 +194,7 @@ export const getPost = /* GraphQL */ `
       tag
       date
       imgUrl
+      imgIdentityID
       createdAt
       updatedAt
       userID
@@ -255,6 +258,7 @@ export const listPosts = /* GraphQL */ `
         tag
         date
         imgUrl
+        imgIdentityID
         createdAt
         updatedAt
         userID
@@ -309,6 +313,7 @@ export const syncReplies = /* GraphQL */ `
           tag
           date
           imgUrl
+          imgIdentityID
           createdAt
           updatedAt
           userID
@@ -358,6 +363,7 @@ export const getReply = /* GraphQL */ `
         tag
         date
         imgUrl
+        imgIdentityID
         createdAt
         updatedAt
         userID
@@ -436,6 +442,7 @@ export const listReplys = /* GraphQL */ `
           tag
           date
           imgUrl
+          imgIdentityID
           createdAt
           updatedAt
           userID
@@ -540,6 +547,7 @@ export const postByUserId = /* GraphQL */ `
         tag
         date
         imgUrl
+        imgIdentityID
         createdAt
         updatedAt
         userID
@@ -595,6 +603,7 @@ export const postByDate = /* GraphQL */ `
         tag
         date
         imgUrl
+        imgIdentityID
         createdAt
         updatedAt
         userID
@@ -653,6 +662,7 @@ export const replyByUserId = /* GraphQL */ `
           tag
           date
           imgUrl
+          imgIdentityID
           createdAt
           updatedAt
           userID
@@ -717,6 +727,7 @@ export const replyByPostId = /* GraphQL */ `
           tag
           date
           imgUrl
+          imgIdentityID
           createdAt
           updatedAt
           userID

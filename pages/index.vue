@@ -14,7 +14,9 @@
                 </v-row>
                 <v-divider/>
                 <div v-for="(post, indexChild) in postObj.posts" :key="indexChild">
-                    <v-row :id="'post-' + post.id" class="my-1" justify="start">{{ post.title }}</v-row>
+                    <div :id="'post-' + post.id" class="my-2" justify="start">
+                        <post :post="post" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,12 +47,14 @@ import * as Common from '~/assets/js/common.js'
 import CustomOverlay from '~/components/overlay.vue'
 import CustomDialog from '~/components/dialog.vue'
 import DatePicker from "~/components/datePicker.vue"
+import Post from "~/components/post.vue"
 
 export default {
     components: {
         CustomOverlay,
         CustomDialog,
-        DatePicker
+        DatePicker,
+        Post
     },
     data () {
         return {
@@ -142,11 +146,13 @@ export default {
                             tag
                             date
                             imgUrl
+                            imgIdentityID
                             createdAt
                             updatedAt
                             userID
                             user {
                                 id
+                                identityID
                                 name
                                 viewName
                                 iconUrl
