@@ -93,3 +93,14 @@ export async function S3Remove (obj, overlay) {
         Common.failed(e, "アイコンの削除に失敗しました", overlay)
     }
 }
+
+export function pad (num) {
+    if (num < 10) {
+        return '0' + num
+    }
+    return num
+}
+
+export function toISO8601DateString (date) {
+    return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate())
+}

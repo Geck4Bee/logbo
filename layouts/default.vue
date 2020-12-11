@@ -6,7 +6,7 @@
             fixed
             app
         >
-            <v-list class="mt-1 ml-2" v-if="$store.state.isLoggedIn">
+            <v-list class="mt-1 ml-2" v-if="isLoggedIn">
                 <div style="display: flex;flex-wrap: nowrap;align-items: center;">
                     <v-avatar
                         color="indigo"
@@ -24,10 +24,10 @@
                     </v-avatar>
                     <span class="mx-2">{{$store.state.currentUserInfo.username}}</span>
                 </div>
-                <amplify-sign-out class="mx-auto" v-if="$store.state.isLoggedIn" />
+                <amplify-sign-out class="mx-auto" v-if="isLoggedIn" />
             </v-list>
             <v-list class="pt-2" dense>
-                <v-btn class="ml-4" text nuxt to="/signin" v-if="!$store.state.isLoggedIn">サインイン</v-btn>
+                <v-btn class="ml-4" text nuxt to="/signin" v-if="!isLoggedIn">サインイン</v-btn>
             </v-list>
             <v-list class="pt-2" dense>
                 <v-divider></v-divider>
@@ -84,6 +84,7 @@ export default {
             clipped: false,
             drawer: false,
             fixed: false,
+            isLoggedIn: false,
             items: [
                 {
                     icon: 'mdi-home',
@@ -125,13 +126,13 @@ export default {
         })
     },
     async created () {
-        this.getUserInfo()
+        await this.getUserInfo()
     },
     computed: {
         filteredItems () {
             const self = this
             return self.items.filter((item) => {
-                if (self.$store.state.isLoggedIn) {
+                if (self.isLoggedIn) {
                     return item.status.indexOf('loggedIn') !== -1
                 } else {
                     return item.status.indexOf('loggedOut') !== -1
@@ -145,8 +146,9 @@ export default {
             if (!this.currentUserInfo) {
                 this.currentUserInfo = await this.$Amplify.Auth.currentUserInfo()
                 this.$store.commit('login', this.currentUserInfo)
+                this.isLoggedIn = true
             }
-            if (this.$store.state.isLoggedIn) {
+            if (this.isLoggedIn) {
                 this.getProfile()
             }
         },

@@ -1,93 +1,186 @@
 <template>
-    <v-row justify="center" align="center">
-        <v-col cols="12" sm="8" md="6">
-            <div class="text-center">
-                <logo />
-                <vuetify-logo />
+    <div>
+        <custom-overlay :overlay="overlay" />
+        <custom-dialog
+        :dialog="showDialog"
+        :message="dialogMessage"
+        :cancel="false"
+        @agree="showDialog = !showDialog"
+        />
+        <div v-for="(postObj, indexParent) in postObjs" :key="indexParent">
+            <div class="mb-4">
+                <v-row justify="start">
+                    <h2>{{ new Date(postObj.date).toLocaleDateString() }}</h2>
+                </v-row>
+                <v-divider/>
+                <div v-for="(post, indexChild) in postObj.posts" :key="indexChild">
+                    <v-row :id="'post-' + post.id" class="my-1" justify="start">{{ post.title }}</v-row>
+                </div>
             </div>
-            <v-card>
-                <v-card-title class="headline">
-                    Welcome to the Vuetify + Nuxt.js template
-                </v-card-title>
-                <v-card-text>
-                    <p>
-                        Vuetify is a progressive Material Design component framework for
-                        Vue.js. It was designed to empower developers to create amazing
-                        applications.
-                    </p>
-                    <p>
-                        For more information on Vuetify, check out the
-                        <a
-                            href="https://vuetifyjs.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            documentation </a
-                        >.
-                    </p>
-                    <p>
-                        If you have questions, please join the official
-                        <a
-                            href="https://chat.vuetifyjs.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="chat"
-                        >
-                            discord </a
-                        >.
-                    </p>
-                    <p>
-                        Find a bug? Report it on the github
-                        <a
-                            href="https://github.com/vuetifyjs/vuetify/issues"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="contribute"
-                        >
-                            issue board </a
-                        >.
-                    </p>
-                    <p>
-                        Thank you for developing with Vuetify and I look forward to bringing
-                        more exciting features in the future.
-                    </p>
-                    <div class="text-xs-right">
-                        <em><small>&mdash; John Leider</small></em>
-                    </div>
-                    <hr class="my-3" />
-                    <a
-                        href="https://nuxtjs.org/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Nuxt Documentation
-                    </a>
-                    <br />
-                    <a
-                        href="https://github.com/nuxt/nuxt.js"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Nuxt GitHub
-                    </a>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn color="primary" nuxt to="/inspire"> Continue </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-col>
-    </v-row>
+        </div>
+        <v-row justify="center">
+            <v-btn
+            color="teal"
+            class="mx-2"
+            :disabled="disableBackBtn"
+            @click="backBtn"
+            >
+                <span>前へ</span>
+            </v-btn>
+            <v-btn
+            color="blue"
+            class="mx-2"
+            :disabled="disableNextBtn"
+            @click="nextBtn"
+            >
+                <span>次へ</span>
+            </v-btn>
+        </v-row>
+    </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import API, { graphqlOperation } from '@aws-amplify/api'
+import * as Common from '~/assets/js/common.js'
+import CustomOverlay from '~/components/overlay.vue'
+import CustomDialog from '~/components/dialog.vue'
+import DatePicker from "~/components/datePicker.vue"
 
 export default {
     components: {
-        Logo,
-        VuetifyLogo,
+        CustomOverlay,
+        CustomDialog,
+        DatePicker
     },
+    data () {
+        return {
+            overlay: false,
+            showDialog: false,
+            dialogMessage: "",
+            flagLoad: false,
+            postObjs: [],
+            nextToken: null,
+            nextTokens: [],
+            page: 1,
+            totalPages: 1,
+            postsPerPage: 2,
+            date: null,
+            startDate: null,
+            queryTitle: "",
+            queryTag: "",
+            queryURL: "",
+            queryUserID: ""
+        }
+    },
+    created () {
+        const now = new Date()
+        this.date = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        this.startDate = new Date(2020, 11, 1)
+        this.nextTokens.push({
+            date: this.date.toISOString(),
+            nextToken: null
+        })
+    },
+    mounted () {
+        this.getPosts()
+    },
+    computed: {
+        disableBackBtn () {
+            return ((this.page -1 < 1) ? true : false)
+        },
+        disableNextBtn () {
+            return ( ([null, "null", ""].indexOf(this.nextToken) !== -1) ? true : false )
+        }
+    },
+    methods: {
+        backBtn () {
+            this.page--
+            this.postObjs = []
+            this.nextToken = this.nextTokens[this.page-1].nextToken
+            this.date = new Date(this.nextTokens[this.page-1].date)
+            this.getPosts()
+        },
+        nextBtn () {
+            if (this.page === this.totalPages) {
+                this.nextTokens.push({
+                    date: this.date.toISOString(),
+                    nextToken: this.nextToken
+                })
+                this.totalPages++
+            }
+            this.page++
+            this.postObjs = []
+            this.getPosts()
+        },
+        async getPosts () {
+            this.flagLoad = true
+            do {
+                let nextToken = null
+                if (this.nextToken) {
+                    nextToken = `"${this.nextToken}"`
+                }
+                const postByDate = `
+                    query PostByDate {
+                        postByDate (
+                            date: "${Common.toISO8601DateString(this.date)}"
+                            sortDirection: DESC
+                            filter: {
+                                or: [
+                                    {title: {contains: "${this.queryTitle}"}},
+                                    {tag: {contains: "${this.queryTag}"}},
+                                    {URL: {contains: "${this.queryURL}"}},
+                                    {userID: {eq: "${this.queryUserID}"}}
+                                ]
+                            }
+                            limit: ${this.postsPerPage}
+                            nextToken: ${nextToken}
+                        ) {
+                        items {
+                            id
+                            title
+                            URL
+                            tag
+                            date
+                            imgUrl
+                            createdAt
+                            updatedAt
+                            userID
+                            user {
+                                id
+                                name
+                                viewName
+                                iconUrl
+                            }
+                        }
+                        nextToken
+                        }
+                    }
+                `
+                try {
+                    await API.graphql(graphqlOperation(postByDate))
+                        .then((res) => {
+                            const items = res.data.postByDate.items
+                            this.nextToken = res.data.postByDate.nextToken
+                            if (items.length > 0) {
+                                this.postObjs.push({
+                                    date: this.date.toISOString(),
+                                    posts: items
+                                })
+                            }
+                            if (this.postObjs.length >= this.postsPerPage
+                            || this.date.getTime() <= this.startDate.getTime()
+                            ) {
+                                this.flagLoad = false
+                            } else if (this.postObjs.length <= this.postsPerPage) {
+                                this.date.setDate(this.date.getDate() - 1)
+                            }
+                        })
+                } catch (e) {
+                    Common.failed(e, "ログボの読み込みに失敗しました", this.overlay)
+                }
+            } while (this.flagLoad)
+            console.log("Loading done") 
+        }
+    }
 }
 </script>

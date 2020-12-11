@@ -72,7 +72,7 @@
                 v-model="date"
                 label="記事の日付"
                 style="max-width: 250px;"
-                :rules="[validateDate]"
+                :rules="[validateDate, required]"
                 maxlength="10"
                 >
                 <template v-slot:append-outer>
@@ -98,7 +98,7 @@ import API, { graphqlOperation } from '@aws-amplify/api'
 import Storage from '@aws-amplify/storage'
 import CustomOverlay from '~/components/overlay.vue'
 import CustomDialog from '~/components/dialog.vue'
-import DatePicker from "~/components/datePicker.vue";
+import DatePicker from "~/components/datePicker.vue"
 import * as Common from '~/assets/js/common.js'
 import { nanoid } from 'nanoid'
 
