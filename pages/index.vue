@@ -7,6 +7,50 @@
         :cancel="false"
         @agree="showDialog = !showDialog"
         />
+        <v-row v-if="query.title !== '' || query.tag !== '' || query.URL !== '' || showQueryUser">
+            <h4>検索条件: </h4>
+        </v-row>
+        <v-row v-if="query.title !== ''" align="center">
+            <v-btn
+            icon
+            color="indigo"
+            @click="removeQuery('title')"
+            >
+                <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <h4>キーワード:<span class="mx-1"></span>{{ query.title }}</h4>
+        </v-row>
+        <v-row v-if="query.tag !== ''" align="center">
+            <v-btn
+            icon
+            color="indigo"
+            @click="removeQuery('tag')"
+            >
+                <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <h4>タグ:<span class="mx-1"></span>{{ query.tag }}</h4>
+        </v-row>
+        <v-row v-if="query.URL !== ''" align="center">
+            <v-btn
+            icon
+            color="indigo"
+            @click="removeQuery('URL')"
+            >
+                <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <h4>URL:<span class="mx-1"></span>{{ query.URL }}</h4>
+        </v-row>
+        <v-row v-if="showQueryUser" align="center">
+            <v-btn
+            icon
+            color="indigo"
+            @click="removeQuery('userID')"
+            >
+                <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <h4>ユーザー:<span class="mx-1"></span></h4>
+            <user-card-row :user="queryUser" />
+        </v-row>
         <div v-for="(postObj, indexParent) in postObjs" :key="indexParent">
             <div class="mb-4">
                 <v-row justify="start">
@@ -46,15 +90,15 @@ import API, { graphqlOperation } from '@aws-amplify/api'
 import * as Common from '~/assets/js/common.js'
 import CustomOverlay from '~/components/overlay.vue'
 import CustomDialog from '~/components/dialog.vue'
-import DatePicker from "~/components/datePicker.vue"
 import Post from "~/components/post.vue"
+import UserCardRow from '~/components/userCardRow.vue'
 
 export default {
     components: {
         CustomOverlay,
         CustomDialog,
-        DatePicker,
-        Post
+        Post,
+        UserCardRow
     },
     data () {
         return {
@@ -67,26 +111,53 @@ export default {
             nextTokens: [],
             page: 1,
             totalPages: 1,
-            postsPerPage: 2,
+            postsPerPage: 40,
             date: null,
             startDate: null,
-            queryTitle: "",
-            queryTag: "",
-            queryURL: "",
-            queryUserID: ""
+            query: {
+                title: "",
+                tag: "",
+                URL: "",
+                userID: ""
+            },
+            queryUser: {
+                id: "",
+                identityID: "",
+                name: "",
+                viewName: "",
+                iconUrl: ""
+            },
+            showQueryUser: false
         }
     },
-    created () {
-        const now = new Date()
-        this.date = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-        this.startDate = new Date(2020, 11, 1)
-        this.nextTokens.push({
-            date: this.date.toISOString(),
-            nextToken: null
+    asyncData (context) {
+        let query = {
+            title: "",
+            tag: "",
+            URL: "",
+            userID: ""
+        }
+        const queryKey = Object.keys(context.query)
+        queryKey.map((key) => {
+            query[key] = context.query[key]
         })
+        const now = new Date()
+        const date = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        const startDate = new Date(2020, 11, 1)
+        const nextTokenObj = {
+            date: date.toISOString(),
+            nextToken: null
+        }
+        return { 
+            query: query,
+            date: date,
+            startDate: startDate,
+            nextTokens: [nextTokenObj]
+        }
     },
+    watchQuery: ['title', 'tag', 'URL', 'userID'],
     mounted () {
-        this.getPosts()
+        this.startLoading()
     },
     computed: {
         disableBackBtn () {
@@ -96,7 +167,16 @@ export default {
             return ( ([null, "null", ""].indexOf(this.nextToken) !== -1) ? true : false )
         }
     },
+    watch: {
+        query: function(newVal) {
+            this.startLoading()
+        },
+    },
     methods: {
+        removeQuery (key) {
+            this.query[key] = ""
+            this.$router.push({ path: "/", query: this.query})
+        },
         backBtn () {
             this.page--
             this.postObjs = []
@@ -116,7 +196,14 @@ export default {
             this.postObjs = []
             this.getPosts()
         },
+        async startLoading () {
+            if (this.query.userID !== "") {
+                await this.getUser()
+            }
+            this.getPosts()
+        },
         async getPosts () {
+            this.overlay = true
             this.flagLoad = true
             do {
                 let nextToken = null
@@ -130,10 +217,11 @@ export default {
                             sortDirection: DESC
                             filter: {
                                 or: [
-                                    {title: {contains: "${this.queryTitle}"}},
-                                    {tag: {contains: "${this.queryTag}"}},
-                                    {URL: {contains: "${this.queryURL}"}},
-                                    {userID: {eq: "${this.queryUserID}"}}
+                                    {title: {contains: "${this.query.title}"}},
+                                    {tag: {contains: "${this.query.title}"}}
+                                    {tag: {contains: "${this.query.tag}"}},
+                                    {URL: {contains: "${this.query.URL}"}},
+                                    {userID: {eq: "${this.query.userID}"}}
                                 ]
                             }
                             limit: ${this.postsPerPage}
@@ -180,13 +268,38 @@ export default {
                             } else if (this.postObjs.length <= this.postsPerPage) {
                                 this.date.setDate(this.date.getDate() - 1)
                             }
+                            this.overlay = false
                         })
                 } catch (e) {
                     Common.failed(e, "ログボの読み込みに失敗しました", this.overlay)
                 }
             } while (this.flagLoad)
             console.log("Loading done") 
-        }
+        },
+        async getUser() {
+            this.overlay = true
+            const getUser = `
+                query GetUser {
+                    getUser(id: "${this.query.userID}") {
+                        id
+                        identityID
+                        name
+                        viewName
+                        iconUrl
+                    }
+                }
+            `
+            try {
+                await API.graphql(graphqlOperation(getUser))
+                    .then((res) => {
+                        this.queryUser = res.data.getUser
+                        this.overlay = false
+                        this.showQueryUser = true
+                    })
+            } catch (e) {
+                Common.failed(e, "ユーザーの読み込みに失敗しました", this.overlay)
+            }
+        },
     }
 }
 </script>

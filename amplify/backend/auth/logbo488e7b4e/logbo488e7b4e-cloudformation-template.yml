@@ -137,6 +137,26 @@ Parameters:
   dependsOn:
     Type: CommaDelimitedList
       
+  
+  thirdPartyAuth:
+    Type: String
+            
+  
+  userPoolGroups:
+    Type: String
+            
+  
+  adminQueries:
+    Type: String
+            
+  
+  hostedUI:
+    Type: String
+            
+  adminQueryGroup:
+    Type: String
+  
+            
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
@@ -200,8 +220,8 @@ Resources:
       Policies:
         PasswordPolicy:
           MinimumLength: !Ref passwordPolicyMinLength
-          RequireLowercase: false
-          RequireNumbers: false
+          RequireLowercase: true
+          RequireNumbers: true
           RequireSymbols: false
           RequireUppercase: false
           
@@ -231,6 +251,9 @@ Resources:
     Properties:
       ClientName: logbo488e7b4e_app_clientWeb
       
+      ReadAttributes: !Ref userpoolClientReadAttributes
+      WriteAttributes: !Ref userpoolClientWriteAttributes
+      
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
     DependsOn: UserPool
@@ -240,6 +263,9 @@ Resources:
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
       ClientName: logbo488e7b4e_app_client
+      
+      ReadAttributes: !Ref userpoolClientReadAttributes
+      WriteAttributes: !Ref userpoolClientWriteAttributes
       
       GenerateSecret: !Ref userpoolClientGenerateSecret
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity

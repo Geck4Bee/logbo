@@ -22,7 +22,7 @@
                         :max-width="50"
                         />
                     </v-avatar>
-                    <span class="mx-2">{{$store.state.currentUserInfo.username}}</span>
+                    <span class="mx-2">{{ $store.state.currentUserInfo.username }}</span>
                 </div>
                 <amplify-sign-out class="mx-auto" v-if="isLoggedIn" />
             </v-list>
@@ -120,7 +120,7 @@ export default {
                 this.$router.push('/')
                 this.getUserInfo()
             } else if (info === 'signedOut') {
-                this.$router.push('/signin')
+                this.$router.push('/')
                 this.logout()
             }
         })
@@ -142,9 +142,8 @@ export default {
     },
     methods: {
         async getUserInfo () {
-            this.currentUserInfo = this.$store.state.currentUserInfo
-            if (!this.currentUserInfo) {
-                this.currentUserInfo = await this.$Amplify.Auth.currentUserInfo()
+            this.currentUserInfo = this.$store.state.currentUserInfo || await this.$Amplify.Auth.currentUserInfo()
+            if (this.currentUserInfo) {
                 this.$store.commit('login', this.currentUserInfo)
                 this.isLoggedIn = true
             }
@@ -154,6 +153,7 @@ export default {
         },
         logout () {
             this.$store.commit('logout')
+            this.isLoggedIn = false
             this.$store.commit('removeImg')
         },
         async getProfile () {

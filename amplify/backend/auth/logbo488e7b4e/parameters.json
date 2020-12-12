@@ -14,9 +14,12 @@
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
+    "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
-    "passwordPolicyCharacters": [],
+    "passwordPolicyCharacters": [
+        "Requires Lowercase",
+        "Requires Numbers"
+    ],
     "requiredAttributes": [
         "email"
     ],
@@ -29,7 +32,7 @@
         "email"
     ],
     "userpoolClientLambdaRole": "logbo4488e7b4e_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
+    "userpoolClientSetAttributes": true,
     "sharedId": "488e7b4e",
     "resourceName": "logbo488e7b4e",
     "authSelections": "identityPoolAndUserPool",
@@ -45,13 +48,20 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "useDefault": "manual",
     "triggers": "{}",
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+        "Admin"
+    ],
     "serviceName": "Cognito",
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": []
+    "dependsOn": [],
+    "thirdPartyAuth": false,
+    "userPoolGroups": true,
+    "adminQueries": true,
+    "hostedUI": false,
+    "adminQueryGroup": "Admin"
 }

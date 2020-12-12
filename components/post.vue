@@ -30,7 +30,12 @@
                 </v-row>
                 <v-row>
                     <div v-for="(tag, index) in JSON.parse(post.tag)" :key="index">
-                        <span style="color: gray;" class="mx-2">#{{ tag }}</span>
+                        <button
+                        class="mx-2 tag-link"
+                        @click="redirectWithTag(tag)"
+                        >
+                            <span>#{{ tag }}</span>
+                        </button>
                     </div>
                 </v-row>
             </div>
@@ -89,6 +94,21 @@ export default {
         this.image.imgURL = this.post.imgUrl
         const imageIdentityID = this.post.imgIdentityID || this.post.user.identityID
         Common.setImgFileUser(this.image, imageIdentityID)
+    },
+    methods: {
+        redirectWithTag (e) {
+            const title = (this.$route.query.titile !== undefined)? this.$route.query.titile : ""
+            const tag = e
+            const URL = (this.$route.query.URL !== undefined)? this.$route.query.URL : ""
+            const userID =(this.$route.query.userID !== undefined)? this.$route.query.userID : ""
+            const query = {
+                title: title,
+                tag: e,
+                URL: URL,
+                userID: userID
+            }
+            this.$router.push({ path: "/", query: query})
+        }
     }
 }
 </script>
@@ -96,5 +116,12 @@ export default {
 <style>
 .postRow {
     box-shadow: 3px 3px 10px #000, -3px -3px 10px #000;
+}
+
+.tag-link {
+    color: gray;
+}
+.tag-link:hover {
+    color: white;
 }
 </style>

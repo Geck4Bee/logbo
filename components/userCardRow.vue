@@ -1,6 +1,6 @@
 <template>
     <v-row class="user-info-first-small">
-        <div>
+        <div v-if="icon.showPreviewImg" class="mx-1">
             <v-img
             :src="icon.imgPreview"
             alt="アイコンのプレビュー"
@@ -11,15 +11,14 @@
         </div>
         <div class="user-link-small">
             <div class="user-name-box-small">
-                <span class="user-viewName">{{ user.viewName }}</span>
-                <span class="user-name">@{{ user.name }}</span><br/>
+                <nuxt-link :to="'/' + query">{{ user.viewName }}</nuxt-link>
+                <nuxt-link :to="'/' + query">@{{ user.name }}</nuxt-link><br/>
             </div>
         </div>
     </v-row>
 </template>
 
 <script>
-import API, { graphqlOperation } from '@aws-amplify/api'
 import * as Common from '~/assets/js/common.js'
 
 export default {
@@ -42,7 +41,7 @@ export default {
             defalut () {
                 return {
                     id: "",
-                    identityId: "",
+                    identityID: "",
                     viewName: '',
                     name: '',
                     iconUrl: '',
@@ -51,13 +50,18 @@ export default {
         }
     },
     mounted () {
-        this.setImgUrlIcon()
+        this.icon.imgURL = this.user.iconUrl
+        Common.setImgFileUser(this.icon, this.user.identityID)
     },
-    methods: {
-        setImgUrlIcon () {
-            this.icon.imgURL = this.user.iconUrl
-            Common.setImgFileUser(this.icon, this.user.identityId)
-        },
+    computed: {
+        query () {
+            const title = (this.$route.query.titile !== undefined)? 'title=' + this.$route.query.titile : ""
+            const tag = (this.$route.query.tag !== undefined)? 'tag=' + this.$route.query.tag : ""
+            const URL = (this.$route.query.URL !== undefined)? 'URL=' + this.$route.query.URL : ""
+            const userID ='userID=' + this.user.id
+            const query = [title, tag, URL, userID].filter(val => val !== "")
+            return '?' + query.join('&')
+        }
     }
 }
 </script>
@@ -71,27 +75,20 @@ export default {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
+    color: white;
+}
+
+.user-link-small a {
+    color: gray !important;
+    font-size: 0.9em;
+    width: 14em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-decoration: none;
-    color: white;
 }
-.user-viewName {
-    font-size: 0.9em;
-    width: 14em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: white;
-}
-.user-name {
-    font-size: 0.9em;
-    width: 14em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: white;
-}
-.user-name:hover,
-.user-viewName:hover {
-    color: gray;
+
+.user-link-small a:hover {
+    color: white !important;
 }
 </style>

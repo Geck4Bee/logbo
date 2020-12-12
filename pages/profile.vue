@@ -168,10 +168,11 @@ export default {
                 await API.graphql(graphqlOperation(userByCognitoId))
                     .then((res) => {
                         const items = res.data.userByCognitoID.items[0]
+                        console.log(items)
                         this.id = ("id" in items) ? items.id : ""
                         this.viewName = ("viewName" in items) ? items.viewName : ""
                         this.description = ("description" in items) ? items.description.replace(/\\n/g, '\n') : ""
-                        this.icon.imgURL = ("iconUrl" in items) ? items.iconUrl : null
+                        this.icon.imgURL = ("iconUrl" in items && items.iconUrl !== "") ? items.iconUrl : null
                         this.version = ("_version" in items) ? items._version : null
                         Common.setImgFile(this.icon)
                         this.overlay = false
