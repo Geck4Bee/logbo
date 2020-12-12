@@ -97,15 +97,16 @@ export default {
     },
     methods: {
         redirectWithTag (e) {
-            const title = (this.$route.query.titile !== undefined)? this.$route.query.titile : ""
-            const tag = e
+            const title = (this.$route.query.title !== undefined)? this.$route.query.title : ""
             const URL = (this.$route.query.URL !== undefined)? this.$route.query.URL : ""
-            const userID =(this.$route.query.userID !== undefined)? this.$route.query.userID : ""
+            const userID = (this.$route.query.userID !== undefined)? this.$route.query.userID : ""
+            const date = (this.$route.query.date !== undefined)? this.$route.query.date : ""
             const query = {
                 title: title,
                 tag: e,
                 URL: URL,
-                userID: userID
+                userID: userID,
+                date: date
             }
             this.$router.push({ path: "/", query: query})
         }

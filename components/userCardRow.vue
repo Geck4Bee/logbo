@@ -55,11 +55,12 @@ export default {
     },
     computed: {
         query () {
-            const title = (this.$route.query.titile !== undefined)? 'title=' + this.$route.query.titile : ""
+            const title = (this.$route.query.title !== undefined)? 'title=' + this.$route.query.title : ""
             const tag = (this.$route.query.tag !== undefined)? 'tag=' + this.$route.query.tag : ""
             const URL = (this.$route.query.URL !== undefined)? 'URL=' + this.$route.query.URL : ""
             const userID ='userID=' + this.user.id
-            const query = [title, tag, URL, userID].filter(val => val !== "")
+            const date = (this.$route.query.date !== undefined)? 'date=' + this.$route.query.date : ""
+            const query = [title, tag, URL, userID, date].filter(val => val !== "")
             return '?' + query.join('&')
         }
     }

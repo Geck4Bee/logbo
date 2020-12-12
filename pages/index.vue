@@ -7,8 +7,19 @@
         :cancel="false"
         @agree="showDialog = !showDialog"
         />
+        <search-form class="my-1" />
         <v-row v-if="query.title !== '' || query.tag !== '' || query.URL !== '' || showQueryUser">
             <h4>検索条件: </h4>
+        </v-row>
+        <v-row v-if="query.date !== ''" align="center">
+            <v-btn
+            icon
+            color="indigo"
+            @click="removeQuery('date')"
+            >
+                <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <h4>日付:<span class="mx-1"></span>{{ query.date }}</h4>
         </v-row>
         <v-row v-if="query.title !== ''" align="center">
             <v-btn
@@ -54,7 +65,7 @@
         <div v-for="(postObj, indexParent) in postObjs" :key="indexParent">
             <div class="mb-4">
                 <v-row justify="start">
-                    <h2>{{ new Date(postObj.date).toLocaleDateString() }}</h2>
+                    <h2>{{ new Date(postObj.date).toLocaleDateString().replace(new RegExp(/(\/)/gi), '-') }}</h2>
                 </v-row>
                 <v-divider/>
                 <div v-for="(post, indexChild) in postObj.posts" :key="indexChild">
@@ -92,13 +103,15 @@ import CustomOverlay from '~/components/overlay.vue'
 import CustomDialog from '~/components/dialog.vue'
 import Post from "~/components/post.vue"
 import UserCardRow from '~/components/userCardRow.vue'
+import SearchForm from '~/components/searchForm.vue'
 
 export default {
     components: {
         CustomOverlay,
         CustomDialog,
         Post,
-        UserCardRow
+        UserCardRow,
+        SearchForm
     },
     data () {
         return {
@@ -118,7 +131,8 @@ export default {
                 title: "",
                 tag: "",
                 URL: "",
-                userID: ""
+                userID: "",
+                date: ""
             },
             queryUser: {
                 id: "",
@@ -135,14 +149,15 @@ export default {
             title: "",
             tag: "",
             URL: "",
-            userID: ""
+            userID: "",
+            date: ""
         }
         const queryKey = Object.keys(context.query)
         queryKey.map((key) => {
             query[key] = context.query[key]
         })
         const now = new Date()
-        const date = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        const date = (query.date !== "")? new Date(Number(query.date.substring(0, 4)), Number(query.date.substring(5, 7))-1, Number(query.date.substring(8))) : new Date(now.getFullYear(), now.getMonth(), now.getDate())
         const startDate = new Date(2020, 11, 1)
         const nextTokenObj = {
             date: date.toISOString(),
@@ -155,7 +170,7 @@ export default {
             nextTokens: [nextTokenObj]
         }
     },
-    watchQuery: ['title', 'tag', 'URL', 'userID'],
+    watchQuery: ['title', 'tag', 'URL', 'userID', 'date'],
     mounted () {
         this.startLoading()
     },
@@ -210,6 +225,9 @@ export default {
                 if (this.nextToken) {
                     nextToken = `"${this.nextToken}"`
                 }
+                const filterURL = (this.query.URL !== "")? `{URL: {contains: "${this.query.URL}"}},` : ''
+                const filterUserID = (this.query.userID !== "")? `{userID: {eq: "${this.query.userID}"}},` : ''
+                const filterAnd = (filterURL !== '' || filterUserID !== '')? 'and: [' + filterURL + filterUserID + ']' : ''
                 const postByDate = `
                     query PostByDate {
                         postByDate (
@@ -218,11 +236,10 @@ export default {
                             filter: {
                                 or: [
                                     {title: {contains: "${this.query.title}"}},
-                                    {tag: {contains: "${this.query.title}"}}
+                                    {tag: {contains: "${this.query.title}"}},
                                     {tag: {contains: "${this.query.tag}"}},
-                                    {URL: {contains: "${this.query.URL}"}},
-                                    {userID: {eq: "${this.query.userID}"}}
-                                ]
+                                ],
+                                ${filterAnd}
                             }
                             limit: ${this.postsPerPage}
                             nextToken: ${nextToken}
