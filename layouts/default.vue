@@ -126,6 +126,7 @@ export default {
         })
     },
     async created () {
+        this.$store.commit("setReplyType")
         await this.getUserInfo()
     },
     computed: {

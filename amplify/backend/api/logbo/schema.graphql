@@ -38,6 +38,8 @@ type Reply @model
   type: String!
   content: String!
   request: String
+  imgUrl: String
+  pastPost: String
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
   userID: ID!

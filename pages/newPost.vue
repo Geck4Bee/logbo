@@ -151,7 +151,7 @@ export default {
         validation () {
             try {
                 if(!this.$refs.formPost.validate()) {
-                throw "ExceptionOccured"
+                    throw "ExceptionOccured"
                 }
                  this.startCreatePost()
             } catch (e) {

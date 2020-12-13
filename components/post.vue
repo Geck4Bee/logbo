@@ -8,22 +8,30 @@
         </v-row>
         <v-row justify="start" align="center" class="px-4 pb-1">
             <div class="mx-2">
-                <v-img
-                :src="image.imgPreview"
-                alt="画像のプレビュー"
-                @error="Common.resetImgURL(icon)"
-                class="user-image-minimum"
-                max-width="80"
-                />
+                <v-btn
+                icon
+                :href="post.URL"
+                :disabled="post.URL === ''"
+                target="_blank"
+                rel="noopener noreferrer"
+                >
+                    <v-avatar tile>
+                        <v-img
+                        :src="image.imgPreview"
+                        alt="画像のプレビュー"
+                        @error="Common.resetImgURL(icon)"
+                        class="user-image-minimum"
+                        max-width="80"
+                        />
+                    </v-avatar>
+                </v-btn>
             </div>
-            <div class="mx-2">
+            <div class="mx-4">
                 <v-row>
                     <v-btn
                     text
-                    :href="post.URL"
-                    :disabled="post.URL === ''"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    nuxt
+                    :to="'/post/' + post.id"
                     >
                         <h3 class="my-0">{{ post.title }}</h3>
                     </v-btn>

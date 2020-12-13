@@ -80,6 +80,8 @@ export const getUser = /* GraphQL */ `
           type
           content
           request
+          imgUrl
+          pastPost
           createdAt
           updatedAt
           userID
@@ -228,6 +230,8 @@ export const getPost = /* GraphQL */ `
           type
           content
           request
+          imgUrl
+          pastPost
           createdAt
           updatedAt
           userID
@@ -324,6 +328,8 @@ export const syncReplies = /* GraphQL */ `
         type
         content
         request
+        imgUrl
+        pastPost
         createdAt
         updatedAt
         userID
@@ -393,6 +399,8 @@ export const getReply = /* GraphQL */ `
       type
       content
       request
+      imgUrl
+      pastPost
       createdAt
       updatedAt
       userID
@@ -453,6 +461,8 @@ export const listReplys = /* GraphQL */ `
         type
         content
         request
+        imgUrl
+        pastPost
         createdAt
         updatedAt
         userID
@@ -673,6 +683,8 @@ export const replyByUserId = /* GraphQL */ `
         type
         content
         request
+        imgUrl
+        pastPost
         createdAt
         updatedAt
         userID
@@ -738,6 +750,8 @@ export const replyByPostId = /* GraphQL */ `
         type
         content
         request
+        imgUrl
+        pastPost
         createdAt
         updatedAt
         userID

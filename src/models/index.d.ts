@@ -41,6 +41,8 @@ export declare class Reply {
   readonly type: string;
   readonly content: string;
   readonly request?: string;
+  readonly imgUrl?: string;
+  readonly pastPost?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   readonly user?: User;

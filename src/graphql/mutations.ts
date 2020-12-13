@@ -42,6 +42,8 @@ export const createUser = /* GraphQL */ `
           type
           content
           request
+          imgUrl
+          pastPost
           createdAt
           updatedAt
           userID
@@ -100,6 +102,8 @@ export const updateUser = /* GraphQL */ `
           type
           content
           request
+          imgUrl
+          pastPost
           createdAt
           updatedAt
           userID
@@ -158,6 +162,8 @@ export const deleteUser = /* GraphQL */ `
           type
           content
           request
+          imgUrl
+          pastPost
           createdAt
           updatedAt
           userID
@@ -222,6 +228,8 @@ export const createPost = /* GraphQL */ `
           type
           content
           request
+          imgUrl
+          pastPost
           createdAt
           updatedAt
           userID
@@ -284,6 +292,8 @@ export const updatePost = /* GraphQL */ `
           type
           content
           request
+          imgUrl
+          pastPost
           createdAt
           updatedAt
           userID
@@ -346,6 +356,8 @@ export const deletePost = /* GraphQL */ `
           type
           content
           request
+          imgUrl
+          pastPost
           createdAt
           updatedAt
           userID
@@ -407,6 +419,8 @@ export const createReply = /* GraphQL */ `
       type
       content
       request
+      imgUrl
+      pastPost
       createdAt
       updatedAt
       userID
@@ -484,6 +498,8 @@ export const updateReply = /* GraphQL */ `
       type
       content
       request
+      imgUrl
+      pastPost
       createdAt
       updatedAt
       userID
@@ -561,6 +577,8 @@ export const deleteReply = /* GraphQL */ `
       type
       content
       request
+      imgUrl
+      pastPost
       createdAt
       updatedAt
       userID

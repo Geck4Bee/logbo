@@ -73,10 +73,10 @@ export async function S3Upload (obj, id, overlay) {
             obj.imgURL = result.key
         })
         .catch(e => {
-            Common.failed(e, "アイコンのアップロードに失敗しました", overlay)
+            failed(e, "アイコンのアップロードに失敗しました", overlay)
         })
     } catch (e) {
-        Common.failed(e, "アイコンのアップロードに失敗しました", overlay)
+        failed(e, "アイコンのアップロードに失敗しました", overlay)
     }
 }
 
@@ -87,10 +87,10 @@ export async function S3Remove (obj, overlay) {
             obj.imgURL = null
         })
         .catch(e => {
-            Common.failed(e, "アイコンの削除に失敗しました", overlay)
+            failed(e, "アイコンの削除に失敗しました", overlay)
         })
     } catch (e) {
-        Common.failed(e, "アイコンの削除に失敗しました", overlay)
+        failed(e, "アイコンの削除に失敗しました", overlay)
     }
 }
 
