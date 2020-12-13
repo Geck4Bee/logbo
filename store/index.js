@@ -30,8 +30,8 @@ export const mutations = {
     setReplyType(state) {
         state.replyType = [
             {name: "変更リクエスト", value: "request"},
-            {name: "承認リクエスト", value: "accept"},
-            {name: "却下リクエスト", value: "reject"},
+            {name: "承認済み", value: "accept"},
+            {name: "却下済み", value: "reject"},
             {name: "補足", value: "supplement"},
             {name: "検証", value: "inspection"}
         ]

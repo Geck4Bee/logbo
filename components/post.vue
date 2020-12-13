@@ -126,7 +126,6 @@ export default {
 .postRow {
     box-shadow: 3px 3px 10px #000, -3px -3px 10px #000;
 }
-
 .tag-link {
     color: gray;
 }

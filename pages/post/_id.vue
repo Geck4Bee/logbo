@@ -33,21 +33,54 @@
                                     max-width="200"
                                     />
                                 </div>
-                                <div class="mx-2">
-                                    <v-row justify="start">
-                                        <v-btn
-                                        color="teal"
-                                        @click="dialogReply = true"
-                                        >
-                                        返信
-                                        </v-btn>
+                                <div class="mx-4">
+                                    <v-row justify="start" class="my-2">
+                                        <h4>日付: </h4>
+                                        <span class="ml-2">{{ post.date }}</span>
+                                    </v-row>
+                                    <v-row justify="start" class="my-2">
+                                        <h4>URL:</h4>
+                                            <a
+                                            class="post-url ml-2"
+                                            :href="post.URL"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            :style="(post.URL !=='')? '' : 'pointer-events:none;'"
+                                            >
+                                                <span>{{ (post.URL !=='')? post.URL : "無し" }}</span>
+                                            </a>
+                                    </v-row>
+                                    <v-row justrify="start" class="my-2">
+                                        <h4 class="mr-2">タグ:</h4>
+                                        <div v-for="(tag, index) in JSON.parse(post.tag)" :key="index">
+                                            <button
+                                            class="mx-2"
+                                            @click="redirectWithTag(tag)"
+                                            >
+                                                <span class="tag-link">#{{ tag }}</span>
+                                            </button>
+                                        </div>
                                     </v-row>
                                 </div>
+                            </v-row>
+                            <v-row justify="center">
+                                <v-btn
+                                color="teal"
+                                @click="dialogReply = true"
+                                >
+                                返信
+                                </v-btn>
                             </v-row>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-expansion-panels>
             </v-card>
+        </div>
+        <div v-for="(reply, index) in replies" :key="index" class="my-1">
+            <reply
+            :reply="reply"
+            :index="index"
+            />
         </div>
         <v-row justify="center" class="my-1">
             <v-btn
@@ -84,13 +117,15 @@ import CustomOverlay from '~/components/overlay.vue'
 import CustomDialog from '~/components/dialog.vue'
 import UserCardRow from '~/components/userCardRow.vue'
 import FormReply from '~/components/formReply.vue'
+import Reply from '~/components/reply.vue'
 
 export default {
     components: {
         CustomOverlay,
         CustomDialog,
         UserCardRow,
-        FormReply
+        FormReply,
+        Reply
     },
     data () {
         return {
@@ -150,6 +185,16 @@ export default {
         }
     },
     methods: {
+        redirectWithTag (e) {
+            const query = {
+                title: "",
+                tag: e,
+                URL: "",
+                userID: "",
+                date: ""
+            }
+            this.$router.push({ path: "/", query: query})
+        },
         backBtn () {
             this.page--
             this.nextToken = this.nextTokens[this.page-1]
@@ -230,6 +275,8 @@ export default {
                             createdAt
                             updatedAt
                             userID
+                            imgUrl
+                            pastPost
                             user {
                                 id
                                 identityID
@@ -273,7 +320,7 @@ export default {
                             request: "${JSON.stringify(reply.request).replace(/"/g, '\\"')}",
                             imgUrl: "${reply.image.imgURL}"
                             pastPost: "${JSON.stringify(reply.pastPost).replace(/"/g, '\\"')}"
-                            userID: "${this.$store.state.currentUserInfo.attributes.sub}"
+                            userID: "${this.$store.state.userID}"
                         }) {
                             id
                             postID
@@ -301,3 +348,19 @@ export default {
     }
 }
 </script>
+
+<style>
+.post-url {
+    text-decoration: none;
+    color: gray !important;
+}
+.post-url:hover {
+    color: white !important;
+}
+.tag-link {
+    color: gray;
+}
+.tag-link:hover {
+    color: white;
+}
+</style>
