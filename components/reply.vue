@@ -118,6 +118,34 @@
                                 </v-row>
                             </div>
                         </v-row>
+                        <v-row v-if="reply.userID === $store.state.userID" justify="center" class="my-2">
+                            <div v-if="postUserID === $store.state.userID && reply.type === 'request'">
+                                <v-btn
+                                color="teal"
+                                class="mx-2"
+                                dark
+                                >
+                                <v-icon>mdi-check-bold</v-icon>
+                                承認
+                                </v-btn>
+                                <v-btn
+                                color="red"
+                                class="mx-2"
+                                dark
+                                >
+                                <v-icon>mdi-close-thick</v-icon>
+                                却下
+                                </v-btn>
+                            </div>
+                            <v-btn
+                            color="indigo"
+                            class="mx-2"
+                            dark
+                            >
+                            <v-icon>mdi-delete</v-icon>
+                            削除
+                            </v-btn>
+                        </v-row>
                     </v-expansion-panel-content>
                 </v-expansion-panel>
             </v-expansion-panels>
@@ -166,6 +194,10 @@ export default {
         }
     },
     props: {
+        postUserID: {
+            type: String,
+            default: ""
+        },
         index: {
             type: Number,
             default: 1

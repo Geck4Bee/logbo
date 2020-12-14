@@ -64,12 +64,26 @@
                                 </div>
                             </v-row>
                             <v-row justify="center">
-                                <v-btn
-                                color="teal"
-                                @click="dialogReply = true"
-                                >
-                                返信
-                                </v-btn>
+                                <div v-if="$store.state.isLoggedIn">
+                                    <v-btn
+                                    color="teal"
+                                    @click="dialogReply = true"
+                                    dark
+                                    >
+                                    <v-icon class="mr-1">mdi-message-reply</v-icon>
+                                    返信
+                                    </v-btn>
+                                </div>
+                                <div v-if="post.userID === $store.state.userID">
+                                    <v-btn
+                                    color="indigo"
+                                    class="mx-2"
+                                    dark
+                                    >
+                                    <v-icon>mdi-delete</v-icon>
+                                    削除
+                                    </v-btn>
+                                </div>
                             </v-row>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -80,6 +94,7 @@
             <reply
             :reply="reply"
             :index="index"
+            :postUserID="post.userID"
             />
         </div>
         <v-row justify="center" class="my-1">
