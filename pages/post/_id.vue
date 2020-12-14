@@ -24,7 +24,7 @@
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             <v-row justify="start">
-                                <div class="mx-2">
+                                <div v-if="image.showPreviewImg" class="mx-2">
                                     <v-img
                                     :src="image.imgPreview"
                                     alt="画像のプレビュー"

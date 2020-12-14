@@ -152,6 +152,8 @@ export default {
                     URL: "",
                     tag: [],
                     date: "",
+                    imgUrl: "",
+                    identityID: ""
                 },
                 image: {
                     name: "reply",
@@ -204,6 +206,8 @@ export default {
         this.reply.request.tag = JSON.parse(this.post.tag)
         this.reply.request.date = this.post.date
         this.reply.pastPost = JSON.parse(JSON.stringify(this.reply.request))
+        this.reply.pastPost.imgUrl = this.post.imgUrl
+        this.reply.pastPost.identityID = this.post.user.identityID
     },
     mounted () {
         this.replyTypes = this.$store.state.replyType.filter(obj => ["accept", "reject"].indexOf(obj.value) === -1)
