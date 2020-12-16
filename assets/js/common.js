@@ -81,16 +81,16 @@ export async function S3Upload (obj, id, overlay) {
 }
 
 export async function S3Remove (obj, overlay) {
-    try{
+    try {
         await Storage.remove(obj.imgURL, { level: 'protected' })
         .then(result => {
             obj.imgURL = null
         })
         .catch(e => {
-            failed(e, "アイコンの削除に失敗しました", overlay)
+            failed(e, "画像の削除に失敗しました", overlay)
         })
     } catch (e) {
-        failed(e, "アイコンの削除に失敗しました", overlay)
+        failed(e, "画像の削除に失敗しました", overlay)
     }
 }
 
@@ -99,6 +99,39 @@ export function pad (num) {
         return '0' + num
     }
     return num
+}
+
+export async function getUserID (currentUserInfo) {
+    let userID = null
+    const userByCognitoId = `
+        query UserByCognitoId {
+            userByCognitoID(
+                cognitoID: "${currentUserInfo.attributes.sub}",
+                limit: 1,
+                nextToken: null
+            ) {
+                items {
+                    id
+                    iconUrl
+                },
+                nextToken
+            }
+        }
+    `
+    try {
+        await API.graphql(graphqlOperation(userByCognitoId))
+            .then(async (res) => {
+                const items = res.data.userByCognitoID.items[0]
+                if ([null, undefined, []].indexOf(items) !== -1) {
+                    throw "Profile not found"
+                }
+                userID = items.id
+            })
+    } catch (e) {
+        console.log("Profile not found: " + e)
+    } finally {
+        return userID
+    }
 }
 
 export function toISO8601DateString (date) {

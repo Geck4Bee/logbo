@@ -74,7 +74,7 @@
                                     返信
                                     </v-btn>
                                 </div>
-                                <div v-if="post.userID === $store.state.userID">
+                                <div v-if="post.userID === userID">
                                     <v-btn
                                     color="indigo"
                                     class="mx-2"
@@ -145,6 +145,7 @@ export default {
     data () {
         return {
             showPost: false,
+            userID: null,
             openPost: [0],
             post: {
                 id: "",
@@ -163,7 +164,8 @@ export default {
                     name: "",
                     viewName: "",
                     iconUrl: ""
-                }
+                },
+                _version: 0
             },
             image: {
                 name: "image",
@@ -188,6 +190,11 @@ export default {
     },
     async created () {
         this.post.id = this.$route.params.id
+        this.userID = this.$store.state.userID
+        if (!this.userID) {
+            const currentUserInfo = await this.$Amplify.Auth.currentUserInfo()
+            this.userID = await Common.getUserID(currentUserInfo)
+        }
         await this.getPost()
         this.replyByPostID()
     },
@@ -245,6 +252,8 @@ export default {
                             viewName
                             iconUrl
                         }
+                        _version
+                        _deleted
                     }
                 }
             `
@@ -254,6 +263,7 @@ export default {
                         const items = res.data.getPost
                         if (items && Object.keys(items).length > 0) {
                             this.post = items
+                            if (this.post._deleted) throw new Error("投稿は削除されています")
                             this.image.imgURL = this.post.imgUrl
                             const imageIdentityID = this.post.imgIdentityID || this.post.user.identityID
                             Common.setImgFileUser(this.image, imageIdentityID)
@@ -263,6 +273,7 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
+                this.$router.push("/")
             }
             this.overlay = false
         },
@@ -298,7 +309,9 @@ export default {
                                 name
                                 viewName
                                 iconUrl
-                            }
+                            },
+                            _version
+                            _deleted
                         }
                         nextToken
                         startedAt
@@ -308,7 +321,7 @@ export default {
             try {
                 API.graphql(graphqlOperation(replyByPostId))
                     .then(res => {
-                        const items = res.data.replyByPostID.items
+                        const items = res.data.replyByPostID.items.filter(obj => !obj._deleted)
                         this.nextToken = res.data.replyByPostID.nextToken
                         if (items.length > 0) this.replies = items
                         console.log('Replies has loaded')
@@ -335,7 +348,7 @@ export default {
                             request: "${JSON.stringify(reply.request).replace(/"/g, '\\"')}",
                             imgUrl: "${reply.image.imgURL}"
                             pastPost: "${JSON.stringify(reply.pastPost).replace(/"/g, '\\"')}"
-                            userID: "${this.$store.state.userID}"
+                            userID: "${this.userID}"
                         }) {
                             id
                             postID

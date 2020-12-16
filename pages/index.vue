@@ -262,6 +262,8 @@ export default {
                                 viewName
                                 iconUrl
                             }
+                            _version
+                            _deleted
                         }
                         nextToken
                         }
@@ -270,7 +272,7 @@ export default {
                 try {
                     await API.graphql(graphqlOperation(postByDate))
                         .then((res) => {
-                            const items = res.data.postByDate.items
+                            const items = res.data.postByDate.items.filter(obj => !obj._deleted)
                             this.nextToken = res.data.postByDate.nextToken
                             if (items.length > 0) {
                                 this.postObjs.push({

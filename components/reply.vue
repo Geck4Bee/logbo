@@ -5,7 +5,13 @@
         :dialog="showDialog"
         :message="dialogMessage"
         :cancel="false"
-        @agree="showDialog = !showDialog"
+        @agree="delReply()"
+        />
+        <custom-dialog
+        :dialog="showDialogResult"
+        :message="dialogMessageResult"
+        :cancel="false"
+        @agree="showDialogResult = !showDialogResult"
         />
         <v-card dark>
             <v-card-subtitle class="pt-1 pb-0">
@@ -118,8 +124,8 @@
                                 </v-row>
                             </div>
                         </v-row>
-                        <v-row v-if="reply.userID === $store.state.userID" justify="center" class="my-2">
-                            <div v-if="postUserID === $store.state.userID && reply.type === 'request'">
+                        <v-row v-if="reply.userID === userID" justify="center" class="my-2">
+                            <div v-if="postUserID === userID && reply.type === 'request'">
                                 <v-btn
                                 color="teal"
                                 class="mx-2"
@@ -141,6 +147,7 @@
                             color="indigo"
                             class="mx-2"
                             dark
+                            @click="delReplyDialog()"
                             >
                             <v-icon>mdi-delete</v-icon>
                             削除
@@ -169,9 +176,12 @@ export default {
     },
     data () {
         return {
+            userID: "",
             overlay: false,
             showDialog: false,
             dialogMessage: "",
+            showDialogResult: false,
+            dialogMessageResult: "",
             showReply: false,
             replyTypes: [],
             openReply: [],
@@ -213,6 +223,7 @@ export default {
                     user: null,
                     createdAt: "",
                     imgUrl: "",
+                    _version: 0,
                     request: {
                         title: "",
                         URL: "",
@@ -243,6 +254,11 @@ export default {
         if (this.reply.user == null) await this.getUser()
         await Common.setImgFileUser(this.image, this.reply.user.identityID)
         await Common.setImgFileUser(this.pastImage, this.reply.pastPost.identityID)
+        this.userID = this.$store.state.userID
+        if (!this.userID) {
+            const currentUserInfo = await this.$Amplify.Auth.currentUserInfo()
+            this.userID = await Common.getUserID(currentUserInfo)
+        }
         this.showReply = true
     },
     methods: {
@@ -265,6 +281,42 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e, "ユーザーの読み込みに失敗しました", this.overlay)
+            }
+        },
+        delReplyDialog () {
+            this.dialogMessage = "リプライを削除します。よろしいでしょうか？"
+            this.showDialog = true
+        },
+        async delReply () {
+            this.showDialog = false
+            this.overlay = true
+            try {
+                const currentCredentials = await this.$Amplify.Auth.currentCredentials()
+                if (this.reply.user.identityID !== currentCredentials.identityId) {
+                    throw new Error("権限のないアカウント")
+                }
+                if ([null, undefined, ""].indexOf(this.image.imgURL) === -1) {
+                    await Common.S3Remove(this.image, this.overlay)
+                }
+                const deleteReply = `
+                    mutation DeleteReply {
+                        deleteReply(input: {
+                            id: "${this.reply.id}"
+                            _version: ${this.reply._version}
+                        }) {
+                        id
+                        _version
+                        }
+                    }
+                `
+                API.graphql(graphqlOperation(deleteReply))
+                    .then(res => {
+                        this.overlay = false
+                        this.dialogMessageResult = "リプライを削除しました"
+                        this.showDialogResult = true
+                    })
+            } catch (e) {
+                Common.failed(e, "リプライの削除に失敗しました", this.overlay)
             }
         },
     }
