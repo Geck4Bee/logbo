@@ -309,7 +309,7 @@ export default {
                         }
                     }
                 `
-                API.graphql(graphqlOperation(deleteReply))
+                await API.graphql(graphqlOperation(deleteReply))
                     .then(res => {
                         this.overlay = false
                         this.dialogMessageResult = "リプライを削除しました"

@@ -290,7 +290,7 @@ export default {
                             this.overlay = false
                         })
                 } catch (e) {
-                    Common.failed(e, "ログボの読み込みに失敗しました", this.overlay)
+                    Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
                 }
             } while (this.flagLoad)
             console.log("Loading done") 

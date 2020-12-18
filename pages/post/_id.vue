@@ -1,13 +1,19 @@
 <template>
     <div>
         <custom-overlay :overlay="overlay" />
-        <custom-dialog
-        :dialog="showDialog"
-        :message="dialogMessage"
-        :cancel="false"
-        @agree="showDialog = !showDialog"
-        />
         <div v-if="showPost" class="my-2">
+            <custom-dialog
+            :dialog="showDialog"
+            :message="dialogMessage"
+            :cancel="false"
+            @agree="reload()"
+            />
+            <custom-dialog
+            :dialog="showDialogResult"
+            :message="dialogMessageResult"
+            :cancel="false"
+            @agree="$router.push('/')"
+            />
             <v-card dark>
                 <v-card-subtitle class="pb-0">
                     <v-row align="center">
@@ -79,6 +85,7 @@
                                     color="indigo"
                                     class="mx-2"
                                     dark
+                                    @click="delPost"
                                     >
                                     <v-icon>mdi-delete</v-icon>
                                     削除
@@ -178,6 +185,8 @@ export default {
             overlay: false,
             showDialog: false,
             dialogMessage: "",
+            dialogMessageResult: "",
+            showDialogResult: false,
             replies: [],
             repliesPerPage: 10,
             replyType: "all",
@@ -196,7 +205,7 @@ export default {
             this.userID = await Common.getUserID(currentUserInfo)
         }
         await this.getPost()
-        this.replyByPostID()
+        await this.replyByPostID()
     },
     computed: {
         disableBackBtn () {
@@ -207,6 +216,16 @@ export default {
         }
     },
     methods: {
+        async reload () {
+            this.showDialog = false
+            this.showDialogResult = false
+            this.showPost = false
+            this.post = {}
+            this.post.id = this.$route.params.id
+            this.replies = []
+            await this.getPost()
+            await this.replyByPostID()
+        },
         redirectWithTag (e) {
             const query = {
                 title: "",
@@ -268,6 +287,8 @@ export default {
                             const imageIdentityID = this.post.imgIdentityID || this.post.user.identityID
                             Common.setImgFileUser(this.image, imageIdentityID)
                             this.showPost = true
+                        } else {
+                            throw new Error("投稿が見つかりません")
                         }
                         console.log("Post has loaded")
                     })
@@ -367,10 +388,72 @@ export default {
                         this.overlay = false
                         this.dialogMessage = "リプライを投稿しました"
                         this.showDialog = true
-                        this.replies.unshift(reply)
                     })
             } catch (e) {
                 Common.failed(e, "リプライの投稿に失敗しました", this.overlay)
+            }
+        },
+        async delPost () {
+            this.showDialog = false
+            this.overlay = true
+            try {
+                const currentCredentials = await this.$Amplify.Auth.currentCredentials()
+                if (this.post.user.identityID !== currentCredentials.identityId) {
+                    throw new Error("権限のないアカウント")
+                }
+                await this.replies.map(async (reply) => {
+                    await this.delReply(reply)
+                })
+                console.log("Deleted All Replies")
+                if ([null, undefined, ""].indexOf(this.image.imgURL) === -1) {
+                    await Common.S3Remove(this.image, this.overlay)
+                }
+                const deletePost = `
+                    mutation DeletePost {
+                        deletePost(input: {
+                            id: "${this.post.id}"
+                            _version: ${this.post._version}
+                        }) {
+                        id
+                        _version
+                        }
+                    }
+                `
+                await API.graphql(graphqlOperation(deletePost))
+                    .then(res => {
+                        this.overlay = false
+                        this.dialogMessageResult = "投稿を削除しました"
+                        this.showDialogResult = true
+                    })
+            } catch (e) {
+                Common.failed(e, "投稿の削除に失敗しました", this.overlay)
+            }
+        },
+        async delReply (reply) {
+            try {
+                if ([null, undefined, ""].indexOf(reply.imgUrl) === -1) {
+                    const imgObj = {
+                        imgURL: reply.imgUrl
+                    }
+                    await Common.S3Remove(imgObj, this.overlay)
+                }
+                const deleteReply = `
+                    mutation DeleteReply {
+                        deleteReply(input: {
+                            id: "${reply.id}"
+                            _version: ${reply._version}
+                        }) {
+                        id
+                        _version
+                        }
+                    }
+                `
+                await API.graphql(graphqlOperation(deleteReply))
+                    .then(res => {
+                        console.log("Deleted Reply")
+                    })
+            } catch (e) {
+                Common.failed(e, "投稿の削除に失敗しました", this.overlay)
             }
         },
     }
