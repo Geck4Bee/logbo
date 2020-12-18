@@ -101,7 +101,8 @@
             <reply
             :reply="reply"
             :index="index"
-            :postUserID="post.userID"
+            :post="post"
+            @reload="reload"
             />
         </div>
         <v-row justify="center" class="my-1">
@@ -323,6 +324,7 @@ export default {
                             updatedAt
                             userID
                             imgUrl
+                            postID
                             pastPost
                             user {
                                 id

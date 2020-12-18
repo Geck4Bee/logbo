@@ -11,7 +11,19 @@
         :dialog="showDialogResult"
         :message="dialogMessageResult"
         :cancel="false"
-        @agree="showDialogResult = !showDialogResult"
+        @agree="reload()"
+        />
+        <custom-dialog
+        :dialog="showDialogAccept"
+        :message="dialogMessageAccept"
+        :cancel="false"
+        @agree="accept()"
+        />
+        <custom-dialog
+        :dialog="showDialogReject"
+        :message="dialogMessageReject"
+        :cancel="false"
+        @agree="reject()"
         />
         <v-card dark>
             <v-card-subtitle class="pt-1 pb-0">
@@ -29,7 +41,7 @@
                     <v-expansion-panel-content>
                         <v-row justify="start">
                             <div class="ml-2 mr-4">
-                                <v-row v-if="reply.type === 'request' && pastImage.showPreviewImg">
+                                <v-row v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1 && pastImage.showPreviewImg && image.showPreviewImg">
                                     <v-img
                                     :src="pastImage.imgPreview"
                                     alt="画像のプレビュー"
@@ -39,7 +51,7 @@
                                     />
                                 </v-row>
                                 <v-row
-                                v-if="reply.type === 'request' && pastImage.showPreviewImg"
+                                v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1 && pastImage.showPreviewImg && image.showPreviewImg"
                                 justify="center"
                                 class="my-2"
                                 >
@@ -56,7 +68,7 @@
                                 </v-row>
                             </div>
                             <div class="mx-4">
-                                <div v-if="reply.type === 'request'">
+                                <div v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1">
                                     <div v-if="reply.pastPost.title !== reply.request.title" class="my-1">
                                         <v-row justify="start">
                                             <h4>タイトル:</h4>
@@ -124,12 +136,13 @@
                                 </v-row>
                             </div>
                         </v-row>
-                        <v-row v-if="reply.userID === userID" justify="center" class="my-2">
-                            <div v-if="postUserID === userID && reply.type === 'request'">
+                        <v-row v-if="reply.user.identityID === currentCredentials.identityId && ['accept', 'reject'].indexOf(reply.type) === -1" justify="center" class="my-2">
+                            <div v-if="post.user.identityID === currentCredentials.identityId && reply.type === 'request'">
                                 <v-btn
                                 color="teal"
                                 class="mx-2"
                                 dark
+                                @click="delReplyDialogAccept()"
                                 >
                                 <v-icon>mdi-check-bold</v-icon>
                                 承認
@@ -138,6 +151,7 @@
                                 color="red"
                                 class="mx-2"
                                 dark
+                                @click="delReplyDialogReject()"
                                 >
                                 <v-icon>mdi-close-thick</v-icon>
                                 却下
@@ -176,12 +190,16 @@ export default {
     },
     data () {
         return {
-            userID: "",
+            currentCredentials: null,
             overlay: false,
             showDialog: false,
             dialogMessage: "",
             showDialogResult: false,
             dialogMessageResult: "",
+            showDialogAccept: false,
+            dialogMessageAccept: "",
+            showDialogReject: false,
+            dialogMessageReject: "",
             showReply: false,
             replyTypes: [],
             openReply: [],
@@ -204,9 +222,30 @@ export default {
         }
     },
     props: {
-        postUserID: {
-            type: String,
-            default: ""
+        post: {
+            type: Object,
+            default () {
+                return {
+                    id: "",
+                    title: "",
+                    URL: "",
+                    tag: "",
+                    date: "2020-12-01",
+                    imgUrl: "",
+                    imgIdentityID: "",
+                    createdAt: "",
+                    updatedAt: "",
+                    userID: "",
+                    user: {
+                        id: "",
+                        identityID: "",
+                        name: "",
+                        viewName: "",
+                        iconUrl: ""
+                    },
+                    _version: 0
+                }
+            }
         },
         index: {
             type: Number,
@@ -230,6 +269,7 @@ export default {
                         tag: [],
                         date: "",
                     },
+                    postID: "",
                     pastPost: {
                         title: "",
                         URL: "",
@@ -243,25 +283,24 @@ export default {
         },
     },
     async created () {
+        this.currentCredentials = await this.$Amplify.Auth.currentCredentials()
         this.replyTypes = this.$store.state.replyType
         this.openReply = (this.index == 0) ? [0] : []
         this.reply.request = JSON.parse(this.reply.request)
         this.reply.pastPost = JSON.parse(this.reply.pastPost)
         this.reply.content = this.reply.content.replace(/\\n/g, '\n')
-        this.image.imgURL = (this.reply.imgUrl && this.reply.imgUrl !== '')? this.reply.imgUrl : null
-        this.pastImage.imgURL = (this.reply.pastPost.imgUrl && this.reply.pastPost.imgUrl !== '')? this.reply.pastPost.imgUrl : null
+        this.image.imgURL = ([null, undefined, ""].indexOf(this.reply.imgUrl) === -1)? this.reply.imgUrl : null
+        this.pastImage.imgURL = ([null, undefined, ""].indexOf(this.reply.pastPost.imgUrl) === -1)? this.reply.pastPost.imgUrl : null
         this.reply.pastPost.identityID = (this.reply.pastPost.identityID && this.reply.pastPost.identityID !== '')? this.reply.pastPost.identityID : null
         if (this.reply.user == null) await this.getUser()
         await Common.setImgFileUser(this.image, this.reply.user.identityID)
         await Common.setImgFileUser(this.pastImage, this.reply.pastPost.identityID)
-        this.userID = this.$store.state.userID
-        if (!this.userID) {
-            const currentUserInfo = await this.$Amplify.Auth.currentUserInfo()
-            this.userID = await Common.getUserID(currentUserInfo)
-        }
         this.showReply = true
     },
     methods: {
+        reload () {
+            this.$emit("reload")
+        },
         async getUser() {
             const getUser = `
                 query GetUser {
@@ -281,19 +320,30 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e, "ユーザーの読み込みに失敗しました", this.overlay)
+                this.overlay = false
             }
         },
         delReplyDialog () {
             this.dialogMessage = "リプライを削除します。よろしいでしょうか？"
             this.showDialog = true
         },
+        delReplyDialogAccept () {
+            this.dialogMessageAccept = "変更リクエストを承認します。よろしいでしょうか？"
+            this.showDialogAccept = true
+        },
+        delReplyDialogReject () {
+            this.dialogMessageReject = "変更リクエストを却下します。よろしいでしょうか？"
+            this.showDialogReject = true
+        },
         async delReply () {
             this.showDialog = false
             this.overlay = true
             try {
-                const currentCredentials = await this.$Amplify.Auth.currentCredentials()
-                if (this.reply.user.identityID !== currentCredentials.identityId) {
+                if (this.reply.user.identityID !== this.currentCredentials.identityId) {
                     throw new Error("権限のないアカウント")
+                }
+                if (['accept', 'reject'].indexOf(reply.type) === -1) {
+                    throw new Error("承認 or 却下済みのリクエスト")
                 }
                 if ([null, undefined, ""].indexOf(this.image.imgURL) === -1) {
                     await Common.S3Remove(this.image, this.overlay)
@@ -317,8 +367,106 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e, "リプライの削除に失敗しました", this.overlay)
+                this.overlay = false
             }
         },
+        async accept () {
+            this.showDialogAccept = false
+            this.overlay = true
+            try {
+                if (this.post.user.identityID !== this.currentCredentials.identityId) {
+                    throw new Error("権限のないアカウント")
+                }
+                const title = ([null, undefined, ""].indexOf(this.reply.request.title) === -1)? this.reply.request.title : this.reply.pastPost.title
+                const URL = ([null, undefined, ""].indexOf(this.reply.request.URL) === -1)? this.reply.request.URL : this.reply.pastPost.URL
+                const tag = ([null, undefined, "", []].indexOf(this.reply.request.tag) === -1)? this.reply.request.tag : this.reply.pastPost.tag
+                const date = ([null, undefined, ""].indexOf(this.reply.request.date) === -1)? this.reply.request.date : this.reply.pastPost.date
+                const imgUrl = ([null, undefined, ""].indexOf(this.reply.imgUrl) === -1)? this.reply.imgUrl : this.reply.pastPost.imgUrl
+                const imgIdentityID = ([null, undefined, ""].indexOf(this.reply.imgUrl) === -1)? this.reply.user.identityID : this.reply.pastPost.identityID
+                const updatePost = `
+                    mutation UpdatePost {
+                        updatePost(input: {
+                            id: "${this.post.id}",
+                            title: "${title}",
+                            URL: "${URL}",
+                            tag: "${JSON.stringify(tag).replace(/"/g, '\\"')}",
+                            date: "${date}",
+                            imgUrl: "${imgUrl}",
+                            imgIdentityID: "${imgIdentityID}",
+                            _version: ${this.post._version}
+                        }) {
+                            id
+                            title
+                            URL
+                            tag
+                            date
+                            imgUrl
+                            imgIdentityID
+                            _version
+                        }
+                    }
+                `
+                const updateReply = `
+                    mutation UpdateReply {
+                        updateReply(input: {
+                            id: "${this.reply.id}",
+                            type: "accept",
+                            _version: ${this.reply._version}
+                        }) {
+                            id
+                            type
+                            _version
+                        }
+                    }
+                `
+                await API.graphql(graphqlOperation(updatePost))
+                    .then(async (res) => {
+                        console.log("Updated Post")
+                        await API.graphql(graphqlOperation(updateReply))
+                            .then(resChild => {
+                                console.log("Updated Reply")
+                                this.overlay = false
+                                this.dialogMessageResult = "変更リクエストを承認しました"
+                                this.showDialogResult = true
+                            })
+                    })
+            } catch (e) {
+                Common.failed(e, "変更リクエストの承認に失敗しました", this.overlay)
+                this.overlay = false
+            }
+        },
+        async reject () {
+            this.showDialogReject = false
+            this.overlay = true
+            try {
+                if (this.post.user.identityID !== this.currentCredentials.identityId) {
+                    throw new Error("権限のないアカウント")
+                }
+                const updateReply = `
+                    mutation UpdateReply {
+                        updateReply(input: {
+                            id: "${this.reply.id}",
+                            type: "reject",
+                            _version: ${this.reply._version}
+                        }) {
+                            id
+                            type
+                            _version
+                        }
+                    }
+                `
+                await API.graphql(graphqlOperation(updateReply))
+                    .then(res => {
+                        console.log("Updated Reply")
+                        this.overlay = false
+                        this.dialogMessageResult = "変更リクエストを却下しました"
+                        this.showDialogResult = true
+                    })
+            } catch (e) {
+                Common.failed(e, "変更リクエストの却下に失敗しました", this.overlay)
+                this.overlay = false
+            }
+        }
     }
 }
 </script>
