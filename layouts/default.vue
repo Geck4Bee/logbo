@@ -105,7 +105,7 @@ export default {
                     status: ['loggedIn']
                 }
             ],
-            title: 'LOGBO',
+            title: 'GESONTACLE(β)',
             currentUserInfo: {},
             img: {
                 imgURL: null,
