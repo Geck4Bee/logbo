@@ -103,22 +103,23 @@ export function pad (num) {
 
 export async function getUserID (currentUserInfo) {
     let userID = null
-    const userByCognitoId = `
-        query UserByCognitoId {
-            userByCognitoID(
-                cognitoID: "${currentUserInfo.attributes.sub}",
-                limit: 1,
-                nextToken: null
-            ) {
-                items {
-                    id
-                    iconUrl
-                },
-                nextToken
-            }
-        }
-    `
     try {
+        if ([null, undefined, {}].indexOf(currentUserInfo) !== -1) throw new Error("UserInfo is not found")
+        const userByCognitoId = `
+            query UserByCognitoId {
+                userByCognitoID(
+                    cognitoID: "${currentUserInfo.attributes.sub}",
+                    limit: 1,
+                    nextToken: null
+                ) {
+                    items {
+                        id
+                        iconUrl
+                    },
+                    nextToken
+                }
+            }
+        `
         await API.graphql(graphqlOperation(userByCognitoId))
             .then(async (res) => {
                 const items = res.data.userByCognitoID.items[0]
