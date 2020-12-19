@@ -64,6 +64,8 @@
             <v-btn
             v-if="isLoggedIn"
             icon
+            nuxt
+            to="/notice"
             >
                 <v-icon :color="noticeCountColor">mdi-bell</v-icon>
                 <span :style="'color:' + noticeCountColor + ';'" >{{ noticeCountShow }}</span>
@@ -265,6 +267,7 @@ export default {
                         ) {
                         items {
                             id
+                            _deleted
                         }
                         nextToken
                         }
@@ -272,7 +275,7 @@ export default {
                 `
                 await API.graphql(graphqlOperation(noticeByUserId))
                     .then(res => {
-                        const items = res.data.noticeByUserID.items
+                        const items = res.data.noticeByUserID.items.filter(item => [null, undefined, false, ""].indexOf(item._deleted) !== -1)
                         this.noticeCount += items.length
                     })
             } catch (e) {

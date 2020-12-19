@@ -178,7 +178,7 @@ export default {
         const typeName = ([null, undefined, "", {}].indexOf(typeObj) === -1)? typeObj.name : "null"
         const now = new Date()
         const date = (query.date !== "")? new Date(Number(query.date.substring(0, 4)), Number(query.date.substring(5, 7))-1, Number(query.date.substring(8))) : new Date(now.getFullYear(), now.getMonth(), now.getDate())
-        const startDate = new Date(2020, 11, 1)
+        const startDate = new Date(2020, 1, 1)
         const nextTokenObj = {
             date: date.toISOString(),
             nextToken: null
