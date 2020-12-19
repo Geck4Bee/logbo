@@ -9,6 +9,12 @@
             @agree="reload()"
             />
             <custom-dialog
+            :dialog="showDialogDelete"
+            :message="dialogMessageDelete"
+            :cancel="false"
+            @agree="delPost()"
+            />
+            <custom-dialog
             :dialog="showDialogResult"
             :message="dialogMessageResult"
             :cancel="false"
@@ -41,8 +47,12 @@
                                 </div>
                                 <div class="mx-4">
                                     <v-row justify="start" class="my-2">
+                                        <h4>情報の種類: </h4>
+                                        <span class="ml-2" style="color: gray;">{{ typeName }}</span>
+                                    </v-row>
+                                    <v-row justify="start" class="my-2">
                                         <h4>日付: </h4>
-                                        <span class="ml-2">{{ post.date }}</span>
+                                        <span class="ml-2" style="color: gray;">{{ post.date }}</span>
                                     </v-row>
                                     <v-row justify="start" class="my-2">
                                         <h4>URL:</h4>
@@ -85,7 +95,7 @@
                                     color="indigo"
                                     class="mx-2"
                                     dark
-                                    @click="delPost"
+                                    @click="delPostDialog"
                                     >
                                     <v-icon>mdi-delete</v-icon>
                                     削除
@@ -158,6 +168,7 @@ export default {
             post: {
                 id: "",
                 title: "",
+                type: "",
                 URL: "",
                 tag: "",
                 date: "2020-12-01",
@@ -175,6 +186,7 @@ export default {
                 },
                 _version: 0
             },
+            postTypes: [],
             image: {
                 name: "image",
                 imgURL: null,
@@ -188,6 +200,8 @@ export default {
             dialogMessage: "",
             dialogMessageResult: "",
             showDialogResult: false,
+            showDialogDelete: false,
+            dialogMessageDelete: "",
             replies: [],
             repliesPerPage: 10,
             replyType: "all",
@@ -199,6 +213,7 @@ export default {
         }
     },
     async created () {
+        this.postTypes = this.$store.state.postType
         this.post.id = this.$route.params.id
         this.userID = this.$store.state.userID
         if (!this.userID) {
@@ -214,9 +229,17 @@ export default {
         },
         disableNextBtn () {
             return ( ([null, "null", ""].indexOf(this.nextToken) !== -1) ? true : false )
+        },
+        typeName () {
+            const typeObj = this.postTypes.find(obj => obj.value === this.post.type)
+            return ([null, undefined, "", {}].indexOf(typeObj) === -1)? typeObj.name : "null"
         }
     },
     methods: {
+        delPostDialog () {
+            this.dialogMessageDelete = "投稿を削除します。よろしいでしょうか？"
+            this.showDialogDelete = true
+        },
         async reload () {
             this.showDialog = false
             this.showDialogResult = false
@@ -257,6 +280,7 @@ export default {
                     getPost(id: "${this.post.id}") {
                         id
                         title
+                        type
                         URL
                         tag
                         date

@@ -37,6 +37,7 @@
                     </v-btn>
                 </v-row>
                 <v-row>
+                    <span class="mx-2" style="color: gray;">{{ typeName }}</span>
                     <div v-for="(tag, index) in JSON.parse(post.tag)" :key="index">
                         <button
                         class="mx-2 tag-link"
@@ -62,6 +63,7 @@ export default {
     },
     data () {
         return {
+            postTypes: [],
             image: {
                 name: "image",
                 imgURL: null,
@@ -79,6 +81,7 @@ export default {
                 return {
                     id: "",
                     title: "",
+                    type: "",
                     URL: "",
                     tag: "",
                     date: "2020-12-01",
@@ -98,18 +101,27 @@ export default {
             }
         }
     },
+    computed: {
+        typeName () {
+            const typeObj = this.postTypes.find(obj => obj.value === this.post.type)
+            return ([null, undefined, "", {}].indexOf(typeObj) === -1)? typeObj.name : "null"
+        }
+    },
     created () {
         this.image.imgURL = this.post.imgUrl
+        this.postTypes = this.$store.state.postType
         const imageIdentityID = this.post.imgIdentityID || this.post.user.identityID
         Common.setImgFileUser(this.image, imageIdentityID)
     },
     methods: {
         redirectWithTag (e) {
+            const type = (this.$route.query.type !== undefined)? this.$route.query.type : ""
             const title = (this.$route.query.title !== undefined)? this.$route.query.title : ""
             const URL = (this.$route.query.URL !== undefined)? this.$route.query.URL : ""
             const userID = (this.$route.query.userID !== undefined)? this.$route.query.userID : ""
             const date = (this.$route.query.date !== undefined)? this.$route.query.date : ""
             const query = {
+                type: type,
                 title: title,
                 tag: e,
                 URL: URL,

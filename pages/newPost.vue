@@ -5,7 +5,7 @@
         :dialog="showDialog"
         :message="dialogMessage"
         :cancel="false"
-        @agree="showDialog = !showDialog"
+        @agree="$router.push('/')"
         />
         <v-form ref="formPost" @submit.prevent>
             <div class="image-wrapper">
@@ -26,6 +26,16 @@
                 label="画像"
                 :rules="[maxFileSize]"
                 @change="storeImg"
+                />
+            </v-row>
+            <v-row justify="center">
+                <v-select
+                v-model="type"
+                :items="postTypes"
+                item-text="name"
+                item-value="value"
+                label="情報タイプ"
+                :rules="[required]"
                 />
             </v-row>
             <v-row justify="center">
@@ -118,6 +128,8 @@ export default {
             dialogMessage: "投稿が完了しました",
             id: "",
             title: "",
+            type: "",
+            postTypes: [],
             URL: "",
             tag: "",
             tags: [],
@@ -139,6 +151,9 @@ export default {
     },
     created () {
         this.id = nanoid()
+    },
+    mounted () {
+        this.postTypes = this.$store.state.postType
     },
     methods: {
         addTags () {
@@ -196,6 +211,7 @@ export default {
                     createPost(input: {
                         id: "${this.id}",
                         title: "${this.title}",
+                        type: "${this.type}",
                         URL: "${this.URL}",
                         imgUrl: "${this.image.imgURL}",
                         tag: "${JSON.stringify(this.tags).replace(/"/g, '\\"')}",

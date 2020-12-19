@@ -9,6 +9,15 @@
                 <v-expansion-panel-content>
                     <v-form ref="formSearch">
                         <v-card-subtitle class="py-0">
+                            <v-select
+                            v-model="type"
+                            :items="postTypes"
+                            item-text="name"
+                            item-value="value"
+                            label="情報タイプ"
+                            />
+                        </v-card-subtitle>
+                        <v-card-subtitle class="py-0">
                             <v-text-field
                             v-model="title"
                             label="キーワード"
@@ -59,6 +68,8 @@ export default {
     },
     data () {
         return {
+            type: "",
+            postTypes: [],
             title: "",
             URL: "",
             date: "",
@@ -69,6 +80,10 @@ export default {
         this.title = (this.$route.query.title !== undefined)? this.$route.query.title : ""
         this.URL = (this.$route.query.URL !== undefined)? this.$route.query.URL : ""
         this.date = (this.$route.query.date !== undefined)? this.$route.query.date : ""
+    },
+    mounted () {
+        this.postTypes = this.$store.state.postType
+        this.type = (this.$route.query.type !== undefined)? this.$route.query.type : ""
     },
     methods: {
         validation () {
@@ -86,6 +101,7 @@ export default {
             const userID =(this.$route.query.userID !== undefined)? this.$route.query.userID : ""
             const query = {
                 title: this.title,
+                type: this.type,
                 tag: tag,
                 URL: this.URL,
                 userID: userID,

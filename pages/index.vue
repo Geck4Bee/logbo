@@ -21,6 +21,16 @@
             </v-btn>
             <h4>日付:<span class="mx-1"></span>{{ query.date }}</h4>
         </v-row>
+        <v-row v-if="query.type !== ''" align="center">
+            <v-btn
+            icon
+            color="indigo"
+            @click="removeQuery('type')"
+            >
+                <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <h4>情報の種類:<span class="mx-1"></span>{{ typeName }}</h4>
+        </v-row>
         <v-row v-if="query.title !== ''" align="center">
             <v-btn
             icon
@@ -128,12 +138,14 @@ export default {
             date: null,
             startDate: null,
             query: {
+                type: "",
                 title: "",
                 tag: "",
                 URL: "",
                 userID: "",
                 date: ""
             },
+            typeName: "",
             queryUser: {
                 id: "",
                 identityID: "",
@@ -146,6 +158,7 @@ export default {
     },
     asyncData (context) {
         let query = {
+            type: "",
             title: "",
             tag: "",
             URL: "",
@@ -156,6 +169,13 @@ export default {
         queryKey.map((key) => {
             query[key] = context.query[key]
         })
+        const postTypes = [
+            {name: "一次・公式", value: "primary"},
+            {name: "報道・記事", value: "secondary"},
+            {name: "ツイート・投稿", value: "tweet"},
+        ]
+        const typeObj = postTypes.find(obj => obj.value === query.type)
+        const typeName = ([null, undefined, "", {}].indexOf(typeObj) === -1)? typeObj.name : "null"
         const now = new Date()
         const date = (query.date !== "")? new Date(Number(query.date.substring(0, 4)), Number(query.date.substring(5, 7))-1, Number(query.date.substring(8))) : new Date(now.getFullYear(), now.getMonth(), now.getDate())
         const startDate = new Date(2020, 11, 1)
@@ -165,12 +185,13 @@ export default {
         }
         return { 
             query: query,
+            typeName: typeName,
             date: date,
             startDate: startDate,
             nextTokens: [nextTokenObj]
         }
     },
-    watchQuery: ['title', 'tag', 'URL', 'userID', 'date'],
+    watchQuery: ['type', 'title', 'tag', 'URL', 'userID', 'date'],
     mounted () {
         this.startLoading()
     },
@@ -225,9 +246,10 @@ export default {
                 if (this.nextToken) {
                     nextToken = `"${this.nextToken}"`
                 }
+                const filterType = (this.query.type !== "")? `{type: {eq: "${this.query.type}"}},`: ''
                 const filterURL = (this.query.URL !== "")? `{URL: {contains: "${this.query.URL}"}},` : ''
                 const filterUserID = (this.query.userID !== "")? `{userID: {eq: "${this.query.userID}"}},` : ''
-                const filterAnd = (filterURL !== '' || filterUserID !== '')? 'and: [' + filterURL + filterUserID + ']' : ''
+                const filterAnd = ( filterType !== '' || filterURL !== '' || filterUserID !== '')? 'and: [' + filterType + filterURL + filterUserID + ']' : ''
                 const postByDate = `
                     query PostByDate {
                         postByDate (
@@ -247,6 +269,7 @@ export default {
                         items {
                             id
                             title
+                            type
                             URL
                             tag
                             date
