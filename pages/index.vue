@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container fluid style="max-width: 900px;">
         <custom-overlay :overlay="overlay" />
         <custom-dialog
         :dialog="showDialog"
@@ -103,7 +103,7 @@
                 <span>次へ</span>
             </v-btn>
         </v-row>
-    </div>
+    </v-container>
 </template>
 
 <script>
