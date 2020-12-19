@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container fluid style="max-width:950px;">
         <custom-overlay :overlay="overlay" />
         <div v-if="showPost" class="my-2">
             <custom-dialog
@@ -143,7 +143,7 @@
             @put="createReply"
             />
         </v-dialog>
-    </div>
+    </v-container>
 </template>
 
 <script>
