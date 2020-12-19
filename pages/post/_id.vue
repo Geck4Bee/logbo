@@ -415,11 +415,14 @@ export default {
                         }
                     }
                 `
+                const replyTypes = this.$store.state.replyType
+                const typeObj = replyTypes.find(item => item.value === reply.type)
+                const typeName = ([null, undefined, "", {}].indexOf(typeObj) === -1)? typeObj.name : "null"
                 const createNotice = `
                     mutation CreateNotice {
                         createNotice(input: {
                             id: "${reply.id}",
-                            content: "${this.post.title}に${reply.type}が投稿されました",
+                            content: "${this.post.title}に${typeName}が投稿されました",
                             userID: "${this.post.userID}",
                             fromUserID: "${this.userID}",
                             postID: "${this.post.id}",

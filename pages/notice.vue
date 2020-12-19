@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container fluid style="max-width: 800px;">
         <custom-overlay :overlay="overlay" />
         <h2>通知一覧</h2>
         <div v-for="(item, index) in listNotice" :key="index">
@@ -15,7 +15,7 @@
             さらに読み込み
             </v-btn>
         </v-row>
-    </div>
+    </v-container>
 </template>
 
 <script>
