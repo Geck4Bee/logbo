@@ -254,6 +254,7 @@ export default {
             } catch (e) {
                 console.log("Store Image Failed: " + e)
                 Common.failed(e, "画像の表示に失敗しました", this.overlay)
+                this.overlay = false
             }
             this.overlay = false
         },

@@ -136,36 +136,41 @@
                                 </v-row>
                             </div>
                         </v-row>
-                        <v-row v-if="reply.user.identityID === currentCredentials.identityId && ['accept', 'reject'].indexOf(reply.type) === -1" justify="center" class="my-2">
-                            <div v-if="post.user.identityID === currentCredentials.identityId && reply.type === 'request'">
+                        <v-row v-if="$store.state.isLoggedIn" justify="center" class="my-2">
+                            <div v-if="reply.user.identityID === currentCredentials.identityId && ['accept', 'reject'].indexOf(reply.type) === -1">
+                                <div v-if="post.user.identityID === currentCredentials.identityId && reply.type === 'request'">
+                                    <v-btn
+                                    color="teal"
+                                    class="mx-2"
+                                    dark
+                                    @click="delReplyDialogAccept()"
+                                    >
+                                    <v-icon>mdi-check-bold</v-icon>
+                                    承認
+                                    </v-btn>
+                                    <v-btn
+                                    color="red"
+                                    class="mx-2"
+                                    dark
+                                    @click="delReplyDialogReject()"
+                                    >
+                                    <v-icon>mdi-close-thick</v-icon>
+                                    却下
+                                    </v-btn>
+                                </div>
                                 <v-btn
-                                color="teal"
+                                color="indigo"
                                 class="mx-2"
                                 dark
-                                @click="delReplyDialogAccept()"
+                                @click="delReplyDialog()"
                                 >
-                                <v-icon>mdi-check-bold</v-icon>
-                                承認
-                                </v-btn>
-                                <v-btn
-                                color="red"
-                                class="mx-2"
-                                dark
-                                @click="delReplyDialogReject()"
-                                >
-                                <v-icon>mdi-close-thick</v-icon>
-                                却下
+                                <v-icon>mdi-delete</v-icon>
+                                削除
                                 </v-btn>
                             </div>
-                            <v-btn
-                            color="indigo"
-                            class="mx-2"
-                            dark
-                            @click="delReplyDialog()"
-                            >
-                            <v-icon>mdi-delete</v-icon>
-                            削除
-                            </v-btn>
+                            <div>
+                                <del-btn :postID="post.id" :replyID="reply.id" />
+                            </div>
                         </v-row>
                     </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -180,6 +185,7 @@ import * as Common from '~/assets/js/common.js'
 import CustomOverlay from '~/components/overlay.vue'
 import CustomDialog from '~/components/dialog.vue'
 import UserCardRow from '~/components/userCardRow.vue'
+import DelBtn from '~/components/delBtn.vue'
 
 export default {
     name: "Reply",
@@ -187,6 +193,7 @@ export default {
         CustomOverlay,
         CustomDialog,
         UserCardRow,
+        DelBtn
     },
     data () {
         return {

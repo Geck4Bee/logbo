@@ -101,6 +101,9 @@
                                     削除
                                     </v-btn>
                                 </div>
+                                <div v-if="$store.state.isLoggedIn">
+                                    <del-btn :postID="post.id" />
+                                </div>
                             </v-row>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -151,6 +154,7 @@ import CustomDialog from '~/components/dialog.vue'
 import UserCardRow from '~/components/userCardRow.vue'
 import FormReply from '~/components/formReply.vue'
 import Reply from '~/components/reply.vue'
+import DelBtn from '~/components/delBtn.vue'
 
 export default {
     components: {
@@ -158,7 +162,8 @@ export default {
         CustomDialog,
         UserCardRow,
         FormReply,
-        Reply
+        Reply,
+        DelBtn
     },
     data () {
         return {
@@ -319,6 +324,7 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
+                this.overlay = false
                 this.$router.push("/")
             }
             this.overlay = false
@@ -375,6 +381,7 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e, "リプライの読み込みに失敗しました", this.overlay)
+                this.overlay = false
             }
             this.overlay = false
         },
@@ -417,6 +424,7 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e, "リプライの投稿に失敗しました", this.overlay)
+                this.overlay = false
             }
         },
         async delPost () {
@@ -453,6 +461,7 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e, "投稿の削除に失敗しました", this.overlay)
+                this.overlay = false
             }
         },
         async delReply (reply) {
@@ -480,6 +489,7 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e, "投稿の削除に失敗しました", this.overlay)
+                this.overlay = false
             }
         },
     }

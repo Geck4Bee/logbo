@@ -314,6 +314,7 @@ export default {
                         })
                 } catch (e) {
                     Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
+                    this.overlay = false
                 }
             } while (this.flagLoad)
             console.log("Loading done") 
@@ -340,6 +341,7 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e, "ユーザーの読み込みに失敗しました", this.overlay)
+                this.overlay = false
             }
         },
     }

@@ -49,7 +49,7 @@ export const mutations = {
         state.delType = [
             {name: "誹謗・中傷・嫌がらせ", value: "slendering"},
             {name: "脅迫行為", value: "intimidation"},
-            {name: "特定宗教・民族に対する中傷", value: "hate"},
+            {name: "宗教・民族に対する中傷", value: "hate"},
             {name: "ポルノ", value: "porn"},
             {name: "個人情報", value: "person"},
             {name: "雑談", value: "talking"}

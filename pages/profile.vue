@@ -249,6 +249,7 @@ export default {
                     })
             } catch (e) {
                 Common.failed(e + "プロフィールの更新に失敗しました", this.overlay)
+                this.overlay = false
             }
             this.overlay = false
         },

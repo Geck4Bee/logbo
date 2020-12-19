@@ -109,9 +109,11 @@ export default {
     },
     created () {
         this.image.imgURL = this.post.imgUrl
-        this.postTypes = this.$store.state.postType
         const imageIdentityID = this.post.imgIdentityID || this.post.user.identityID
         Common.setImgFileUser(this.image, imageIdentityID)
+    },
+    mounted () {
+        this.postTypes = this.$store.state.postType
     },
     methods: {
         redirectWithTag (e) {
