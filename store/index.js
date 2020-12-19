@@ -31,7 +31,7 @@ export const mutations = {
     },
     setPostType(state) {
         state.postType = [
-            {name: "行政またはそれに準ずる組織・個人", value: "primary"},
+            {name: "政府またはそれに準ずる組織・個人", value: "primary"},
             {name: "民間報道", value: "secondary"},
             {name: "その他の企業・機関・団体の公式発表", value: "official"},
             {name: "リーク", value: "leak"},
