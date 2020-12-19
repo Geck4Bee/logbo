@@ -60,6 +60,14 @@
             to="/">
             <h3>{{ title }}</h3>
             </nuxt-link>
+            <v-spacer />
+            <v-btn
+            v-if="isLoggedIn"
+            icon
+            >
+                <v-icon :color="noticeCountColor">mdi-bell</v-icon>
+                <span :style="'color:' + noticeCountColor + ';'" >{{ noticeCountShow }}</span>
+            </v-btn>
         </v-app-bar>
         <v-main>
             <v-container>
@@ -112,6 +120,8 @@ export default {
                 imgPreview: null,
                 showPreviewImg: false
             },
+            noticeCount: 0,
+            subscription: null
         }
     },
     async beforeCreate() {
@@ -141,6 +151,12 @@ export default {
                     return item.status.indexOf('loggedOut') !== -1
                 }
             })
+        },
+        noticeCountShow () {
+            return (this.noticeCount > 10) ? "10+" : this.noticeCount
+        },
+        noticeCountColor () {
+            return (this.noticeCount > 0) ? 'white' : 'grey'
         }
     },
     methods: {
@@ -152,6 +168,8 @@ export default {
             }
             if (this.isLoggedIn) {
                 this.getProfile()
+                    .then((res) => this.countNotice())
+                    .then((res) => this.subscribe())
             }
         },
         logout () {
@@ -204,26 +222,29 @@ export default {
             this.img.imgURL = null
         },
         createProfile (currentUserInfo) {
-            const nowUnix = Common.getNow()
-            const id = nanoid()
-            const createUser = `
-                mutation CreateUser {
-                    createUser(input: {
-                        id: "${id}",
-                        cognitoID: "${currentUserInfo.attributes.sub}",
-                        name: "${currentUserInfo.username}",
-                        viewName: "${currentUserInfo.username}",
-                        email: "${currentUserInfo.attributes.email}",
-                        description: "",
-                    }) {
-                        id
-                        name
-                        email
-                        description
-                    }
-                }
-            `
             try {
+                if ([null, undefined, "", {}].indexOf(currentUserInfo) !== -1) {
+                    throw new Error('ユーザーが見つかりません')
+                }
+                const nowUnix = Common.getNow()
+                const id = nanoid()
+                const createUser = `
+                    mutation CreateUser {
+                        createUser(input: {
+                            id: "${id}",
+                            cognitoID: "${currentUserInfo.attributes.sub}",
+                            name: "${currentUserInfo.username}",
+                            viewName: "${currentUserInfo.username}",
+                            email: "${currentUserInfo.attributes.email}",
+                            description: "",
+                        }) {
+                            id
+                            name
+                            email
+                            description
+                        }
+                    }
+                `
                 API.graphql(graphqlOperation(createUser))
                     .then((res)=> {
                         console.log("プロフィールを作成しました")
@@ -231,7 +252,51 @@ export default {
             } catch (e) {
                 console.log("プロフィールの作成に失敗しました: " + e)
             }
-        }
+        },
+        async countNotice () {
+            try {
+                const noticeByUserId = `
+                    query NoticeByUserId {
+                        noticeByUserID(
+                            userID: "${this.$store.state.userID}"
+                            sortDirection: DESC
+                            limit: 10
+                            nextToken: null
+                        ) {
+                        items {
+                            id
+                        }
+                        nextToken
+                        }
+                    }
+                `
+                await API.graphql(graphqlOperation(noticeByUserId))
+                    .then(res => {
+                        const items = res.data.noticeByUserID.items
+                        this.noticeCount += items.length
+                    })
+            } catch (e) {
+                console.log('通知の取得に失敗しました' + e)
+            }
+        },
+        subscribe () {
+            const onCreatNotice = `
+                subscription OnCreateNotice {
+                    onCreateNotice(userID: "${this.$store.state.userID}") {
+                        id
+                    }
+                }
+            `
+            this.subscription = API.graphql(graphqlOperation(onCreatNotice))
+                .subscribe({
+                    next: (event) => {
+                        if (event) {
+                            const noticeObj = event.value.data.onCreateNotice
+                            if ([null, undefined, "", {}].indexOf(noticeObj) === -1) this.noticeCount++
+                        }
+                    }
+                })
+        },
     }
 }
 </script>

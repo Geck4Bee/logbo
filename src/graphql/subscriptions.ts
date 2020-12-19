@@ -3,8 +3,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateNotice = /* GraphQL */ `
-  subscription OnCreateNotice($userId: ID) {
-    onCreateNotice(userId: $userId) {
+  subscription OnCreateNotice($userID: ID) {
+    onCreateNotice(userID: $userID) {
       id
       content
       userID

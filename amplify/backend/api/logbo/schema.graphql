@@ -79,5 +79,5 @@ type Notice @model(subscriptions: null)
 }
 
 type Subscription {
-  onCreateNotice(userId: ID): Notice @aws_subscribe(mutations: ["createNotice"])
+  onCreateNotice(userID: ID): Notice @aws_subscribe(mutations: ["createNotice"])
 }

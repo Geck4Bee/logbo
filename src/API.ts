@@ -3665,7 +3665,7 @@ export type NoticeByUserIdQuery = {
 };
 
 export type OnCreateNoticeSubscriptionVariables = {
-  userId?: string | null,
+  userID?: string | null,
 };
 
 export type OnCreateNoticeSubscription = {

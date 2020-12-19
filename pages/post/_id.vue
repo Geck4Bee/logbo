@@ -415,12 +415,34 @@ export default {
                         }
                     }
                 `
-                API.graphql(graphqlOperation(createReply))
-                    .then(res => {
-                        console.log('succeeded')
-                        this.overlay = false
-                        this.dialogMessage = "リプライを投稿しました"
-                        this.showDialog = true
+                const createNotice = `
+                    mutation CreateNotice {
+                        createNotice(input: {
+                            id: "${reply.id}",
+                            content: "${this.post.title}に${reply.type}が投稿されました",
+                            userID: "${this.post.userID}",
+                            fromUserID: "${this.userID}",
+                            postID: "${this.post.id}",
+                            replyID: "${reply.id}"
+                        }) {
+                            id
+                            content
+                            userID
+                            fromUserID
+                            postID
+                            replyID
+                        }
+                    }
+                `
+                await API.graphql(graphqlOperation(createReply))
+                    .then(async (res) => {
+                        console.log('Send Reply Succeeded')
+                        await API.graphql(graphqlOperation(createNotice))
+                            .then((res) => {
+                                this.overlay = false
+                                this.dialogMessage = "リプライを投稿しました"
+                                this.showDialog = true
+                            })
                     })
             } catch (e) {
                 Common.failed(e, "リプライの投稿に失敗しました", this.overlay)
