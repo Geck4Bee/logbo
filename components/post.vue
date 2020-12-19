@@ -7,7 +7,7 @@
             <span style="color: gray; font-size: 0.9em;" class="mx-1">更新: {{ new Date(post.updatedAt).toLocaleString() }}</span>
         </v-row>
         <v-row justify="start" align="center" class="px-4 pb-1">
-            <div class="mx-2">
+            <div class="mx-2 my-2">
                 <v-btn
                 icon
                 :href="post.URL"
@@ -26,14 +26,15 @@
                     </v-avatar>
                 </v-btn>
             </div>
-            <div class="mx-4">
+            <div class="mx-4" style="max-width: 90%;">
                 <v-row>
                     <v-btn
+                    style="max-width: 100%;"
                     text
                     nuxt
                     :to="'/post/' + post.id"
                     >
-                        <h3 class="my-0">{{ post.title }}</h3>
+                        <h3 class="my-0 postTitle">{{ post.title }}</h3>
                     </v-btn>
                 </v-row>
                 <v-row>
@@ -139,6 +140,18 @@ export default {
 <style>
 .postRow {
     box-shadow: 3px 3px 10px #000, -3px -3px 10px #000;
+}
+.v-btn__content {
+    width: 100%;
+    white-space: normal;
+}
+.postTitle {
+    color: white;
+    width: 48em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
 }
 .tag-link {
     color: gray;
