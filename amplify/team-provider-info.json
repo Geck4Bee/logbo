@@ -16,5 +16,27 @@
         "logbo488e7b4e": {}
       }
     }
+  },
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-logbo-staging-143023-authRole",
+      "UnauthRoleArn": "arn:aws:iam::028095336055:role/amplify-logbo-staging-143023-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::028095336055:role/amplify-logbo-staging-143023-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-logbo-staging-143023-deployment",
+      "UnauthRoleName": "amplify-logbo-staging-143023-unauthRole",
+      "StackName": "amplify-logbo-staging-143023",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:028095336055:stack/amplify-logbo-staging-143023/bafd1fc0-4206-11eb-90df-065aa43a7980",
+      "AmplifyAppId": "d1p8oopdaajiam"
+    },
+    "categories": {
+      "auth": {
+        "logbo488e7b4e": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries114335b2": {}
+      }
+    }
   }
 }

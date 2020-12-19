@@ -67,7 +67,7 @@
         "Runtime": "nodejs10.x",
         "Timeout": "25",
         "Code": {
-          "S3Bucket": "amplify-logbo-dev-120119-deployment",
+          "S3Bucket": "amplify-logbo-staging-143023-deployment",
           "S3Key": "amplify-builds/AdminQueries114335b2-59375757585437524c48-build.zip"
         }
       }
