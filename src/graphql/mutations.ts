@@ -20,6 +20,7 @@ export const createUser = /* GraphQL */ `
         items {
           id
           title
+          type
           URL
           tag
           date
@@ -47,6 +48,23 @@ export const createUser = /* GraphQL */ `
           createdAt
           updatedAt
           userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      notice {
+        items {
+          id
+          content
+          userID
+          fromUserID
+          postID
+          replyID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
@@ -80,6 +98,7 @@ export const updateUser = /* GraphQL */ `
         items {
           id
           title
+          type
           URL
           tag
           date
@@ -107,6 +126,23 @@ export const updateUser = /* GraphQL */ `
           createdAt
           updatedAt
           userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      notice {
+        items {
+          id
+          content
+          userID
+          fromUserID
+          postID
+          replyID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
@@ -140,6 +176,7 @@ export const deleteUser = /* GraphQL */ `
         items {
           id
           title
+          type
           URL
           tag
           date
@@ -174,6 +211,23 @@ export const deleteUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      notice {
+        items {
+          id
+          content
+          userID
+          fromUserID
+          postID
+          replyID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -190,6 +244,7 @@ export const createPost = /* GraphQL */ `
     createPost(input: $input, condition: $condition) {
       id
       title
+      type
       URL
       tag
       date
@@ -215,6 +270,10 @@ export const createPost = /* GraphQL */ `
           nextToken
           startedAt
         }
+        notice {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -233,6 +292,22 @@ export const createPost = /* GraphQL */ `
           createdAt
           updatedAt
           userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      del {
+        items {
+          id
+          type
+          userID
+          postID
+          replyID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
@@ -254,6 +329,7 @@ export const updatePost = /* GraphQL */ `
     updatePost(input: $input, condition: $condition) {
       id
       title
+      type
       URL
       tag
       date
@@ -276,6 +352,10 @@ export const updatePost = /* GraphQL */ `
           startedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        notice {
           nextToken
           startedAt
         }
@@ -304,6 +384,22 @@ export const updatePost = /* GraphQL */ `
         nextToken
         startedAt
       }
+      del {
+        items {
+          id
+          type
+          userID
+          postID
+          replyID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -318,6 +414,7 @@ export const deletePost = /* GraphQL */ `
     deletePost(input: $input, condition: $condition) {
       id
       title
+      type
       URL
       tag
       date
@@ -343,6 +440,10 @@ export const deletePost = /* GraphQL */ `
           nextToken
           startedAt
         }
+        notice {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -361,6 +462,22 @@ export const deletePost = /* GraphQL */ `
           createdAt
           updatedAt
           userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      del {
+        items {
+          id
+          type
+          userID
+          postID
+          replyID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
@@ -385,6 +502,7 @@ export const createReply = /* GraphQL */ `
       post {
         id
         title
+        type
         URL
         tag
         date
@@ -409,6 +527,10 @@ export const createReply = /* GraphQL */ `
           updatedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        del {
           nextToken
           startedAt
         }
@@ -438,6 +560,10 @@ export const createReply = /* GraphQL */ `
           startedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        notice {
           nextToken
           startedAt
         }
@@ -464,6 +590,7 @@ export const updateReply = /* GraphQL */ `
       post {
         id
         title
+        type
         URL
         tag
         date
@@ -488,6 +615,10 @@ export const updateReply = /* GraphQL */ `
           updatedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        del {
           nextToken
           startedAt
         }
@@ -517,6 +648,10 @@ export const updateReply = /* GraphQL */ `
           startedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        notice {
           nextToken
           startedAt
         }
@@ -543,6 +678,7 @@ export const deleteReply = /* GraphQL */ `
       post {
         id
         title
+        type
         URL
         tag
         date
@@ -567,6 +703,10 @@ export const deleteReply = /* GraphQL */ `
           updatedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        del {
           nextToken
           startedAt
         }
@@ -599,12 +739,748 @@ export const deleteReply = /* GraphQL */ `
           nextToken
           startedAt
         }
+        notice {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createDel = /* GraphQL */ `
+  mutation CreateDel(
+    $input: CreateDelInput!
+    $condition: ModelDelConditionInput
+  ) {
+    createDel(input: $input, condition: $condition) {
+      id
+      type
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateDel = /* GraphQL */ `
+  mutation UpdateDel(
+    $input: UpdateDelInput!
+    $condition: ModelDelConditionInput
+  ) {
+    updateDel(input: $input, condition: $condition) {
+      id
+      type
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteDel = /* GraphQL */ `
+  mutation DeleteDel(
+    $input: DeleteDelInput!
+    $condition: ModelDelConditionInput
+  ) {
+    deleteDel(input: $input, condition: $condition) {
+      id
+      type
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createNotice = /* GraphQL */ `
+  mutation CreateNotice(
+    $input: CreateNoticeInput!
+    $condition: ModelNoticeConditionInput
+  ) {
+    createNotice(input: $input, condition: $condition) {
+      id
+      content
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      fromUserID
+      fromUser {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      reply {
+        id
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        type
+        content
+        request
+        imgUrl
+        pastPost
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateNotice = /* GraphQL */ `
+  mutation UpdateNotice(
+    $input: UpdateNoticeInput!
+    $condition: ModelNoticeConditionInput
+  ) {
+    updateNotice(input: $input, condition: $condition) {
+      id
+      content
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      fromUserID
+      fromUser {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      reply {
+        id
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        type
+        content
+        request
+        imgUrl
+        pastPost
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteNotice = /* GraphQL */ `
+  mutation DeleteNotice(
+    $input: DeleteNoticeInput!
+    $condition: ModelNoticeConditionInput
+  ) {
+    deleteNotice(input: $input, condition: $condition) {
+      id
+      content
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      fromUserID
+      fromUser {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      reply {
+        id
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        type
+        content
+        request
+        imgUrl
+        pastPost
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt

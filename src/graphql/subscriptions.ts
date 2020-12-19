@@ -2,6 +2,162 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateNotice = /* GraphQL */ `
+  subscription OnCreateNotice($userId: ID) {
+    onCreateNotice(userId: $userId) {
+      id
+      content
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      fromUserID
+      fromUser {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      reply {
+        id
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        type
+        content
+        request
+        imgUrl
+        pastPost
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser {
     onCreateUser {
@@ -17,6 +173,7 @@ export const onCreateUser = /* GraphQL */ `
         items {
           id
           title
+          type
           URL
           tag
           date
@@ -44,6 +201,23 @@ export const onCreateUser = /* GraphQL */ `
           createdAt
           updatedAt
           userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      notice {
+        items {
+          id
+          content
+          userID
+          fromUserID
+          postID
+          replyID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
@@ -74,6 +248,7 @@ export const onUpdateUser = /* GraphQL */ `
         items {
           id
           title
+          type
           URL
           tag
           date
@@ -101,6 +276,23 @@ export const onUpdateUser = /* GraphQL */ `
           createdAt
           updatedAt
           userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      notice {
+        items {
+          id
+          content
+          userID
+          fromUserID
+          postID
+          replyID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
@@ -131,6 +323,7 @@ export const onDeleteUser = /* GraphQL */ `
         items {
           id
           title
+          type
           URL
           tag
           date
@@ -165,6 +358,23 @@ export const onDeleteUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      notice {
+        items {
+          id
+          content
+          userID
+          fromUserID
+          postID
+          replyID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -178,6 +388,7 @@ export const onCreatePost = /* GraphQL */ `
     onCreatePost {
       id
       title
+      type
       URL
       tag
       date
@@ -203,6 +414,10 @@ export const onCreatePost = /* GraphQL */ `
           nextToken
           startedAt
         }
+        notice {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -221,6 +436,22 @@ export const onCreatePost = /* GraphQL */ `
           createdAt
           updatedAt
           userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      del {
+        items {
+          id
+          type
+          userID
+          postID
+          replyID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
@@ -239,6 +470,7 @@ export const onUpdatePost = /* GraphQL */ `
     onUpdatePost {
       id
       title
+      type
       URL
       tag
       date
@@ -261,6 +493,10 @@ export const onUpdatePost = /* GraphQL */ `
           startedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        notice {
           nextToken
           startedAt
         }
@@ -289,6 +525,22 @@ export const onUpdatePost = /* GraphQL */ `
         nextToken
         startedAt
       }
+      del {
+        items {
+          id
+          type
+          userID
+          postID
+          replyID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -300,6 +552,7 @@ export const onDeletePost = /* GraphQL */ `
     onDeletePost {
       id
       title
+      type
       URL
       tag
       date
@@ -325,6 +578,10 @@ export const onDeletePost = /* GraphQL */ `
           nextToken
           startedAt
         }
+        notice {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -343,6 +600,22 @@ export const onDeletePost = /* GraphQL */ `
           createdAt
           updatedAt
           userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      del {
+        items {
+          id
+          type
+          userID
+          postID
+          replyID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
@@ -364,6 +637,7 @@ export const onCreateReply = /* GraphQL */ `
       post {
         id
         title
+        type
         URL
         tag
         date
@@ -388,6 +662,10 @@ export const onCreateReply = /* GraphQL */ `
           updatedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        del {
           nextToken
           startedAt
         }
@@ -417,6 +695,10 @@ export const onCreateReply = /* GraphQL */ `
           startedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        notice {
           nextToken
           startedAt
         }
@@ -440,6 +722,7 @@ export const onUpdateReply = /* GraphQL */ `
       post {
         id
         title
+        type
         URL
         tag
         date
@@ -464,6 +747,10 @@ export const onUpdateReply = /* GraphQL */ `
           updatedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        del {
           nextToken
           startedAt
         }
@@ -493,6 +780,10 @@ export const onUpdateReply = /* GraphQL */ `
           startedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        notice {
           nextToken
           startedAt
         }
@@ -516,6 +807,7 @@ export const onDeleteReply = /* GraphQL */ `
       post {
         id
         title
+        type
         URL
         tag
         date
@@ -540,6 +832,10 @@ export const onDeleteReply = /* GraphQL */ `
           updatedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        del {
           nextToken
           startedAt
         }
@@ -572,12 +868,262 @@ export const onDeleteReply = /* GraphQL */ `
           nextToken
           startedAt
         }
+        notice {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateDel = /* GraphQL */ `
+  subscription OnCreateDel {
+    onCreateDel {
+      id
+      type
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateDel = /* GraphQL */ `
+  subscription OnUpdateDel {
+    onUpdateDel {
+      id
+      type
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteDel = /* GraphQL */ `
+  subscription OnDeleteDel {
+    onDeleteDel {
+      id
+      type
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt

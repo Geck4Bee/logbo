@@ -32,6 +32,10 @@ export const syncUsers = /* GraphQL */ `
           nextToken
           startedAt
         }
+        notice {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -58,6 +62,7 @@ export const getUser = /* GraphQL */ `
         items {
           id
           title
+          type
           URL
           tag
           date
@@ -85,6 +90,23 @@ export const getUser = /* GraphQL */ `
           createdAt
           updatedAt
           userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      notice {
+        items {
+          id
+          content
+          userID
+          fromUserID
+          postID
+          replyID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
@@ -124,6 +146,10 @@ export const listUsers = /* GraphQL */ `
           nextToken
           startedAt
         }
+        notice {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -151,6 +177,7 @@ export const syncPosts = /* GraphQL */ `
       items {
         id
         title
+        type
         URL
         tag
         date
@@ -178,6 +205,10 @@ export const syncPosts = /* GraphQL */ `
           nextToken
           startedAt
         }
+        del {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -192,6 +223,7 @@ export const getPost = /* GraphQL */ `
     getPost(id: $id) {
       id
       title
+      type
       URL
       tag
       date
@@ -214,6 +246,10 @@ export const getPost = /* GraphQL */ `
           startedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        notice {
           nextToken
           startedAt
         }
@@ -242,6 +278,22 @@ export const getPost = /* GraphQL */ `
         nextToken
         startedAt
       }
+      del {
+        items {
+          id
+          type
+          userID
+          postID
+          replyID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -258,6 +310,7 @@ export const listPosts = /* GraphQL */ `
       items {
         id
         title
+        type
         URL
         tag
         date
@@ -282,6 +335,10 @@ export const listPosts = /* GraphQL */ `
           updatedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        del {
           nextToken
           startedAt
         }
@@ -313,6 +370,7 @@ export const syncReplies = /* GraphQL */ `
         post {
           id
           title
+          type
           URL
           tag
           date
@@ -365,6 +423,7 @@ export const getReply = /* GraphQL */ `
       post {
         id
         title
+        type
         URL
         tag
         date
@@ -389,6 +448,10 @@ export const getReply = /* GraphQL */ `
           updatedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        del {
           nextToken
           startedAt
         }
@@ -421,6 +484,10 @@ export const getReply = /* GraphQL */ `
           nextToken
           startedAt
         }
+        notice {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -446,6 +513,7 @@ export const listReplys = /* GraphQL */ `
         post {
           id
           title
+          type
           URL
           tag
           date
@@ -490,6 +558,538 @@ export const listReplys = /* GraphQL */ `
     }
   }
 `;
+export const syncDels = /* GraphQL */ `
+  query SyncDels(
+    $filter: ModelDelFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncDels(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        type
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        replyID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getDel = /* GraphQL */ `
+  query GetDel($id: ID!) {
+    getDel(id: $id) {
+      id
+      type
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listDels = /* GraphQL */ `
+  query ListDels(
+    $filter: ModelDelFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDels(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        type
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        replyID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncNotices = /* GraphQL */ `
+  query SyncNotices(
+    $filter: ModelNoticeFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncNotices(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        content
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        fromUserID
+        fromUser {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        replyID
+        reply {
+          id
+          postID
+          type
+          content
+          request
+          imgUrl
+          pastPost
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getNotice = /* GraphQL */ `
+  query GetNotice($id: ID!) {
+    getNotice(id: $id) {
+      id
+      content
+      userID
+      user {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      fromUserID
+      fromUser {
+        id
+        cognitoID
+        identityID
+        name
+        viewName
+        description
+        iconUrl
+        email
+        posts {
+          nextToken
+          startedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        notice {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      postID
+      post {
+        id
+        title
+        type
+        URL
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      replyID
+      reply {
+        id
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        type
+        content
+        request
+        imgUrl
+        pastPost
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listNotices = /* GraphQL */ `
+  query ListNotices(
+    $filter: ModelNoticeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNotices(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        content
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        fromUserID
+        fromUser {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        replyID
+        reply {
+          id
+          postID
+          type
+          content
+          request
+          imgUrl
+          pastPost
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const userByCognitoId = /* GraphQL */ `
   query UserByCognitoId(
     $cognitoID: String
@@ -519,6 +1119,10 @@ export const userByCognitoId = /* GraphQL */ `
           startedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        notice {
           nextToken
           startedAt
         }
@@ -553,6 +1157,7 @@ export const postByUserId = /* GraphQL */ `
       items {
         id
         title
+        type
         URL
         tag
         date
@@ -577,6 +1182,10 @@ export const postByUserId = /* GraphQL */ `
           updatedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        del {
           nextToken
           startedAt
         }
@@ -609,6 +1218,7 @@ export const postByDate = /* GraphQL */ `
       items {
         id
         title
+        type
         URL
         tag
         date
@@ -633,6 +1243,10 @@ export const postByDate = /* GraphQL */ `
           updatedAt
         }
         replies {
+          nextToken
+          startedAt
+        }
+        del {
           nextToken
           startedAt
         }
@@ -668,6 +1282,7 @@ export const replyByUserId = /* GraphQL */ `
         post {
           id
           title
+          type
           URL
           tag
           date
@@ -735,6 +1350,7 @@ export const replyByPostId = /* GraphQL */ `
         post {
           id
           title
+          type
           URL
           tag
           date
@@ -770,6 +1386,167 @@ export const replyByPostId = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const delByPostId = /* GraphQL */ `
+  query DelByPostId(
+    $postID: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelDelFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    delByPostID(
+      postID: $postID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        replyID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const noticeByUserId = /* GraphQL */ `
+  query NoticeByUserId(
+    $userID: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelNoticeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    noticeByUserID(
+      userID: $userID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        content
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        fromUserID
+        fromUser {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        postID
+        post {
+          id
+          title
+          type
+          URL
+          tag
+          date
+          imgUrl
+          imgIdentityID
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        replyID
+        reply {
+          id
+          postID
+          type
+          content
+          request
+          imgUrl
+          pastPost
+          createdAt
+          updatedAt
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
         _version
         _deleted
         _lastChangedAt

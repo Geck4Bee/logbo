@@ -9,6 +9,7 @@ type User @model @key(name: "byCognitoID", fields: ["cognitoID"], queryField: "u
   email: AWSEmail!
   posts: [Post] @connection(keyName: "byUser", fields: ["id"])
   replies: [Reply] @connection(keyName: "byUser", fields: ["id"])
+  notice: [Notice] @connection(keyName: "byUser", fields: ["id"])
 }
 
 type Post @model
@@ -17,6 +18,7 @@ type Post @model
 {
   id: ID!
   title: String!
+  type: String!
   URL: String
   tag: String
   date: AWSDate
@@ -27,6 +29,7 @@ type Post @model
   userID: ID!
   user: User @connection(fields: ["userID"])
   replies: [Reply] @connection(keyName: "byPost", fields: ["id"])
+  del: [Del] @connection(keyName: "byPost", fields: ["id"])
 }
 
 type Reply @model
@@ -44,4 +47,37 @@ type Reply @model
   updatedAt: AWSDateTime
   userID: ID!
   user: User @connection(fields: ["userID"])
+}
+
+type Del @model
+@key(name: "byPost", fields: ["postID", "createdAt"], queryField: "delByPostID") {
+  id: ID!
+  type: String!
+  userID: ID!
+  user: User @connection(fields: ["userID"])
+  postID: ID!
+  post: Post @connection(fields: ["postID"])
+  replyID: ID
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Notice @model(subscriptions: null)
+@key(name: "byUser", fields: ["userID", "createdAt"], queryField: "noticeByUserID") {
+  id: ID!
+  content: String!
+  userID: ID!
+  user: User @connection(fields: ["userID"])
+  fromUserID: ID!
+  fromUser: User @connection(fields: ["fromUserID"])
+  postID: ID!
+  post: Post @connection(fields: ["postID"])
+  replyID: ID!
+  reply: Reply @connection(fields: ["replyID"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Subscription {
+  onCreateNotice(userId: ID): Notice @aws_subscribe(mutations: ["createNotice"])
 }
