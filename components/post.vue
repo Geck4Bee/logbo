@@ -27,15 +27,13 @@
                 </v-btn>
             </div>
             <div class="mx-4" style="max-width: 90%;">
-                <v-row>
-                    <v-btn
-                    style="max-width: 100%;"
-                    text
-                    nuxt
+                <v-row class="px-2">
+                    <nuxt-link
+                    class="postTitle"
                     :to="'/post/' + post.id"
                     >
-                        <h3 class="my-0 postTitle">{{ post.title }}</h3>
-                    </v-btn>
+                        <h3 class="my-0">{{ post.title }}</h3>
+                    </nuxt-link>
                 </v-row>
                 <v-row>
                     <span class="mx-2" style="color: gray;">{{ typeName }}</span>
@@ -146,12 +144,11 @@ export default {
     white-space: normal;
 }
 .postTitle {
-    color: white;
-    width: 48em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-decoration: none;
+    color: white !important;
+    text-decoration: none !important;
+}
+.postTitle:hover {
+    color: gray !important;
 }
 .tag-link {
     color: gray;
