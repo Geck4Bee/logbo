@@ -75,7 +75,7 @@
                 </v-btn>
             </v-row>
             <v-row justify="center">
-                <h4>{{ tags.toString() }}</h4>
+                <h4>{{ showTags }}</h4>
             </v-row>
             <v-row justify="start">
                 <v-text-field
@@ -154,6 +154,15 @@ export default {
     },
     mounted () {
         this.postTypes = this.$store.state.postType
+    },
+    computed: {
+        showTags () {
+            this.tags = this.tags.map(tag => {
+                return (tag[0] === '#')? tag : '#' + tag
+            })
+            console.log(this.tags)
+            return this.tags.toString()
+        }
     },
     methods: {
         addTags () {
