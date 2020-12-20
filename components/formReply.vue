@@ -74,7 +74,7 @@
                         </v-btn>
                     </v-row>
                     <v-row justify="center">
-                        <h4>{{ reply.request.tag.toString() }}</h4>
+                        <h4>{{ showTags }}</h4>
                     </v-row>
                     <v-row justify="start">
                         <v-text-field
@@ -211,6 +211,14 @@ export default {
     },
     mounted () {
         this.replyTypes = this.$store.state.replyType.filter(obj => ["accept", "reject"].indexOf(obj.value) === -1)
+    },
+    computed: {
+        showTags () {
+            const tags = this.reply.request.tag.map(tag => {
+                return (tag[0] === '#')? tag : '#' + tag
+            })
+            return tags.toString()
+        }
     },
     methods: {
         resetID () {

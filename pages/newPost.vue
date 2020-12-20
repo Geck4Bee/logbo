@@ -157,11 +157,10 @@ export default {
     },
     computed: {
         showTags () {
-            this.tags = this.tags.map(tag => {
+            const tags = this.tags.map(tag => {
                 return (tag[0] === '#')? tag : '#' + tag
             })
-            console.log(this.tags)
-            return this.tags.toString()
+            return tags.toString()
         }
     },
     methods: {
