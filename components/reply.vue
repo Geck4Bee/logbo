@@ -395,8 +395,8 @@ export default {
                 const URL = ([null, undefined, ""].indexOf(this.reply.request.URL) === -1)? this.reply.request.URL : this.reply.pastPost.URL
                 const tag = ([null, undefined, "", []].indexOf(this.reply.request.tag) === -1)? this.reply.request.tag : this.reply.pastPost.tag
                 const date = ([null, undefined, ""].indexOf(this.reply.request.date) === -1)? this.reply.request.date : this.reply.pastPost.date
-                const imgUrl = ([null, undefined, ""].indexOf(this.reply.imgUrl) === -1)? this.reply.imgUrl : this.reply.pastPost.imgUrl
-                const imgIdentityID = ([null, undefined, ""].indexOf(this.reply.imgUrl) === -1)? this.reply.user.identityID : this.reply.pastPost.identityID
+                const imgUrl = ([null, undefined, "", "null"].indexOf(this.reply.imgUrl) === -1)? this.reply.imgUrl : this.reply.pastPost.imgUrl
+                const imgIdentityID = ([null, undefined, "", "null"].indexOf(this.reply.imgUrl) === -1)? this.reply.user.identityID : this.reply.pastPost.identityID
                 const updatePost = `
                     mutation UpdatePost {
                         updatePost(input: {
