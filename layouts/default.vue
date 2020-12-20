@@ -76,19 +76,20 @@
                 <nuxt />
             </v-container>
         </v-main>
-        <v-footer :absolute="!fixed" app>
-            <span>&copy; {{ new Date().getFullYear() }}</span>
-            <v-btn
-            class="mx-2"
-            text
-            dark
-            href="https://discord.gg/Y9RDUuKfUN"
-            target="_blank"
-            rel="noopener noreferrer"
-            >
-            <v-icon color="grey">mdi-discord</v-icon>
-            Discord
-            </v-btn>
+        <v-footer fixed app>
+            <v-row justify="center">
+                <v-btn
+                class="mx-2"
+                text
+                dark
+                href="https://discord.gg/Y9RDUuKfUN"
+                target="_blank"
+                rel="noopener noreferrer"
+                >
+                <v-icon color="grey">mdi-discord</v-icon>
+                Discord
+                </v-btn>
+            </v-row>
         </v-footer>
     </v-app>
 </template>
