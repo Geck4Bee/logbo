@@ -356,7 +356,7 @@ export default {
                 if (this.reply.user.identityID !== this.currentCredentials.identityId) {
                     throw new Error("権限のないアカウント")
                 }
-                if (['accept', 'reject'].indexOf(this.reply.type) === -1) {
+                if (['accept', 'reject'].indexOf(this.reply.type) !== -1) {
                     throw new Error("承認 or 却下済みのリクエスト")
                 }
                 if ([null, undefined, ""].indexOf(this.image.imgURL) === -1) {
