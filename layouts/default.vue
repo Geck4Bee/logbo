@@ -67,8 +67,8 @@
             nuxt
             to="/notice"
             >
-                <v-icon :color="noticeCountColor">mdi-bell</v-icon>
-                <span :style="'color:' + noticeCountColor + ';'" >{{ noticeCountShow }}</span>
+                <v-icon :color="noticeColor">mdi-bell</v-icon>
+                <span :style="'color:' + noticeColor + ';'" >{{ noticeCount }}</span>
             </v-btn>
         </v-app-bar>
         <v-main>
@@ -134,6 +134,7 @@ export default {
                 showPreviewImg: false
             },
             noticeCount: 0,
+            noticeColor: "grey",
             subscription: null
         }
     },
@@ -152,6 +153,15 @@ export default {
         this.$store.commit("setPostType")
         this.$store.commit("setReplyType")
         this.$store.commit("setDelType")
+        this.$store.commit("setNoticeCount")
+        this.$store.subscribe(
+            (mutation, state) => {
+                if (["incrementNoticeCount", "decrementNoticeCount"].indexOf(mutation.type) !== -1) {
+                    this.noticeCount = (state.noticeCount > 10) ? "10+" : state.noticeCount
+                    this.noticeColor = (state.noticeCount > 0) ? 'white' : 'grey'
+                }
+            }
+        )
         await this.getUserInfo()
     },
     computed: {
@@ -165,12 +175,6 @@ export default {
                 }
             })
         },
-        noticeCountShow () {
-            return (this.noticeCount > 10) ? "10+" : this.noticeCount
-        },
-        noticeCountColor () {
-            return (this.noticeCount > 0) ? 'white' : 'grey'
-        }
     },
     methods: {
         async getUserInfo () {
@@ -287,7 +291,9 @@ export default {
                 await API.graphql(graphqlOperation(noticeByUserId))
                     .then(res => {
                         const items = res.data.noticeByUserID.items.filter(item => [null, undefined, false, ""].indexOf(item._deleted) !== -1)
-                        this.noticeCount += items.length
+                        items.map(item => {
+                            this.$store.commit("incrementNoticeCount")
+                        })
                     })
             } catch (e) {
                 console.log('通知の取得に失敗しました' + e)
@@ -306,7 +312,10 @@ export default {
                     next: (event) => {
                         if (event) {
                             const noticeObj = event.value.data.onCreateNotice
-                            if ([null, undefined, "", {}].indexOf(noticeObj) === -1) this.noticeCount++
+                            console.log("catch notice")
+                            if ([null, undefined, "", {}].indexOf(noticeObj) === -1) {
+                                this.$store.commit("incrementNoticeCount")
+                            }
                         }
                     }
                 })

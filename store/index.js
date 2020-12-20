@@ -4,6 +4,7 @@ export const state = () => {
     userID: null
     imgPreview: null
     showPreviewImg: false
+    noticeCount: 0
     postType: []
     replyType: []
     delType: []
@@ -56,5 +57,14 @@ export const mutations = {
             {name: "個人情報", value: "person"},
             {name: "雑談", value: "talking"}
         ]
+    },
+    setNoticeCount(state) {
+        state.noticeCount = 0
+    },
+    incrementNoticeCount(state) {
+        state.noticeCount++
+    },
+    decrementNoticeCount(state) {
+        state.noticeCount--
     }
 }

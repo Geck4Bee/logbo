@@ -115,6 +115,7 @@ export default {
                 `
                 await API.graphql(graphqlOperation(deleteNotice))
                     .then(res => {
+                        this.$store.commit("decrementNoticeCount")
                         console.log("Notice deleted")
                     })
             } catch (e) {
