@@ -82,12 +82,33 @@
                 class="mx-2"
                 text
                 dark
+                href="https://twitter.com/gesontacle"
+                target="_blank"
+                rel="noopener noreferrer"
+                >
+                    <v-icon class="mr-1" color="grey">mdi-twitter</v-icon>
+                    Twitter
+                </v-btn>
+                <v-btn
+                class="mx-2"
+                text
+                dark
+                href="https://twitter.com/gesontacle/status/1340649470380265476"
+                target="_blank"
+                rel="noopener noreferrer"
+                >
+                    使い方
+                </v-btn>
+                <v-btn
+                class="mx-2"
+                text
+                dark
                 href="https://discord.gg/Y9RDUuKfUN"
                 target="_blank"
                 rel="noopener noreferrer"
                 >
-                <v-icon color="grey">mdi-discord</v-icon>
-                Discord
+                    <v-icon class="mr-1" color="grey">mdi-discord</v-icon>
+                    Discord
                 </v-btn>
             </v-row>
         </v-footer>
