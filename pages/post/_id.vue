@@ -208,7 +208,7 @@ export default {
             showDialogDelete: false,
             dialogMessageDelete: "",
             replies: [],
-            repliesPerPage: 10,
+            repliesPerPage: 20,
             replyType: "all",
             nextToken: "",
             nextTokens: [],

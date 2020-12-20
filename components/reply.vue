@@ -136,39 +136,38 @@
                                 </v-row>
                             </div>
                         </v-row>
-                        <v-row v-if="$store.state.isLoggedIn" justify="center" class="my-2">
-                            <div v-if="reply.user.identityID === currentCredentials.identityId && ['accept', 'reject'].indexOf(reply.type) === -1">
-                                <div v-if="post.user.identityID === currentCredentials.identityId && reply.type === 'request'">
-                                    <v-btn
-                                    color="teal"
-                                    class="mx-2"
-                                    dark
-                                    @click="delReplyDialogAccept()"
-                                    >
-                                    <v-icon>mdi-check-bold</v-icon>
-                                    承認
-                                    </v-btn>
-                                    <v-btn
-                                    color="red"
-                                    class="mx-2"
-                                    dark
-                                    @click="delReplyDialogReject()"
-                                    >
-                                    <v-icon>mdi-close-thick</v-icon>
-                                    却下
-                                    </v-btn>
-                                </div>
-                                <v-btn
-                                color="indigo"
-                                class="mx-2"
-                                dark
-                                @click="delReplyDialog()"
-                                >
+                        <v-row justify="center" class="my-2" v-if="$store.state.isLoggedIn">
+                            <v-btn
+                            v-if="identityAndNotJudged && identityAndIsRequest"
+                            color="teal"
+                            class="mx-1"
+                            dark
+                            @click="delReplyDialogAccept()"
+                            >
+                                <v-icon>mdi-check-bold</v-icon>
+                                承認
+                            </v-btn>
+                            <v-btn
+                            v-if="identityAndNotJudged && identityAndIsRequest"
+                            color="red"
+                            class="mx-1"
+                            dark
+                            @click="delReplyDialogReject()"
+                            >
+                                <v-icon>mdi-close-thick</v-icon>
+                                却下
+                            </v-btn>
+                            <v-btn
+                            v-if="identityAndNotJudged"
+                            color="indigo"
+                            class="mx-1"
+                            dark
+                            @click="delReplyDialog()"
+                            >
                                 <v-icon>mdi-delete</v-icon>
                                 削除
-                                </v-btn>
-                            </div>
-                            <div>
+                            </v-btn>
+                            <div class="mx-1">
                                 <del-btn :postID="post.id" :replyID="reply.id" />
                             </div>
                         </v-row>
@@ -303,6 +302,14 @@ export default {
         await Common.setImgFileUser(this.image, this.reply.user.identityID)
         await Common.setImgFileUser(this.pastImage, this.reply.pastPost.identityID)
         this.showReply = true
+    },
+    computed: {
+        identityAndNotJudged () {
+            return (this.reply.user.identityID === this.currentCredentials.identityId && ['accept', 'reject'].indexOf(this.reply.type) === -1)? true : false
+        },
+        identityAndIsRequest () {
+            return (this.post.user.identityID === this.currentCredentials.identityId && this.reply.type === 'request')? true : false
+        }
     },
     methods: {
         reload () {

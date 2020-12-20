@@ -11,6 +11,15 @@
         <v-row v-if="query.title !== '' || query.tag !== '' || query.URL !== '' || showQueryUser">
             <h4>検索条件: </h4>
         </v-row>
+        <v-row justify="end">
+            <v-btn
+            color="grey darken-4"
+            dark
+            @click="downloadTxt"
+            >
+            一覧出力
+            </v-btn>
+        </v-row>
         <v-row v-if="query.date !== ''" align="center">
             <v-btn
             icon
@@ -114,6 +123,7 @@ import CustomDialog from '~/components/dialog.vue'
 import Post from "~/components/post.vue"
 import UserCardRow from '~/components/userCardRow.vue'
 import SearchForm from '~/components/searchForm.vue'
+import { saveAs } from 'file-saver'
 
 export default {
     components: {
@@ -211,6 +221,21 @@ export default {
         },
     },
     methods: {
+        downloadTxt () {
+            let content = ''
+            this.postObjs.map(postObj => {
+                const dateLocale = new Date(postObj.date).toLocaleDateString().replace(new RegExp(/(\/)/gi), '-')
+                content = content + '●' + dateLocale + '\n'
+                postObj.posts.map(post => {
+                    content = content + '・' + post.title + '\n' + post.URL + '\n'
+                })
+                content = content + '\n'
+            })
+            const blob = new Blob([content], {type: "text/plain;charset=utf-8"})
+            const now = new Date().toLocaleDateString().replace(new RegExp(/(\/)/gi), '-')
+            const filename = 'ログボ一覧_' + now + '.txt'
+            saveAs(blob, filename)
+        },
         removeQuery (key) {
             this.query[key] = ""
             this.$router.push({ path: "/", query: this.query})
