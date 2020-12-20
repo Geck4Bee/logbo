@@ -273,23 +273,23 @@ export default {
                 if (this.nextToken) {
                     nextToken = `"${this.nextToken}"`
                 }
+                const filterTitle = (this.query.title !== "")? `{title: {contains: "${this.query.title}"}},`: ''
+                const filterTagTitle = (this.query.title !== "")? `{tag: {contains: "${this.query.title}"}},`: ''
+                const filterTag = (this.query.tag !== "")? `{tag: {contains: "${this.query.tag}"}},`: ''
+                const filterOR = ( filterTitle !== '' || filterTagTitle !== '' || filterTag !== '')? 'or: [' + filterTitle + filterTagTitle + filterTag + '],' : ''
+                
                 const filterType = (this.query.type !== "")? `{type: {eq: "${this.query.type}"}},`: ''
                 const filterURL = (this.query.URL !== "")? `{URL: {contains: "${this.query.URL}"}},` : ''
                 const filterUserID = (this.query.userID !== "")? `{userID: {eq: "${this.query.userID}"}},` : ''
                 const filterAnd = ( filterType !== '' || filterURL !== '' || filterUserID !== '')? 'and: [' + filterType + filterURL + filterUserID + ']' : ''
+                
+                const filter = ( filterOR !== '' || filterAnd !== '')? 'filter: {' + filterOR + filterAnd + '}' : ''
                 const postByDate = `
                     query PostByDate {
                         postByDate (
                             date: "${Common.toISO8601DateString(this.date)}"
                             sortDirection: DESC
-                            filter: {
-                                or: [
-                                    {title: {contains: "${this.query.title}"}},
-                                    {tag: {contains: "${this.query.title}"}},
-                                    {tag: {contains: "${this.query.tag}"}},
-                                ],
-                                ${filterAnd}
-                            }
+                            ${filter}
                             limit: ${this.postsPerPage}
                             nextToken: ${nextToken}
                         ) {
