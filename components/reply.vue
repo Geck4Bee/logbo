@@ -291,7 +291,7 @@ export default {
     async created () {
         this.currentCredentials = await this.$Amplify.Auth.currentCredentials()
         this.replyTypes = this.$store.state.replyType
-        this.openReply = (this.index == 0) ? [0] : []
+        this.openReply = (this.index < 10) ? [0] : []
         this.reply.request = JSON.parse(this.reply.request)
         this.reply.pastPost = JSON.parse(this.reply.pastPost)
         this.reply.content = this.reply.content.replace(/\\n/g, '\n')
