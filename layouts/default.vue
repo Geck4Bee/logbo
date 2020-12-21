@@ -79,7 +79,7 @@
         <v-footer fixed app>
             <v-row justify="center">
                 <v-btn
-                class="mx-2"
+                class="mx-1 px-1"
                 text
                 dark
                 href="https://twitter.com/gesontacle"
@@ -90,7 +90,7 @@
                     Twitter
                 </v-btn>
                 <v-btn
-                class="mx-2"
+                class="mx-1 px-1"
                 text
                 dark
                 href="https://twitter.com/gesontacle/status/1340649470380265476"
@@ -100,7 +100,7 @@
                     使い方
                 </v-btn>
                 <v-btn
-                class="mx-2"
+                class="mx-1 px-1"
                 text
                 dark
                 href="https://discord.gg/Y9RDUuKfUN"

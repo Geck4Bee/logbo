@@ -35,7 +35,7 @@
                             <h2>{{ post.title }}</h2>
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
-                            <v-row justify="start">
+                            <div style="display:flex;flex-wrap:wrap;">
                                 <div v-if="image.showPreviewImg" class="mx-2">
                                     <v-img
                                     :src="image.imgPreview"
@@ -45,28 +45,28 @@
                                     max-width="200"
                                     />
                                 </div>
-                                <div class="mx-4">
-                                    <v-row justify="start" class="my-2">
+                                <div class="mx-4" style="max-width: 100%;">
+                                    <div class="my-2 wrap-box">
                                         <h4>情報の種類: </h4>
                                         <span class="ml-2" style="color: gray;">{{ typeName }}</span>
-                                    </v-row>
-                                    <v-row justify="start" class="my-2">
+                                    </div>
+                                    <div class="my-2 wrap-box">
                                         <h4>日付: </h4>
                                         <span class="ml-2" style="color: gray;">{{ post.date }}</span>
-                                    </v-row>
-                                    <v-row justify="start" class="my-2">
-                                        <h4>URL:</h4>
-                                            <a
-                                            class="post-url ml-2"
-                                            :href="post.URL"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            :style="(post.URL !=='')? '' : 'pointer-events:none;'"
-                                            >
-                                                <span>{{ (post.URL !=='')? post.URL : "無し" }}</span>
-                                            </a>
-                                    </v-row>
-                                    <v-row justrify="start" class="my-2">
+                                    </div>
+                                    <div class="my-2">
+                                        <span style="font-weight: bold;">URL:</span>
+                                        <a
+                                        class="post-url ml-2"
+                                        :href="post.URL"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        :style="(post.URL !=='')? '' : 'pointer-events:none;'"
+                                        >
+                                            {{ (post.URL !=='')? post.URL : "無し" }}
+                                        </a>
+                                    </div>
+                                    <div class="my-2 wrap-box">
                                         <h4 class="mr-2">タグ:</h4>
                                         <div v-for="(tag, index) in JSON.parse(post.tag)" :key="index">
                                             <button
@@ -76,9 +76,9 @@
                                                 <span class="tag-link">#{{ tag }}</span>
                                             </button>
                                         </div>
-                                    </v-row>
+                                    </div>
                                 </div>
-                            </v-row>
+                            </div>
                             <v-row justify="center">
                                 <div v-if="$store.state.isLoggedIn">
                                     <v-btn
@@ -534,5 +534,10 @@ export default {
 }
 .tag-link:hover {
     color: white;
+}
+.wrap-box {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 </style>
