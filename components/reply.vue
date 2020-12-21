@@ -39,9 +39,9 @@
                         <h4>{{ replyTypes.find(obj => obj.value === reply.type).name }}</h4>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
-                        <v-row justify="start">
+                        <div>
                             <div class="ml-2 mr-4">
-                                <v-row v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1 && pastImage.showPreviewImg && image.showPreviewImg">
+                                <div v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1 && pastImage.showPreviewImg && image.showPreviewImg">
                                     <v-img
                                     :src="pastImage.imgPreview"
                                     alt="画像のプレビュー"
@@ -49,15 +49,14 @@
                                     class="user-image-minimum"
                                     max-width="200"
                                     />
-                                </v-row>
-                                <v-row
+                                </div>
+                                <div
                                 v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1 && pastImage.showPreviewImg && image.showPreviewImg"
-                                justify="center"
-                                class="my-2"
+                                class="my-2 wrap-bo"
                                 >
                                     <v-icon>mdi-arrow-down-bold-outline</v-icon>
-                                </v-row>
-                                <v-row v-if="image.showPreviewImg">
+                                </div>
+                                <div v-if="image.showPreviewImg">
                                     <v-img
                                     :src="image.imgPreview"
                                     alt="画像のプレビュー"
@@ -65,77 +64,67 @@
                                     class="user-image-minimum"
                                     max-width="200"
                                     />
-                                </v-row>
+                                </div>
                             </div>
                             <div class="mx-4">
                                 <div v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1">
                                     <div v-if="reply.pastPost.title !== reply.request.title" class="my-1">
-                                        <v-row justify="start">
-                                            <h4>タイトル:</h4>
-                                        </v-row>
-                                        <v-row justify="start" class="ml-2">
+                                        <h4>タイトル:</h4>
+                                        <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更前:</span>
                                             <span>{{ reply.pastPost.title }}</span>
-                                        </v-row>
-                                        <v-row justify="start" class="ml-2">
+                                        </div>
+                                        <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更後:</span>
                                             <span>{{ reply.request.title }}</span>
-                                        </v-row>
+                                        </div>
                                     </div>
                                     <div v-if="reply.pastPost.URL !== reply.request.URL" class="my-1">
-                                        <v-row justify="start">
-                                            <h4>URL:</h4>
-                                        </v-row>
-                                        <v-row justify="start" class="ml-2">
+                                        <h4>URL:</h4>
+                                        <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更前:</span>
                                             <span>{{ reply.pastPost.URL }}</span>
-                                        </v-row>
-                                        <v-row justify="start" class="ml-2">
+                                        </div>
+                                        <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更後:</span>
                                             <span>{{ reply.request.URL }}</span>
-                                        </v-row>
+                                        </div>
                                     </div>
                                     <div v-if="reply.pastPost.date !== reply.request.date" class="my-1">
-                                        <v-row justify="start">
-                                            <h4>日付:</h4>
-                                        </v-row>
-                                        <v-row justify="start" class="ml-2">
+                                        <h4>日付:</h4>
+                                        <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更前:</span>
                                             <span>{{ reply.pastPost.date }}</span>
-                                        </v-row>
-                                        <v-row justify="start" class="ml-2">
+                                        </div>
+                                        <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更後:</span>
                                             <span>{{ reply.request.date }}</span>
-                                        </v-row>
+                                        </div>
                                     </div>
                                     <div v-if="reply.pastPost.tag !== reply.request.tag" class="my-1">
-                                        <v-row justify="start">
-                                            <h4>タグ:</h4>
-                                        </v-row>
-                                        <v-row justify="start" class="ml-2">
+                                        <h4>タグ:</h4>
+                                        <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更前:</span>
                                             <div v-for="(tag, index) in reply.pastPost.tag" :key="index">
                                                 <span>#{{ tag }}</span>
                                                 <span v-if="reply.pastPost.tag.length > 1 && index+1 !== reply.pastPost.tag.length" class="mr-1">,</span>
                                             </div>
-                                        </v-row>
-                                        <v-row justify="start" class="ml-2">
+                                        </div>
+                                        <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更後:</span>
                                             <div v-for="(tag, index) in reply.request.tag" :key="index">
                                                 <span>#{{ tag }}</span>
                                                 <span v-if="reply.request.tag.length > 1 && index+1 !== reply.request.tag.length" class="mr-1">,</span>
                                             </div>
-                                        </v-row>
+                                        </div>
                                     </div>
                                 </div>
-                                <v-row justify="start">
-                                    <h4>コメント:</h4>
-                                </v-row>
-                                <v-row justify="start" class="ml-2">
+                                <h4>コメント:</h4>
+                                <div class="ml-2 wrap-box">
                                     <span class="textbox">{{ reply.content }}</span>
-                                </v-row>
+                                </div>
                             </div>
-                        </v-row>
+                        </div>
                         <v-row justify="center" class="my-2" v-if="$store.state.isLoggedIn">
                             <v-btn
                             v-if="identityAndNotJudged && identityAndIsRequest"

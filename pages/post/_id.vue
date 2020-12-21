@@ -535,9 +535,4 @@ export default {
 .tag-link:hover {
     color: white;
 }
-.wrap-box {
-    max-width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-}
 </style>
