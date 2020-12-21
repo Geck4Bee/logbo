@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                                 <h4>コメント:</h4>
-                                <div class="ml-2 wrap-box">
+                                <div class="ml-2">
                                     <span class="textbox">{{ reply.content }}</span>
                                 </div>
                             </div>
@@ -478,5 +478,10 @@ export default {
 .textbox {
     white-space: pre-wrap;
     word-wrap: break-word;
+}
+.wrap-box {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 </style>
