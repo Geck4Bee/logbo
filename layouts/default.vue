@@ -146,6 +146,12 @@ export default {
                     title: "投稿",
                     to: "/newPost",
                     status: ['loggedIn']
+                },
+                {
+                    icon: "mdi-gesture",
+                    title: "ワヤクラーケン",
+                    to: "/wayakraken",
+                    status: ['loggedIn', 'loggedOut']
                 }
             ],
             title: 'GESONTACLE(β)',
