@@ -2,6 +2,49 @@
     <v-container fluid style="max-width:900px;">
         <custom-overlay :overlay="overlay" />
         <h2>和訳ラーケン</h2>
+        <v-card
+        class="my-2"
+        max-width="400"
+        dark
+        >
+            <v-expansion-panels>
+                <v-expansion-panel>
+                    <v-expansion-panel-header>検索フォーム</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <v-form ref="formSearch" @submit.prevent @submit="search">
+                            <v-card-subtitle class="py-0">
+                                <v-text-field
+                                v-model="keyword"
+                                label="キーワード"
+                                />
+                            </v-card-subtitle>
+                            <v-card-actions class="pt-0">
+                                <v-btn
+                                color="teal"
+                                dark
+                                @click="search"
+                                >
+                                検索
+                                </v-btn>
+                            </v-card-actions>
+                        </v-form>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </v-card>
+        <v-row v-if="[null, undefined, ''].indexOf(queryKey) === -1">
+            <h4>検索条件: </h4>
+        </v-row>
+        <v-row v-if="[null, undefined, ''].indexOf(queryKey) === -1" align="center">
+            <v-btn
+            icon
+            color="indigo"
+            @click="removeQuery('keyword')"
+            >
+                <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <h4>キーワード:<span class="mx-1"></span>{{ queryKey }}</h4>
+        </v-row>
         <div v-for="(item, index) in krakens" :key="index">
             <kraken :item="item" class="my-3" />
         </div>
@@ -50,18 +93,22 @@ export default {
             totalPages: 1,
             nextToken: null,
             nextTokens: [null],
-            queryKey: ""
+            queryKey: "",
+            keyword: ""
         }
     },
     asyncData (context) {
         const queryKey = context.query['keyword']
         return {
-            queryKey: queryKey
+            queryKey: queryKey,
+            keyword: queryKey
         }
     },
     watchQuery: ['keyword'],
     watch: {
         queryKey: function(newVal) {
+            this.nextToken = null
+            this.nextTokens = [null]
             this.getKrakens()
         },
     },
@@ -77,6 +124,11 @@ export default {
         }
     },
     methods: {
+        removeQuery (key) {
+            this.queryKey = ""
+            this.keyword = ""
+            this.$router.push({ path: "/wayakraken", query: {keyword: this.queryKey}})
+        },
         backBtn () {
             this.page--
             this.nextToken = this.nextTokens[this.page-1]
@@ -90,6 +142,9 @@ export default {
             this.page++
             this.getKrakens()
         },
+        search () {
+            this.$router.push({ path: "/wayakraken", query: {keyword: this.keyword}})
+        },
         async getKrakens () {
             this.overlay = true
             try {
@@ -97,7 +152,9 @@ export default {
                 if (this.nextToken) {
                     nextToken = `"${this.nextToken}"`
                 }
-                const filter = ([null, undefined, ""].indexOf(this.queryKey) === -1)? `filter: {or: [{en: {contain: "${this.queryKey}"}},{ja: {contain: "${this.queryKey}"}}]},` : ""
+                const filter = ([null, undefined, ""].indexOf(this.queryKey) === -1)? `filter: {or: [{en: {contains: "${this.queryKey}"}},{ja: {contains: "${this.queryKey}"}}]},` : ""
+                console.log(filter)
+                console.log(nextToken)
                 const listKrakens = `
                     query ListKrakens {
                         listKrakens(
