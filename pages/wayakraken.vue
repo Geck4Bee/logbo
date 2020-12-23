@@ -153,8 +153,6 @@ export default {
                     nextToken = `"${this.nextToken}"`
                 }
                 const filter = ([null, undefined, ""].indexOf(this.queryKey) === -1)? `filter: {or: [{en: {contains: "${this.queryKey}"}},{ja: {contains: "${this.queryKey}"}}]},` : ""
-                console.log(filter)
-                console.log(nextToken)
                 const listKrakens = `
                     query ListKrakens {
                         listKrakens(
