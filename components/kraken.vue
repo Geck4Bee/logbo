@@ -3,22 +3,22 @@
         <v-row class="px-4" justify="end" align="center">
             <span style="color: gray; font-size: 0.9em;" class="mx-1">読取日時: {{ new Date(item.createdAt).toLocaleString() }}</span>
         </v-row>
-        <v-row class="px-4 pb-1" justify="start" align="center">
+        <div class="px-4 pb-1" justify="start" align="center">
             <span class="my-0">{{ item.en }}</span>
-        </v-row>
-        <v-row class="px-4 pb-1" justify="start" align="center">
+        </div>
+        <div class="px-4 pb-1">
             <h4 class="my-0">{{ item.ja }}</h4>
-        </v-row>
-        <v-row class="px-4 pb-1" justify="start" align="center">
+        </div>
+        <div class="px-4 pb-1 wrap-box" style="max-width: 100%;">
             <a
             class="krakenURL"
             :href="item.URL"
             target="_blank"
             rel="noopener noreferrer"
             >
-                <span class="my-0">{{ item.URL }}</span>
+                {{ item.URL }}
             </a>
-        </v-row>
+        </div>
     </div>
 </template>
 
@@ -52,8 +52,15 @@ export default {
 .krakenURL {
     color: gray !important;
     text-decoration: none !important;
+    max-width: 100%;
 }
 .krakenURL:hover {
     color: white !important;
+}
+.wrap-box {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    word-break: break-all;
 }
 </style>
