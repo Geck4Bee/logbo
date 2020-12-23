@@ -592,6 +592,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "div": {
+                    "name": "div",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "URL": {
                     "name": "URL",
                     "isArray": false,
@@ -645,11 +652,22 @@ export const schema = {
                         ],
                         "queryField": "krakenByURL"
                     }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byCreatedAt",
+                        "fields": [
+                            "div",
+                            "createdAt"
+                        ],
+                        "queryField": "sortedByCreatedAt"
+                    }
                 }
             ]
         }
     },
     "enums": {},
     "nonModels": {},
-    "version": "aa666a3f2d945e4e3ee6a35e62b4053e"
+    "version": "b48775af0e231743d3ac9cfe08dc071e"
 };

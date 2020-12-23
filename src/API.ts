@@ -282,6 +282,7 @@ export type DeleteNoticeInput = {
 
 export type CreateKrakenInput = {
   id?: string | null,
+  div: string,
   URL: string,
   en?: string | null,
   ja?: string | null,
@@ -291,6 +292,7 @@ export type CreateKrakenInput = {
 };
 
 export type ModelKrakenConditionInput = {
+  div?: ModelStringInput | null,
   URL?: ModelStringInput | null,
   en?: ModelStringInput | null,
   ja?: ModelStringInput | null,
@@ -303,6 +305,7 @@ export type ModelKrakenConditionInput = {
 
 export type UpdateKrakenInput = {
   id: string,
+  div?: string | null,
   URL?: string | null,
   en?: string | null,
   ja?: string | null,
@@ -392,6 +395,7 @@ export type ModelNoticeFilterInput = {
 
 export type ModelKrakenFilterInput = {
   id?: ModelIDInput | null,
+  div?: ModelStringInput | null,
   URL?: ModelStringInput | null,
   en?: ModelStringInput | null,
   ja?: ModelStringInput | null,
@@ -2077,6 +2081,7 @@ export type CreateKrakenMutation = {
   createKraken:  {
     __typename: "Kraken",
     id: string,
+    div: string,
     URL: string,
     en: string | null,
     ja: string | null,
@@ -2097,6 +2102,7 @@ export type UpdateKrakenMutation = {
   updateKraken:  {
     __typename: "Kraken",
     id: string,
+    div: string,
     URL: string,
     en: string | null,
     ja: string | null,
@@ -2117,6 +2123,7 @@ export type DeleteKrakenMutation = {
   deleteKraken:  {
     __typename: "Kraken",
     id: string,
+    div: string,
     URL: string,
     en: string | null,
     ja: string | null,
@@ -3327,6 +3334,7 @@ export type SyncKrakensQuery = {
     items:  Array< {
       __typename: "Kraken",
       id: string,
+      div: string,
       URL: string,
       en: string | null,
       ja: string | null,
@@ -3349,6 +3357,7 @@ export type GetKrakenQuery = {
   getKraken:  {
     __typename: "Kraken",
     id: string,
+    div: string,
     URL: string,
     en: string | null,
     ja: string | null,
@@ -3372,6 +3381,7 @@ export type ListKrakensQuery = {
     items:  Array< {
       __typename: "Kraken",
       id: string,
+      div: string,
       URL: string,
       en: string | null,
       ja: string | null,
@@ -3859,6 +3869,37 @@ export type KrakenByUrlQuery = {
     items:  Array< {
       __typename: "Kraken",
       id: string,
+      div: string,
+      URL: string,
+      en: string | null,
+      ja: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+    } | null > | null,
+    nextToken: string | null,
+    startedAt: number | null,
+  } | null,
+};
+
+export type SortedByCreatedAtQueryVariables = {
+  div?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelKrakenFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type SortedByCreatedAtQuery = {
+  sortedByCreatedAt:  {
+    __typename: "ModelKrakenConnection",
+    items:  Array< {
+      __typename: "Kraken",
+      id: string,
+      div: string,
       URL: string,
       en: string | null,
       ja: string | null,
@@ -5114,6 +5155,7 @@ export type OnCreateKrakenSubscription = {
   onCreateKraken:  {
     __typename: "Kraken",
     id: string,
+    div: string,
     URL: string,
     en: string | null,
     ja: string | null,
@@ -5129,6 +5171,7 @@ export type OnUpdateKrakenSubscription = {
   onUpdateKraken:  {
     __typename: "Kraken",
     id: string,
+    div: string,
     URL: string,
     en: string | null,
     ja: string | null,
@@ -5144,6 +5187,7 @@ export type OnDeleteKrakenSubscription = {
   onDeleteKraken:  {
     __typename: "Kraken",
     id: string,
+    div: string,
     URL: string,
     en: string | null,
     ja: string | null,

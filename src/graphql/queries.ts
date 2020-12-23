@@ -1105,6 +1105,7 @@ export const syncKrakens = /* GraphQL */ `
     ) {
       items {
         id
+        div
         URL
         en
         ja
@@ -1123,6 +1124,7 @@ export const getKraken = /* GraphQL */ `
   query GetKraken($id: ID!) {
     getKraken(id: $id) {
       id
+      div
       URL
       en
       ja
@@ -1143,6 +1145,7 @@ export const listKrakens = /* GraphQL */ `
     listKrakens(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        div
         URL
         en
         ja
@@ -1642,6 +1645,41 @@ export const krakenByUrl = /* GraphQL */ `
     ) {
       items {
         id
+        div
+        URL
+        en
+        ja
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const sortedByCreatedAt = /* GraphQL */ `
+  query SortedByCreatedAt(
+    $div: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelKrakenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    sortedByCreatedAt(
+      div: $div
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        div
         URL
         en
         ja

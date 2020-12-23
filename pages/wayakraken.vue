@@ -153,31 +153,35 @@ export default {
                     nextToken = `"${this.nextToken}"`
                 }
                 const filter = ([null, undefined, ""].indexOf(this.queryKey) === -1)? `filter: {or: [{en: {contains: "${this.queryKey}"}},{ja: {contains: "${this.queryKey}"}}]},` : ""
-                const listKrakens = `
-                    query ListKrakens {
-                        listKrakens(
-                            ${filter}
-                            limit: ${this.krakensPerPage},
-                            nextToken: ${nextToken}
+                const sortedByCreatedAt = `
+                    query SortedByCreatedAt {
+                            sortedByCreatedAt(
+                                div: "1"
+                                sortDirection: DESC
+                                ${filter}
+                                limit: ${this.krakensPerPage}
+                                nextToken: ${nextToken}
                         ) {
                             items {
                                 id
+                                div
                                 URL
                                 en
                                 ja
                                 createdAt
-                                updatedAt
                             }
                             nextToken
                             startedAt
                         }
                     }
                 `
-                await API.graphql(graphqlOperation(listKrakens))
+                await API.graphql(graphqlOperation(sortedByCreatedAt))
                     .then(res => {
-                        const items = res.data.listKrakens.items
-                        this.nextToken = res.data.listKrakens.nextToken
-                        if (items.length > 0) this.krakens = items
+                        const items = res.data.sortedByCreatedAt.items
+                        this.nextToken = res.data.sortedByCreatedAt.nextToken
+                        if (items.length > 0) {
+                            this.krakens = items
+                        }
                         console.log('Krakens has loaded')
                         this.overlay = false
                     })

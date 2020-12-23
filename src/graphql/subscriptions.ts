@@ -1134,6 +1134,7 @@ export const onCreateKraken = /* GraphQL */ `
   subscription OnCreateKraken {
     onCreateKraken {
       id
+      div
       URL
       en
       ja
@@ -1149,6 +1150,7 @@ export const onUpdateKraken = /* GraphQL */ `
   subscription OnUpdateKraken {
     onUpdateKraken {
       id
+      div
       URL
       en
       ja
@@ -1164,6 +1166,7 @@ export const onDeleteKraken = /* GraphQL */ `
   subscription OnDeleteKraken {
     onDeleteKraken {
       id
+      div
       URL
       en
       ja

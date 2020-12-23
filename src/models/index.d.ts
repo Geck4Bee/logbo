@@ -81,6 +81,7 @@ export declare class Del {
 
 export declare class Kraken {
   readonly id: string;
+  readonly div: string;
   readonly URL: string;
   readonly en?: string;
   readonly ja?: string;

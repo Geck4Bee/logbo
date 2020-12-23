@@ -84,8 +84,10 @@ type Subscription {
 
 type Kraken @model
 @key(name: "byURL", fields: ["URL", "createdAt"], queryField: "krakenByURL")
+@key(name: "byCreatedAt", fields: ["div", "createdAt"], queryField: "sortedByCreatedAt")
 {
   id: ID!
+  div: String!
   URL: String!
   en: String
   ja: String

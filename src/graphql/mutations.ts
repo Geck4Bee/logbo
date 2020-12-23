@@ -1494,6 +1494,7 @@ export const createKraken = /* GraphQL */ `
   ) {
     createKraken(input: $input, condition: $condition) {
       id
+      div
       URL
       en
       ja
@@ -1512,6 +1513,7 @@ export const updateKraken = /* GraphQL */ `
   ) {
     updateKraken(input: $input, condition: $condition) {
       id
+      div
       URL
       en
       ja
@@ -1530,6 +1532,7 @@ export const deleteKraken = /* GraphQL */ `
   ) {
     deleteKraken(input: $input, condition: $condition) {
       id
+      div
       URL
       en
       ja
