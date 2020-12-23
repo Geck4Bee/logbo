@@ -1130,3 +1130,48 @@ export const onDeleteDel = /* GraphQL */ `
     }
   }
 `;
+export const onCreateKraken = /* GraphQL */ `
+  subscription OnCreateKraken {
+    onCreateKraken {
+      id
+      URL
+      en
+      ja
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateKraken = /* GraphQL */ `
+  subscription OnUpdateKraken {
+    onUpdateKraken {
+      id
+      URL
+      en
+      ja
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteKraken = /* GraphQL */ `
+  subscription OnDeleteKraken {
+    onDeleteKraken {
+      id
+      URL
+      en
+      ja
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;

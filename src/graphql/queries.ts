@@ -1090,6 +1090,73 @@ export const listNotices = /* GraphQL */ `
     }
   }
 `;
+export const syncKrakens = /* GraphQL */ `
+  query SyncKrakens(
+    $filter: ModelKrakenFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncKrakens(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        URL
+        en
+        ja
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getKraken = /* GraphQL */ `
+  query GetKraken($id: ID!) {
+    getKraken(id: $id) {
+      id
+      URL
+      en
+      ja
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listKrakens = /* GraphQL */ `
+  query ListKrakens(
+    $filter: ModelKrakenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listKrakens(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        URL
+        en
+        ja
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const userByCognitoId = /* GraphQL */ `
   query UserByCognitoId(
     $cognitoID: String
@@ -1545,6 +1612,39 @@ export const noticeByUserId = /* GraphQL */ `
           _deleted
           _lastChangedAt
         }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const krakenByUrl = /* GraphQL */ `
+  query KrakenByUrl(
+    $URL: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelKrakenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    krakenByURL(
+      URL: $URL
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        URL
+        en
+        ja
         createdAt
         updatedAt
         _version

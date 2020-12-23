@@ -1487,3 +1487,57 @@ export const deleteNotice = /* GraphQL */ `
     }
   }
 `;
+export const createKraken = /* GraphQL */ `
+  mutation CreateKraken(
+    $input: CreateKrakenInput!
+    $condition: ModelKrakenConditionInput
+  ) {
+    createKraken(input: $input, condition: $condition) {
+      id
+      URL
+      en
+      ja
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateKraken = /* GraphQL */ `
+  mutation UpdateKraken(
+    $input: UpdateKrakenInput!
+    $condition: ModelKrakenConditionInput
+  ) {
+    updateKraken(input: $input, condition: $condition) {
+      id
+      URL
+      en
+      ja
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteKraken = /* GraphQL */ `
+  mutation DeleteKraken(
+    $input: DeleteKrakenInput!
+    $condition: ModelKrakenConditionInput
+  ) {
+    deleteKraken(input: $input, condition: $condition) {
+      id
+      URL
+      en
+      ja
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;

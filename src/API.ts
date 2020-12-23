@@ -280,6 +280,42 @@ export type DeleteNoticeInput = {
   _version?: number | null,
 };
 
+export type CreateKrakenInput = {
+  id?: string | null,
+  URL: string,
+  en?: string | null,
+  ja?: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  _version?: number | null,
+};
+
+export type ModelKrakenConditionInput = {
+  URL?: ModelStringInput | null,
+  en?: ModelStringInput | null,
+  ja?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  and?: Array< ModelKrakenConditionInput | null > | null,
+  or?: Array< ModelKrakenConditionInput | null > | null,
+  not?: ModelKrakenConditionInput | null,
+};
+
+export type UpdateKrakenInput = {
+  id: string,
+  URL?: string | null,
+  en?: string | null,
+  ja?: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteKrakenInput = {
+  id?: string | null,
+  _version?: number | null,
+};
+
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   cognitoID?: ModelStringInput | null,
@@ -352,6 +388,18 @@ export type ModelNoticeFilterInput = {
   and?: Array< ModelNoticeFilterInput | null > | null,
   or?: Array< ModelNoticeFilterInput | null > | null,
   not?: ModelNoticeFilterInput | null,
+};
+
+export type ModelKrakenFilterInput = {
+  id?: ModelIDInput | null,
+  URL?: ModelStringInput | null,
+  en?: ModelStringInput | null,
+  ja?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  and?: Array< ModelKrakenFilterInput | null > | null,
+  or?: Array< ModelKrakenFilterInput | null > | null,
+  not?: ModelKrakenFilterInput | null,
 };
 
 export enum ModelSortDirection {
@@ -2020,6 +2068,66 @@ export type DeleteNoticeMutation = {
   } | null,
 };
 
+export type CreateKrakenMutationVariables = {
+  input: CreateKrakenInput,
+  condition?: ModelKrakenConditionInput | null,
+};
+
+export type CreateKrakenMutation = {
+  createKraken:  {
+    __typename: "Kraken",
+    id: string,
+    URL: string,
+    en: string | null,
+    ja: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateKrakenMutationVariables = {
+  input: UpdateKrakenInput,
+  condition?: ModelKrakenConditionInput | null,
+};
+
+export type UpdateKrakenMutation = {
+  updateKraken:  {
+    __typename: "Kraken",
+    id: string,
+    URL: string,
+    en: string | null,
+    ja: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteKrakenMutationVariables = {
+  input: DeleteKrakenInput,
+  condition?: ModelKrakenConditionInput | null,
+};
+
+export type DeleteKrakenMutation = {
+  deleteKraken:  {
+    __typename: "Kraken",
+    id: string,
+    URL: string,
+    en: string | null,
+    ja: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
 export type SyncUsersQueryVariables = {
   filter?: ModelUserFilterInput | null,
   limit?: number | null,
@@ -3206,6 +3314,78 @@ export type ListNoticesQuery = {
   } | null,
 };
 
+export type SyncKrakensQueryVariables = {
+  filter?: ModelKrakenFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncKrakensQuery = {
+  syncKrakens:  {
+    __typename: "ModelKrakenConnection",
+    items:  Array< {
+      __typename: "Kraken",
+      id: string,
+      URL: string,
+      en: string | null,
+      ja: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+    } | null > | null,
+    nextToken: string | null,
+    startedAt: number | null,
+  } | null,
+};
+
+export type GetKrakenQueryVariables = {
+  id: string,
+};
+
+export type GetKrakenQuery = {
+  getKraken:  {
+    __typename: "Kraken",
+    id: string,
+    URL: string,
+    en: string | null,
+    ja: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListKrakensQueryVariables = {
+  filter?: ModelKrakenFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListKrakensQuery = {
+  listKrakens:  {
+    __typename: "ModelKrakenConnection",
+    items:  Array< {
+      __typename: "Kraken",
+      id: string,
+      URL: string,
+      en: string | null,
+      ja: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+    } | null > | null,
+    nextToken: string | null,
+    startedAt: number | null,
+  } | null,
+};
+
 export type UserByCognitoIdQueryVariables = {
   cognitoID?: string | null,
   sortDirection?: ModelSortDirection | null,
@@ -3653,6 +3833,35 @@ export type NoticeByUserIdQuery = {
         _deleted: boolean | null,
         _lastChangedAt: number,
       } | null,
+      createdAt: string | null,
+      updatedAt: string | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+    } | null > | null,
+    nextToken: string | null,
+    startedAt: number | null,
+  } | null,
+};
+
+export type KrakenByUrlQueryVariables = {
+  URL?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelKrakenFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type KrakenByUrlQuery = {
+  krakenByURL:  {
+    __typename: "ModelKrakenConnection",
+    items:  Array< {
+      __typename: "Kraken",
+      id: string,
+      URL: string,
+      en: string | null,
+      ja: string | null,
       createdAt: string | null,
       updatedAt: string | null,
       _version: number,
@@ -4893,6 +5102,51 @@ export type OnDeleteDelSubscription = {
       _lastChangedAt: number,
     } | null,
     replyID: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateKrakenSubscription = {
+  onCreateKraken:  {
+    __typename: "Kraken",
+    id: string,
+    URL: string,
+    en: string | null,
+    ja: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateKrakenSubscription = {
+  onUpdateKraken:  {
+    __typename: "Kraken",
+    id: string,
+    URL: string,
+    en: string | null,
+    ja: string | null,
+    createdAt: string | null,
+    updatedAt: string | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteKrakenSubscription = {
+  onDeleteKraken:  {
+    __typename: "Kraken",
+    id: string,
+    URL: string,
+    en: string | null,
+    ja: string | null,
     createdAt: string | null,
     updatedAt: string | null,
     _version: number,

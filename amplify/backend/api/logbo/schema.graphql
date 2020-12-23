@@ -81,3 +81,14 @@ type Notice @model(subscriptions: null)
 type Subscription {
   onCreateNotice(userID: ID): Notice @aws_subscribe(mutations: ["createNotice"])
 }
+
+type Kraken @model
+@key(name: "byURL", fields: ["URL", "createdAt"], queryField: "krakenByURL")
+{
+  id: ID!
+  URL: String!
+  en: String
+  ja: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

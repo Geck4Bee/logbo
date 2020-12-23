@@ -78,3 +78,14 @@ export declare class Del {
   constructor(init: ModelInit<Del>);
   static copyOf(source: Del, mutator: (draft: MutableModel<Del>) => MutableModel<Del> | void): Del;
 }
+
+export declare class Kraken {
+  readonly id: string;
+  readonly URL: string;
+  readonly en?: string;
+  readonly ja?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Kraken>);
+  static copyOf(source: Kraken, mutator: (draft: MutableModel<Kraken>) => MutableModel<Kraken> | void): Kraken;
+}
