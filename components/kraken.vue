@@ -3,7 +3,7 @@
         <v-row class="px-4" justify="end" align="center">
             <span style="color: gray; font-size: 0.9em;" class="mx-1">読取日時: {{ new Date(item.createdAt).toLocaleString() }}</span>
         </v-row>
-        <div class="px-4 pb-1" justify="start" align="center">
+        <div class="px-4 pb-1">
             <span class="my-0">{{ item.en }}</span>
         </div>
         <div class="px-4 pb-1">
