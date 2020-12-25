@@ -144,7 +144,7 @@ export default {
             nextTokens: [],
             page: 1,
             totalPages: 1,
-            postsPerPage: 20,
+            postsPerPage: 15,
             date: null,
             startDate: null,
             query: {
@@ -331,11 +331,12 @@ export default {
                                     posts: items
                                 })
                             }
-                            if (this.postObjs.length >= this.postsPerPage-1
+                            if (this.postObjs.length > this.postsPerPage-1
                             || this.date.getTime() <= this.startDate.getTime()
                             ) {
                                 this.flagLoad = false
-                            } else if (this.postObjs.length < this.postsPerPage-1) {
+                            } else if (this.postObjs.length <= this.postsPerPage-1) {
+                                this.nextToken = null
                                 this.date.setDate(this.date.getDate() - 1)
                             }
                             this.overlay = false
