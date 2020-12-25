@@ -47,9 +47,39 @@
                     <v-row justify="center">
                         <v-text-field
                         v-model="reply.request.URL"
-                        label="URL"
+                        label="URL(必須)"
                         :rules="[validateURL]"
                         />
+                    </v-row>
+                    <v-row justify="center">
+                        <v-text-field
+                        v-model="URLInput"
+                        label="URL(オプション)"
+                        :rules="[validateURL]"
+                        />
+                        <v-btn
+                        color="teal"
+                        dark
+                        class="mx-2"
+                        @click="addURL"
+                        >
+                        URL追加
+                        </v-btn>
+                    </v-row>
+                    <v-row justify="center">
+                        <div v-for="(URL, index) in reply.request.subURLs" :key="index">
+                            <v-row class="mx-2" align="center">
+                                <v-btn
+                                color="indigo"
+                                dark
+                                icon
+                                @click="delURLs(URL)"
+                                >
+                                    <v-icon>mdi-delete</v-icon>
+                                </v-btn>
+                                <h4>{{ URL }}{{ (index !== reply.request.subURLs.length -1)? ',' : '' }}</h4>
+                            </v-row>
+                        </div>
                     </v-row>
                     <v-row justify="start">
                         <v-text-field
@@ -64,17 +94,21 @@
                         >
                         タグ追加
                         </v-btn>
-                        <v-btn
-                        color="purple"
-                        dark
-                        class="mx-2"
-                        @click="delTags"
-                        >
-                        タグ削除
-                        </v-btn>
                     </v-row>
                     <v-row justify="center">
-                        <h4>{{ showTags }}</h4>
+                        <div v-for="(tag, index) in reply.request.tag" :key="index">
+                            <v-row class="mx-2" align="center">
+                                <v-btn
+                                color="indigo"
+                                dark
+                                icon
+                                @click="delTags(tag)"
+                                >
+                                    <v-icon>mdi-delete</v-icon>
+                                </v-btn>
+                                <h4>#{{ tag }}{{ (index !== reply.request.tag.length -1)? ',' : '' }}</h4>
+                            </v-row>
+                        </div>
                     </v-row>
                     <v-row justify="start">
                         <v-text-field
@@ -137,6 +171,7 @@ export default {
         return {
             overlay: false,
             tag: "",
+            URLInput: "",
             reply: {
                 id: "",
                 type: "",
@@ -144,12 +179,14 @@ export default {
                 request: {
                     title: "",
                     URL: "",
+                    subURLs: [],
                     tag: [],
                     date: "",
                 },
                 pastPost: {
                     title: "",
                     URL: "",
+                    subURLs: [],
                     tag: [],
                     date: "",
                     imgUrl: "",
@@ -181,6 +218,7 @@ export default {
                     title: "",
                     URL: "",
                     tag: "",
+                    subURLs: "",
                     date: "2020-12-01",
                     imgUrl: "",
                     imgIdentityID: "",
@@ -203,6 +241,7 @@ export default {
         this.reply.id = nanoid()
         this.reply.request.title = this.post.title
         this.reply.request.URL = this.post.URL
+        this.reply.request.subURLs = JSON.parse(this.post.subURLs)
         this.reply.request.tag = JSON.parse(this.post.tag)
         this.reply.request.date = this.post.date
         this.reply.pastPost = JSON.parse(JSON.stringify(this.reply.request))
@@ -224,12 +263,22 @@ export default {
         resetID () {
             this.reply.id = nanoid()
         },
+        addURL () {
+            if (!regURL.test(this.URLInput)) return false
+            this.reply.request.subURLs.push(this.URLInput)
+            this.reply.request.subURLs = [...new Set(this.reply.request.subURLs)]
+            this.URLInput = ""
+        },
+        delURLs (delURL) {
+            this.reply.request.subURLs = this.reply.request.subURLs.filter(URL => URL !== delURL)
+        },
         addTags () {
             this.reply.request.tag.push(this.tag)
             this.reply.request.tag = [...new Set(this.reply.request.tag)]
+            this.tag = ""
         },
-        delTags () {
-            this.reply.request.tag = this.reply.request.tag.filter(tag => tag !== this.tag)
+        delTags (deltag) {
+            this.reply.request.tag = this.reply.request.tag.filter(tag => tag !== deltag)
         },
         validation () {
             try {

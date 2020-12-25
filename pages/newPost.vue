@@ -78,7 +78,7 @@
                         >
                             <v-icon>mdi-delete</v-icon>
                         </v-btn>
-                        <h4>{{ URL }}{{ (index !== subURLs.length)? ',' : '' }}</h4>
+                        <h4>{{ URL }}{{ (index !== subURLs.length -1)? ',' : '' }}</h4>
                     </v-row>
                 </div>
             </v-row>
@@ -107,7 +107,7 @@
                         >
                             <v-icon>mdi-delete</v-icon>
                         </v-btn>
-                        <h4>#{{ tag }}{{ (index !== tags.length)? ',' : '' }}</h4>
+                        <h4>#{{ tag }}{{ (index !== tags.length -1)? ',' : '' }}</h4>
                     </v-row>
                 </div>
             </v-row>

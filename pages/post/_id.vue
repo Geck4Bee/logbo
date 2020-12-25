@@ -78,7 +78,7 @@
                                             >
                                                 {{ (subURL !=='')? subURL : "無し" }}
                                             </a>
-                                            <span class="mr-2" style="color: gray;">{{(index !== post.subURLs.length)? ',' : ''}}</span>
+                                            <span class="mr-2" style="color: gray;">{{(index !== JSON.parse(post.subURLs).length -1)? ',' : ''}}</span>
                                         </div>
                                     </div>
                                     <div class="my-2 wrap-box">

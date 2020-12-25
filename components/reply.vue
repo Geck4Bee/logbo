@@ -80,7 +80,7 @@
                                         </div>
                                     </div>
                                     <div v-if="reply.pastPost.URL !== reply.request.URL" class="my-1">
-                                        <h4>URL:</h4>
+                                        <h4>URL(必須):</h4>
                                         <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更前:</span>
                                             <span>{{ reply.pastPost.URL }}</span>
@@ -88,6 +88,23 @@
                                         <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更後:</span>
                                             <span>{{ reply.request.URL }}</span>
+                                        </div>
+                                    </div>
+                                    <div v-if="JSON.stringify(reply.pastPost.subURLs) !== JSON.stringify(reply.request.subURLs)" class="my-1">
+                                        <h4>URL(オプション):</h4>
+                                        <div class="ml-2 wrap-box">
+                                            <span class="mr-2">変更前:</span>
+                                            <div v-for="(URL, index) in reply.pastPost.subURLs" :key="index">
+                                                <span>{{ URL }}</span>
+                                                <span v-if="index !== reply.pastPost.subURLs.length -1" class="mr-1">,</span>
+                                            </div>
+                                        </div>
+                                        <div class="ml-2 wrap-box">
+                                            <span class="mr-2">変更後:</span>
+                                            <div v-for="(URL, index) in reply.request.subURLs" :key="index">
+                                                <span>{{ URL }}</span>
+                                                <span v-if="index !== reply.request.subURLs.length -1" class="mr-1">,</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div v-if="reply.pastPost.date !== reply.request.date" class="my-1">
@@ -101,20 +118,20 @@
                                             <span>{{ reply.request.date }}</span>
                                         </div>
                                     </div>
-                                    <div v-if="reply.pastPost.tag !== reply.request.tag" class="my-1">
+                                    <div v-if="JSON.stringify(reply.pastPost.tag) !== JSON.stringify(reply.request.tag)" class="my-1">
                                         <h4>タグ:</h4>
                                         <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更前:</span>
                                             <div v-for="(tag, index) in reply.pastPost.tag" :key="index">
                                                 <span>#{{ tag }}</span>
-                                                <span v-if="reply.pastPost.tag.length > 1 && index+1 !== reply.pastPost.tag.length" class="mr-1">,</span>
+                                                <span v-if="index !== reply.pastPost.tag.length -1" class="mr-1">,</span>
                                             </div>
                                         </div>
                                         <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更後:</span>
                                             <div v-for="(tag, index) in reply.request.tag" :key="index">
                                                 <span>#{{ tag }}</span>
-                                                <span v-if="reply.request.tag.length > 1 && index+1 !== reply.request.tag.length" class="mr-1">,</span>
+                                                <span v-if="index !== reply.request.tag.length -1" class="mr-1">,</span>
                                             </div>
                                         </div>
                                     </div>
@@ -261,6 +278,7 @@ export default {
                     request: {
                         title: "",
                         URL: "",
+                        subURLs: [],
                         tag: [],
                         date: "",
                     },
@@ -268,6 +286,7 @@ export default {
                     pastPost: {
                         title: "",
                         URL: "",
+                        subURLs: [],
                         tag: [],
                         date: "",
                         imgUrl: "",
@@ -382,6 +401,7 @@ export default {
                 }
                 const title = ([null, undefined, ""].indexOf(this.reply.request.title) === -1)? this.reply.request.title : this.reply.pastPost.title
                 const URL = ([null, undefined, ""].indexOf(this.reply.request.URL) === -1)? this.reply.request.URL : this.reply.pastPost.URL
+                const subURLs = ([null, undefined, "", []].indexOf(this.reply.request.subURLs) === -1)? this.reply.request.subURLs : this.reply.pastPost.subURLs
                 const tag = ([null, undefined, "", []].indexOf(this.reply.request.tag) === -1)? this.reply.request.tag : this.reply.pastPost.tag
                 const date = ([null, undefined, ""].indexOf(this.reply.request.date) === -1)? this.reply.request.date : this.reply.pastPost.date
                 const imgUrl = ([null, undefined, "", "null"].indexOf(this.reply.imgUrl) === -1)? this.reply.imgUrl : this.reply.pastPost.imgUrl
@@ -392,6 +412,7 @@ export default {
                             id: "${this.post.id}",
                             title: "${title}",
                             URL: "${URL}",
+                            subURLs: "${JSON.stringify(subURLs).replace(/"/g, '\\"')}",
                             tag: "${JSON.stringify(tag).replace(/"/g, '\\"')}",
                             date: "${date}",
                             imgUrl: "${imgUrl}",
@@ -401,6 +422,7 @@ export default {
                             id
                             title
                             URL
+                            subURLs
                             tag
                             date
                             imgUrl
