@@ -144,6 +144,7 @@ export default {
             nextTokens: [],
             page: 1,
             totalPages: 1,
+            postCount: 0,
             postsPerPage: 15,
             date: null,
             startDate: null,
@@ -212,7 +213,7 @@ export default {
             return ((this.page -1 < 1) ? true : false)
         },
         disableNextBtn () {
-            return ( ([null, "null", ""].indexOf(this.nextToken) !== -1) ? true : false )
+            return ( ([null, "null", ""].indexOf(this.nextToken) !== -1 && this.postCount < this.postsPerPage) ? true : false )
         }
     },
     watch: {
@@ -242,6 +243,7 @@ export default {
         },
         backBtn () {
             this.page--
+            this.postCount = 0
             this.postObjs = []
             this.nextToken = this.nextTokens[this.page-1].nextToken
             this.date = new Date(this.nextTokens[this.page-1].date)
@@ -256,6 +258,7 @@ export default {
                 this.totalPages++
             }
             this.page++
+            this.postCount = 0
             this.postObjs = []
             this.getPosts()
         },
@@ -330,12 +333,13 @@ export default {
                                     date: this.date.toISOString(),
                                     posts: items
                                 })
+                                this.postCount += items.length
                             }
-                            if (this.postObjs.length > this.postsPerPage-1
+                            if (this.postCount >= this.postsPerPage
                             || this.date.getTime() <= this.startDate.getTime()
                             ) {
                                 this.flagLoad = false
-                            } else if (this.postObjs.length <= this.postsPerPage-1) {
+                            } else if (this.postCount < this.postsPerPage) {
                                 this.nextToken = null
                                 this.date.setDate(this.date.getDate() - 1)
                             }
