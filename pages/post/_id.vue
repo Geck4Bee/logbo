@@ -66,7 +66,7 @@
                                             {{ (post.URL !=='')? post.URL : "無し" }}
                                         </a>
                                     </div>
-                                    <div class="my-2 wrap-box" v-if="[null, undefined, [], ''].indexOf(post.subURLs) === -1">
+                                    <div class="my-2 wrap-box" v-if="[null, undefined, '[]'].indexOf(post.subURLs) === -1">
                                         <h4 class="mr-2">URL(オプション):</h4>
                                         <div v-for="(subURL, index) in JSON.parse(post.subURLs)" :key="index">
                                             <a
