@@ -48,9 +48,39 @@
             <v-row justify="center">
                 <v-text-field
                 v-model="URL"
-                label="URL"
+                label="URL(必須)"
+                :rules="[required, validateURL]"
+                />
+            </v-row>
+            <v-row justify="center">
+                <v-text-field
+                v-model="URLInput"
+                label="URL(オプション)"
                 :rules="[validateURL]"
                 />
+                <v-btn
+                color="teal"
+                dark
+                class="mx-2"
+                @click="addURL"
+                >
+                URL追加
+                </v-btn>
+            </v-row>
+            <v-row justify="center">
+                <div v-for="(URL, index) in subURLs" :key="index">
+                    <v-row class="mx-2" align="center">
+                        <v-btn
+                        color="indigo"
+                        dark
+                        icon
+                        @click="delURLs(URL)"
+                        >
+                            <v-icon>mdi-delete</v-icon>
+                        </v-btn>
+                        <h4>{{ URL }}{{ (index !== subURLs.length)? ',' : '' }}</h4>
+                    </v-row>
+                </div>
             </v-row>
             <v-row justify="start">
                 <v-text-field
@@ -65,17 +95,21 @@
                 >
                 タグ追加
                 </v-btn>
-                <v-btn
-                color="purple"
-                dark
-                class="mx-2"
-                @click="delTags"
-                >
-                タグ削除
-                </v-btn>
             </v-row>
             <v-row justify="center">
-                <h4>{{ showTags }}</h4>
+                <div v-for="(tag, index) in tags" :key="index">
+                    <v-row class="mx-2" align="center">
+                        <v-btn
+                        color="indigo"
+                        dark
+                        icon
+                        @click="delTags(tag)"
+                        >
+                            <v-icon>mdi-delete</v-icon>
+                        </v-btn>
+                        <h4>#{{ tag }}{{ (index !== tags.length)? ',' : '' }}</h4>
+                    </v-row>
+                </div>
             </v-row>
             <v-row justify="start">
                 <v-text-field
@@ -130,7 +164,9 @@ export default {
             title: "",
             type: "",
             postTypes: [],
+            URLInput: "",
             URL: "",
+            subURLs: [],
             tag: "",
             tags: [],
             date: "",
@@ -164,12 +200,22 @@ export default {
         }
     },
     methods: {
+        addURL () {
+            if (!regURL.test(this.URLInput)) return false
+            this.subURLs.push(this.URLInput)
+            this.subURLs = [...new Set(this.subURLs)]
+            this.URLInput = ""
+        },
+        delURLs (delURL) {
+            this.subURLs = this.subURLs.filter(URL => URL !== delURL)
+        },
         addTags () {
             this.tags.push(this.tag)
             this.tags = [...new Set(this.tags)]
+            this.tag = ""
         },
-        delTags () {
-            this.tags = this.tags.filter(tag => tag !== this.tag)
+        delTags (deltag) {
+            this.tags = this.tags.filter(tag => tag !== deltag)
         },
         validation () {
             try {
@@ -222,6 +268,7 @@ export default {
                         title: "${this.title}",
                         type: "${this.type}",
                         URL: "${this.URL}",
+                        subURLs: "${JSON.stringify(this.subURLs).replace(/"/g, '\\"')}",
                         imgUrl: "${this.image.imgURL}",
                         tag: "${JSON.stringify(this.tags).replace(/"/g, '\\"')}",
                         date: "${this.date}",
@@ -229,8 +276,10 @@ export default {
                     }) {
                         id
                         title
+                        type
                         imgUrl
                         URL
+                        subURLs
                         tag
                         date
                         userID

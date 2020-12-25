@@ -39,6 +39,7 @@ export declare class Post {
   readonly title: string;
   readonly type: string;
   readonly URL?: string;
+  readonly subURLs?: string;
   readonly tag?: string;
   readonly date?: string;
   readonly imgUrl?: string;

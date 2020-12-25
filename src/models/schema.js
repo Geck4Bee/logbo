@@ -265,6 +265,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "subURLs": {
+                    "name": "subURLs",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "tag": {
                     "name": "tag",
                     "isArray": false,
@@ -669,5 +676,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "b48775af0e231743d3ac9cfe08dc071e"
+    "version": "915153f8dd50c7ad6081185960045fdf"
 };

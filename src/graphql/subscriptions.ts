@@ -69,6 +69,7 @@ export const onCreateNotice = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -112,6 +113,7 @@ export const onCreateNotice = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -175,6 +177,7 @@ export const onCreateUser = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -250,6 +253,7 @@ export const onUpdateUser = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -325,6 +329,7 @@ export const onDeleteUser = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -390,6 +395,7 @@ export const onCreatePost = /* GraphQL */ `
       title
       type
       URL
+      subURLs
       tag
       date
       imgUrl
@@ -472,6 +478,7 @@ export const onUpdatePost = /* GraphQL */ `
       title
       type
       URL
+      subURLs
       tag
       date
       imgUrl
@@ -554,6 +561,7 @@ export const onDeletePost = /* GraphQL */ `
       title
       type
       URL
+      subURLs
       tag
       date
       imgUrl
@@ -639,6 +647,7 @@ export const onCreateReply = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -724,6 +733,7 @@ export const onUpdateReply = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -809,6 +819,7 @@ export const onDeleteReply = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -923,6 +934,7 @@ export const onCreateDel = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -1005,6 +1017,7 @@ export const onUpdateDel = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -1087,6 +1100,7 @@ export const onDeleteDel = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl

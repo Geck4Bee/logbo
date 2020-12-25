@@ -20,6 +20,7 @@ type Post @model
   title: String!
   type: String!
   URL: String
+  subURLs: String
   tag: String
   date: AWSDate
   imgUrl: String

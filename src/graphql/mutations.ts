@@ -22,6 +22,7 @@ export const createUser = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -100,6 +101,7 @@ export const updateUser = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -178,6 +180,7 @@ export const deleteUser = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -246,6 +249,7 @@ export const createPost = /* GraphQL */ `
       title
       type
       URL
+      subURLs
       tag
       date
       imgUrl
@@ -331,6 +335,7 @@ export const updatePost = /* GraphQL */ `
       title
       type
       URL
+      subURLs
       tag
       date
       imgUrl
@@ -416,6 +421,7 @@ export const deletePost = /* GraphQL */ `
       title
       type
       URL
+      subURLs
       tag
       date
       imgUrl
@@ -504,6 +510,7 @@ export const createReply = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -592,6 +599,7 @@ export const updateReply = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -680,6 +688,7 @@ export const deleteReply = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -797,6 +806,7 @@ export const createDel = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -882,6 +892,7 @@ export const updateDel = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -967,6 +978,7 @@ export const deleteDel = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -1080,6 +1092,7 @@ export const createNotice = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -1123,6 +1136,7 @@ export const createNotice = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -1239,6 +1253,7 @@ export const updateNotice = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -1282,6 +1297,7 @@ export const updateNotice = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -1398,6 +1414,7 @@ export const deleteNotice = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -1441,6 +1458,7 @@ export const deleteNotice = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl

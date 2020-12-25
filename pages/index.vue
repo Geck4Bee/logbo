@@ -276,12 +276,13 @@ export default {
                 const filterTitle = (this.query.title !== "")? `{title: {contains: "${this.query.title}"}},`: ''
                 const filterTagTitle = (this.query.title !== "")? `{tag: {contains: "${this.query.title}"}},`: ''
                 const filterTag = (this.query.tag !== "")? `{tag: {contains: "${this.query.tag}"}},`: ''
-                const filterOR = ( filterTitle !== '' || filterTagTitle !== '' || filterTag !== '')? 'or: [' + filterTitle + filterTagTitle + filterTag + '],' : ''
+                const filterURL = (this.query.URL !== "")? `{URL: {contains: "${this.query.URL}"}},` : ''
+                const filterSubURLs = (this.query.URL !== "")? `{subURLs: {contains: "${this.query.URL}"}}` : ''
+                const filterOR = ( filterTitle !== '' || filterTagTitle !== '' || filterURL !== '' || filterSubURLs !== '' || filterTag !== '')? 'or: [' + filterTitle + filterTagTitle + filterTag + filterURL + filterSubURLs + '],' : ''
                 
                 const filterType = (this.query.type !== "")? `{type: {eq: "${this.query.type}"}},`: ''
-                const filterURL = (this.query.URL !== "")? `{URL: {contains: "${this.query.URL}"}},` : ''
                 const filterUserID = (this.query.userID !== "")? `{userID: {eq: "${this.query.userID}"}},` : ''
-                const filterAnd = ( filterType !== '' || filterURL !== '' || filterUserID !== '')? 'and: [' + filterType + filterURL + filterUserID + ']' : ''
+                const filterAnd = ( filterType !== '' || filterUserID !== '')? 'and: [' + filterType + filterURL + filterUserID + ']' : ''
                 
                 const filter = ( filterOR !== '' || filterAnd !== '')? 'filter: {' + filterOR + filterAnd + '}' : ''
                 const postByDate = `

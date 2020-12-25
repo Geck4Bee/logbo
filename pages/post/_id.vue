@@ -66,6 +66,21 @@
                                             {{ (post.URL !=='')? post.URL : "無し" }}
                                         </a>
                                     </div>
+                                    <div class="my-2 wrap-box" v-if="[null, undefined, []].indexOf(post.subURLs) === -1">
+                                        <h4 class="mr-2">URL(オプション):</h4>
+                                        <div v-for="(subURL, index) in JSON.parse(post.subURLs)" :key="index">
+                                            <a
+                                            class="post-url"
+                                            :href="subURL"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            :style="(subURL !=='')? '' : 'pointer-events:none;'"
+                                            >
+                                                {{ (subURL !=='')? subURL : "無し" }}
+                                            </a>
+                                            <span class="mr-2" style="color: gray;">{{(index !== post.subURLs.length)? ',' : ''}}</span>
+                                        </div>
+                                    </div>
                                     <div class="my-2 wrap-box">
                                         <h4 class="mr-2">タグ:</h4>
                                         <div v-for="(tag, index) in JSON.parse(post.tag)" :key="index">
@@ -287,6 +302,7 @@ export default {
                         title
                         type
                         URL
+                        subURLs
                         tag
                         date
                         imgUrl

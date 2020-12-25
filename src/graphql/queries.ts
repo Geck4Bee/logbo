@@ -64,6 +64,7 @@ export const getUser = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -179,6 +180,7 @@ export const syncPosts = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -225,6 +227,7 @@ export const getPost = /* GraphQL */ `
       title
       type
       URL
+      subURLs
       tag
       date
       imgUrl
@@ -312,6 +315,7 @@ export const listPosts = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -372,6 +376,7 @@ export const syncReplies = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -425,6 +430,7 @@ export const getReply = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -515,6 +521,7 @@ export const listReplys = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -596,6 +603,7 @@ export const syncDels = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -658,6 +666,7 @@ export const getDel = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -733,6 +742,7 @@ export const listDels = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -810,6 +820,7 @@ export const syncNotices = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -915,6 +926,7 @@ export const getNotice = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -958,6 +970,7 @@ export const getNotice = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -1052,6 +1065,7 @@ export const listNotices = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -1229,6 +1243,7 @@ export const postByUserId = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -1290,6 +1305,7 @@ export const postByDate = /* GraphQL */ `
         title
         type
         URL
+        subURLs
         tag
         date
         imgUrl
@@ -1354,6 +1370,7 @@ export const replyByUserId = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -1422,6 +1439,7 @@ export const replyByPostId = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -1507,6 +1525,7 @@ export const delByPostId = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
@@ -1588,6 +1607,7 @@ export const noticeByUserId = /* GraphQL */ `
           title
           type
           URL
+          subURLs
           tag
           date
           imgUrl
