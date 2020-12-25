@@ -241,7 +241,7 @@ export default {
         this.reply.id = nanoid()
         this.reply.request.title = this.post.title
         this.reply.request.URL = this.post.URL
-        this.reply.request.subURLs = JSON.parse(this.post.subURLs)
+        this.reply.request.subURLs = ([null, undefined, ""].indexOf(this.post.subURLs) === -1)? JSON.parse(this.post.subURLs) : []
         this.reply.request.tag = JSON.parse(this.post.tag)
         this.reply.request.date = this.post.date
         this.reply.pastPost = JSON.parse(JSON.stringify(this.reply.request))
