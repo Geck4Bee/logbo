@@ -52,13 +52,14 @@
             <v-btn icon @click.stop="clipped = !clipped">
                 <v-icon>mdi-application</v-icon>
             </v-btn>
-            <v-btn icon @click.stop="fixed = !fixed">
-                <v-icon>mdi-minus</v-icon>
-            </v-btn>
             <nuxt-link
             style="text-decoration: none;color: white;"
             to="/">
-            <h3>{{ title }}</h3>
+                <v-img
+                src="/GESOTITLE_WHITELINE.png"
+                alt="タイトル"
+                max-width="180"
+                />
             </nuxt-link>
             <v-spacer />
             <v-btn
