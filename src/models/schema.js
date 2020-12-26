@@ -402,6 +402,17 @@ export const schema = {
                         ],
                         "queryField": "postByCreatedAt"
                     }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUpdatedAt",
+                        "fields": [
+                            "div",
+                            "updatedAt"
+                        ],
+                        "queryField": "postByUpdatedAt"
+                    }
                 }
             ]
         },
@@ -694,5 +705,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "2f6dfcec6fe098a5d371093fea06abbc"
+    "version": "8141b1be6eb62345dfd14c90e40435a0"
 };

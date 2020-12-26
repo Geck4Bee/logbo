@@ -3701,6 +3701,68 @@ export type PostByCreatedAtQuery = {
   } | null,
 };
 
+export type PostByUpdatedAtQueryVariables = {
+  div?: string | null,
+  updatedAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelPostFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type PostByUpdatedAtQuery = {
+  postByUpdatedAt:  {
+    __typename: "ModelPostConnection",
+    items:  Array< {
+      __typename: "Post",
+      id: string,
+      div: string,
+      title: string,
+      type: string,
+      URL: string | null,
+      subURLs: string | null,
+      tag: string | null,
+      date: string | null,
+      imgUrl: string | null,
+      imgIdentityID: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
+      userID: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        cognitoID: string,
+        identityID: string | null,
+        name: string,
+        viewName: string | null,
+        description: string | null,
+        iconUrl: string | null,
+        email: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      replies:  {
+        __typename: "ModelReplyConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      del:  {
+        __typename: "ModelDelConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+    } | null > | null,
+    nextToken: string | null,
+    startedAt: number | null,
+  } | null,
+};
+
 export type ReplyByUserIdQueryVariables = {
   userID?: string | null,
   createdAt?: ModelStringKeyConditionInput | null,
