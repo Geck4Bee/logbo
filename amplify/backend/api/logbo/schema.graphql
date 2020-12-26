@@ -15,8 +15,10 @@ type User @model @key(name: "byCognitoID", fields: ["cognitoID"], queryField: "u
 type Post @model
 @key(name: "byUser", fields: ["userID", "createdAt"], queryField: "postByUserID")
 @key(name: "byDate", fields: ["date", "createdAt"], queryField: "postByDate")
+@key(name: "byCreatedAt", fields: ["div", "createdAt"], queryField: "postByCreatedAt")
 {
   id: ID!
+  div: String!
   title: String!
   type: String!
   URL: String

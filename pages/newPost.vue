@@ -265,6 +265,7 @@ export default {
                 mutation CreatePost {
                     createPost(input: {
                         id: "${this.id}",
+                        div: "1",
                         title: "${this.title}",
                         type: "${this.type}",
                         URL: "${this.URL}",
@@ -275,6 +276,7 @@ export default {
                         userID: "${this.$store.state.userID}"
                     }) {
                         id
+                        div
                         title
                         type
                         imgUrl

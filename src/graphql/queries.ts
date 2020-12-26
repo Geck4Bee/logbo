@@ -61,6 +61,7 @@ export const getUser = /* GraphQL */ `
       posts {
         items {
           id
+          div
           title
           type
           URL
@@ -177,6 +178,7 @@ export const syncPosts = /* GraphQL */ `
     ) {
       items {
         id
+        div
         title
         type
         URL
@@ -224,6 +226,7 @@ export const getPost = /* GraphQL */ `
   query GetPost($id: ID!) {
     getPost(id: $id) {
       id
+      div
       title
       type
       URL
@@ -312,6 +315,7 @@ export const listPosts = /* GraphQL */ `
     listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        div
         title
         type
         URL
@@ -373,6 +377,7 @@ export const syncReplies = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -427,6 +432,7 @@ export const getReply = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -518,6 +524,7 @@ export const listReplys = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -600,6 +607,7 @@ export const syncDels = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -663,6 +671,7 @@ export const getDel = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -739,6 +748,7 @@ export const listDels = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -817,6 +827,7 @@ export const syncNotices = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -923,6 +934,7 @@ export const getNotice = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -967,6 +979,7 @@ export const getNotice = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -1062,6 +1075,7 @@ export const listNotices = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -1240,6 +1254,7 @@ export const postByUserId = /* GraphQL */ `
     ) {
       items {
         id
+        div
         title
         type
         URL
@@ -1302,6 +1317,70 @@ export const postByDate = /* GraphQL */ `
     ) {
       items {
         id
+        div
+        title
+        type
+        URL
+        subURLs
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const postByCreatedAt = /* GraphQL */ `
+  query PostByCreatedAt(
+    $div: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    postByCreatedAt(
+      div: $div
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        div
         title
         type
         URL
@@ -1367,6 +1446,7 @@ export const replyByUserId = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -1436,6 +1516,7 @@ export const replyByPostId = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -1522,6 +1603,7 @@ export const delByPostId = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -1604,6 +1686,7 @@ export const noticeByUserId = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL

@@ -19,6 +19,7 @@ export const createUser = /* GraphQL */ `
       posts {
         items {
           id
+          div
           title
           type
           URL
@@ -98,6 +99,7 @@ export const updateUser = /* GraphQL */ `
       posts {
         items {
           id
+          div
           title
           type
           URL
@@ -177,6 +179,7 @@ export const deleteUser = /* GraphQL */ `
       posts {
         items {
           id
+          div
           title
           type
           URL
@@ -246,6 +249,7 @@ export const createPost = /* GraphQL */ `
   ) {
     createPost(input: $input, condition: $condition) {
       id
+      div
       title
       type
       URL
@@ -332,6 +336,7 @@ export const updatePost = /* GraphQL */ `
   ) {
     updatePost(input: $input, condition: $condition) {
       id
+      div
       title
       type
       URL
@@ -418,6 +423,7 @@ export const deletePost = /* GraphQL */ `
   ) {
     deletePost(input: $input, condition: $condition) {
       id
+      div
       title
       type
       URL
@@ -507,6 +513,7 @@ export const createReply = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -596,6 +603,7 @@ export const updateReply = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -685,6 +693,7 @@ export const deleteReply = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -803,6 +812,7 @@ export const createDel = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -889,6 +899,7 @@ export const updateDel = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -975,6 +986,7 @@ export const deleteDel = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -1089,6 +1101,7 @@ export const createNotice = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -1133,6 +1146,7 @@ export const createNotice = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -1250,6 +1264,7 @@ export const updateNotice = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -1294,6 +1309,7 @@ export const updateNotice = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -1411,6 +1427,7 @@ export const deleteNotice = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -1455,6 +1472,7 @@ export const deleteNotice = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL

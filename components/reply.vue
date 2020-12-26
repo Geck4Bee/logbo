@@ -411,6 +411,7 @@ export default {
                     mutation UpdatePost {
                         updatePost(input: {
                             id: "${this.post.id}",
+                            div: "1",
                             title: "${title}",
                             URL: "${URL}",
                             subURLs: "${JSON.stringify(subURLs).replace(/"/g, '\\"')}",
@@ -421,6 +422,7 @@ export default {
                             _version: ${this.post._version}
                         }) {
                             id
+                            div
                             title
                             URL
                             subURLs

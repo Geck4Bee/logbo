@@ -66,6 +66,7 @@ export const onCreateNotice = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -110,6 +111,7 @@ export const onCreateNotice = /* GraphQL */ `
         postID
         post {
           id
+          div
           title
           type
           URL
@@ -174,6 +176,7 @@ export const onCreateUser = /* GraphQL */ `
       posts {
         items {
           id
+          div
           title
           type
           URL
@@ -250,6 +253,7 @@ export const onUpdateUser = /* GraphQL */ `
       posts {
         items {
           id
+          div
           title
           type
           URL
@@ -326,6 +330,7 @@ export const onDeleteUser = /* GraphQL */ `
       posts {
         items {
           id
+          div
           title
           type
           URL
@@ -392,6 +397,7 @@ export const onCreatePost = /* GraphQL */ `
   subscription OnCreatePost {
     onCreatePost {
       id
+      div
       title
       type
       URL
@@ -475,6 +481,7 @@ export const onUpdatePost = /* GraphQL */ `
   subscription OnUpdatePost {
     onUpdatePost {
       id
+      div
       title
       type
       URL
@@ -558,6 +565,7 @@ export const onDeletePost = /* GraphQL */ `
   subscription OnDeletePost {
     onDeletePost {
       id
+      div
       title
       type
       URL
@@ -644,6 +652,7 @@ export const onCreateReply = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -730,6 +739,7 @@ export const onUpdateReply = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -816,6 +826,7 @@ export const onDeleteReply = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -931,6 +942,7 @@ export const onCreateDel = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -1014,6 +1026,7 @@ export const onUpdateDel = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL
@@ -1097,6 +1110,7 @@ export const onDeleteDel = /* GraphQL */ `
       postID
       post {
         id
+        div
         title
         type
         URL

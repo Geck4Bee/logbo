@@ -86,6 +86,7 @@ export type DeleteUserInput = {
 
 export type CreatePostInput = {
   id?: string | null,
+  div: string,
   title: string,
   type: string,
   URL?: string | null,
@@ -101,6 +102,7 @@ export type CreatePostInput = {
 };
 
 export type ModelPostConditionInput = {
+  div?: ModelStringInput | null,
   title?: ModelStringInput | null,
   type?: ModelStringInput | null,
   URL?: ModelStringInput | null,
@@ -135,6 +137,7 @@ export type ModelIDInput = {
 
 export type UpdatePostInput = {
   id: string,
+  div?: string | null,
   title?: string | null,
   type?: string | null,
   URL?: string | null,
@@ -338,6 +341,7 @@ export type ModelUserFilterInput = {
 
 export type ModelPostFilterInput = {
   id?: ModelIDInput | null,
+  div?: ModelStringInput | null,
   title?: ModelStringInput | null,
   type?: ModelStringInput | null,
   URL?: ModelStringInput | null,
@@ -447,6 +451,7 @@ export type CreateUserMutation = {
       items:  Array< {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -534,6 +539,7 @@ export type UpdateUserMutation = {
       items:  Array< {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -621,6 +627,7 @@ export type DeleteUserMutation = {
       items:  Array< {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -696,6 +703,7 @@ export type CreatePostMutation = {
   createPost:  {
     __typename: "Post",
     id: string,
+    div: string,
     title: string,
     type: string,
     URL: string | null,
@@ -792,6 +800,7 @@ export type UpdatePostMutation = {
   updatePost:  {
     __typename: "Post",
     id: string,
+    div: string,
     title: string,
     type: string,
     URL: string | null,
@@ -888,6 +897,7 @@ export type DeletePostMutation = {
   deletePost:  {
     __typename: "Post",
     id: string,
+    div: string,
     title: string,
     type: string,
     URL: string | null,
@@ -988,6 +998,7 @@ export type CreateReplyMutation = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -1087,6 +1098,7 @@ export type UpdateReplyMutation = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -1186,6 +1198,7 @@ export type DeleteReplyMutation = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -1318,6 +1331,7 @@ export type CreateDelMutation = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -1414,6 +1428,7 @@ export type UpdateDelMutation = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -1510,6 +1525,7 @@ export type DeleteDelMutation = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -1638,6 +1654,7 @@ export type CreateNoticeMutation = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -1687,6 +1704,7 @@ export type CreateNoticeMutation = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -1816,6 +1834,7 @@ export type UpdateNoticeMutation = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -1865,6 +1884,7 @@ export type UpdateNoticeMutation = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -1994,6 +2014,7 @@ export type DeleteNoticeMutation = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -2043,6 +2064,7 @@ export type DeleteNoticeMutation = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -2223,6 +2245,7 @@ export type GetUserQuery = {
       items:  Array< {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -2347,6 +2370,7 @@ export type SyncPostsQuery = {
     items:  Array< {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -2401,6 +2425,7 @@ export type GetPostQuery = {
   getPost:  {
     __typename: "Post",
     id: string,
+    div: string,
     title: string,
     type: string,
     URL: string | null,
@@ -2500,6 +2525,7 @@ export type ListPostsQuery = {
     items:  Array< {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -2563,6 +2589,7 @@ export type SyncRepliesQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -2623,6 +2650,7 @@ export type GetReplyQuery = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -2725,6 +2753,7 @@ export type ListReplysQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -2808,6 +2837,7 @@ export type SyncDelsQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -2880,6 +2910,7 @@ export type GetDelQuery = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -2964,6 +2995,7 @@ export type ListDelsQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -3043,6 +3075,7 @@ export type SyncNoticesQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -3163,6 +3196,7 @@ export type GetNoticeQuery = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -3212,6 +3246,7 @@ export type GetNoticeQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -3314,6 +3349,7 @@ export type ListNoticesQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -3494,6 +3530,7 @@ export type PostByUserIdQuery = {
     items:  Array< {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -3555,6 +3592,69 @@ export type PostByDateQuery = {
     items:  Array< {
       __typename: "Post",
       id: string,
+      div: string,
+      title: string,
+      type: string,
+      URL: string | null,
+      subURLs: string | null,
+      tag: string | null,
+      date: string | null,
+      imgUrl: string | null,
+      imgIdentityID: string | null,
+      createdAt: string | null,
+      updatedAt: string | null,
+      userID: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        cognitoID: string,
+        identityID: string | null,
+        name: string,
+        viewName: string | null,
+        description: string | null,
+        iconUrl: string | null,
+        email: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      replies:  {
+        __typename: "ModelReplyConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      del:  {
+        __typename: "ModelDelConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+    } | null > | null,
+    nextToken: string | null,
+    startedAt: number | null,
+  } | null,
+};
+
+export type PostByCreatedAtQueryVariables = {
+  div?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelPostFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type PostByCreatedAtQuery = {
+  postByCreatedAt:  {
+    __typename: "ModelPostConnection",
+    items:  Array< {
+      __typename: "Post",
+      id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -3620,6 +3720,7 @@ export type ReplyByUserIdQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -3687,6 +3788,7 @@ export type ReplyByPostIdQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -3772,6 +3874,7 @@ export type DelByPostIdQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -3853,6 +3956,7 @@ export type NoticeByUserIdQuery = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -4033,6 +4137,7 @@ export type OnCreateNoticeSubscription = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -4082,6 +4187,7 @@ export type OnCreateNoticeSubscription = {
       post:  {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -4149,6 +4255,7 @@ export type OnCreateUserSubscription = {
       items:  Array< {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -4231,6 +4338,7 @@ export type OnUpdateUserSubscription = {
       items:  Array< {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -4313,6 +4421,7 @@ export type OnDeleteUserSubscription = {
       items:  Array< {
         __typename: "Post",
         id: string,
+        div: string,
         title: string,
         type: string,
         URL: string | null,
@@ -4383,6 +4492,7 @@ export type OnCreatePostSubscription = {
   onCreatePost:  {
     __typename: "Post",
     id: string,
+    div: string,
     title: string,
     type: string,
     URL: string | null,
@@ -4474,6 +4584,7 @@ export type OnUpdatePostSubscription = {
   onUpdatePost:  {
     __typename: "Post",
     id: string,
+    div: string,
     title: string,
     type: string,
     URL: string | null,
@@ -4565,6 +4676,7 @@ export type OnDeletePostSubscription = {
   onDeletePost:  {
     __typename: "Post",
     id: string,
+    div: string,
     title: string,
     type: string,
     URL: string | null,
@@ -4660,6 +4772,7 @@ export type OnCreateReplySubscription = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -4754,6 +4867,7 @@ export type OnUpdateReplySubscription = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -4848,6 +4962,7 @@ export type OnDeleteReplySubscription = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -4975,6 +5090,7 @@ export type OnCreateDelSubscription = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -5066,6 +5182,7 @@ export type OnUpdateDelSubscription = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,
@@ -5157,6 +5274,7 @@ export type OnDeleteDelSubscription = {
     post:  {
       __typename: "Post",
       id: string,
+      div: string,
       title: string,
       type: string,
       URL: string | null,

@@ -36,6 +36,7 @@ export declare class User {
 
 export declare class Post {
   readonly id: string;
+  readonly div: string;
   readonly title: string;
   readonly type: string;
   readonly URL?: string;

@@ -244,6 +244,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "div": {
+                    "name": "div",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "title": {
                     "name": "title",
                     "isArray": false,
@@ -383,6 +390,17 @@ export const schema = {
                             "createdAt"
                         ],
                         "queryField": "postByDate"
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byCreatedAt",
+                        "fields": [
+                            "div",
+                            "createdAt"
+                        ],
+                        "queryField": "postByCreatedAt"
                     }
                 }
             ]
@@ -676,5 +694,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "915153f8dd50c7ad6081185960045fdf"
+    "version": "2f6dfcec6fe098a5d371093fea06abbc"
 };
