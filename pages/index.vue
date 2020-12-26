@@ -144,7 +144,7 @@ export default {
             page: 1,
             totalPages: 1,
             postCount: 0,
-            postsPerPage: 2,
+            postsPerPage: 20,
             date: null,
             startDate: null,
             query: {
