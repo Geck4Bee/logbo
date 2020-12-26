@@ -8,6 +8,9 @@ export const state = () => {
     postType: []
     replyType: []
     delType: []
+    page: 0
+    nextToken: null
+    nextTokens: [null]
 }
 
 export const mutations = {
@@ -66,5 +69,21 @@ export const mutations = {
     },
     decrementNoticeCount(state) {
         state.noticeCount--
+    },
+    setupNextToken(state) {
+        state.nextToken = null
+        state.nextTokens = [null]
+    },
+    setupPage(state) {
+        state.page = 0
+    },
+    setPage(state, num) {
+        state.page = num
+    },
+    setNextToken(state, str) {
+        state.nextToken = str
+    },
+    setNextTokens(state, arr) {
+        state.nextTokens = arr
     }
 }

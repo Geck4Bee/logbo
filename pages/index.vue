@@ -144,7 +144,7 @@ export default {
             page: 1,
             totalPages: 1,
             postCount: 0,
-            postsPerPage: 20,
+            postsPerPage: 2,
             date: null,
             startDate: null,
             query: {
@@ -206,6 +206,17 @@ export default {
         }
     },
     watchQuery: ['type', 'title', 'tag', 'URL', 'userID', 'date'],
+    created () {
+        if (this.$store.state.page === undefined || this.$store.state.nextToken === undefined || this.$store.state.nextTokens === undefined) {
+            this.$store.commit("setupNextToken")
+            this.$store.commit("setupPage")
+        } else {
+            this.page = this.$store.state.page
+            this.nextTokens = this.$store.state.nextTokens
+            this.nextToken = this.nextTokens[this.page -1]
+            this.totalPages = this.nextTokens.length
+        }
+    },
     mounted () {
         this.startLoading()
     },
@@ -244,17 +255,21 @@ export default {
         },
         backBtn () {
             this.page--
+            this.$store.commit("setPage", this.page)
             this.postCount = 0
             this.postObjs = []
+            this.$store.commit("setNextToken", this.nextToken)
             this.nextToken = this.nextTokens[this.page-1]
             this.getPosts()
         },
         nextBtn () {
             if (this.page === this.totalPages) {
                 this.nextTokens.push(this.nextToken)
+                this.$store.commit("setNextTokens", this.nextTokens)
                 this.totalPages++
             }
             this.page++
+            this.$store.commit("setPage", this.page)
             this.postCount = 0
             this.postObjs = []
             this.getPosts()
@@ -324,6 +339,7 @@ export default {
                 await API.graphql(graphqlOperation(postByDivDate))
                     .then((res) => {
                         const items = res.data.postByDivDate.items.filter(obj => !obj._deleted)
+                        this.$store.commit("setNextToken", this.nextToken)
                         this.nextToken = res.data.postByDivDate.nextToken
                         if (items.length > 0) {
                             let dateList = items.map(item => item.date)
