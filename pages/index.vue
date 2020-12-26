@@ -144,7 +144,7 @@ export default {
             page: 1,
             totalPages: 1,
             postCount: 0,
-            postsPerPage: 20,
+            postsPerPage: 15,
             date: null,
             startDate: null,
             query: {
@@ -287,6 +287,7 @@ export default {
         async getPosts () {
             this.overlay = true
             let nextToken = null
+            this.loadflag = true
             do {
                 if (this.nextToken) {
                     nextToken = `"${this.nextToken}"`
@@ -310,7 +311,7 @@ export default {
                             date: {le: "${Common.toISO8601DateString(this.date)}"}
                             sortDirection: DESC
                             ${filter}
-                            limit: ${this.postsPerPage}
+                            limit: ${this.postsPerPage - this.postCount}
                             nextToken: ${nextToken}
                         ) {
                         items {
