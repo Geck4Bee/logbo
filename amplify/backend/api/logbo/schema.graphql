@@ -17,6 +17,7 @@ type Post @model
 @key(name: "byDate", fields: ["date", "createdAt"], queryField: "postByDate")
 @key(name: "byCreatedAt", fields: ["div", "createdAt"], queryField: "postByCreatedAt")
 @key(name: "byUpdatedAt", fields: ["div", "updatedAt"], queryField: "postByUpdatedAt")
+@key(name: "byDivDate", fields: ["div", "date"], queryField: "postByDivDate")
 {
   id: ID!
   div: String!

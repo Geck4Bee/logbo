@@ -1487,6 +1487,69 @@ export const postByUpdatedAt = /* GraphQL */ `
     }
   }
 `;
+export const postByDivDate = /* GraphQL */ `
+  query PostByDivDate(
+    $div: String
+    $date: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    postByDivDate(
+      div: $div
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        div
+        title
+        type
+        URL
+        subURLs
+        tag
+        date
+        imgUrl
+        imgIdentityID
+        createdAt
+        updatedAt
+        userID
+        user {
+          id
+          cognitoID
+          identityID
+          name
+          viewName
+          description
+          iconUrl
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        replies {
+          nextToken
+          startedAt
+        }
+        del {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const replyByUserId = /* GraphQL */ `
   query ReplyByUserId(
     $userID: ID

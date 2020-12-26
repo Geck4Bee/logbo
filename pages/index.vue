@@ -154,7 +154,8 @@ export default {
                 tag: "",
                 URL: "",
                 userID: "",
-                date: ""
+                date: "",
+                sort: "date",
             },
             typeName: "",
             queryUser: {
@@ -164,7 +165,12 @@ export default {
                 viewName: "",
                 iconUrl: ""
             },
-            showQueryUser: false
+            showQueryUser: false,
+            sortTypes: [
+                {name: "ソースの日付順", value: "date"},
+                {name: "記事作成日時順", value: "createdAt"},
+                {name: "記事更新日時順", value: "updatedAt"}
+            ]
         }
     },
     asyncData (context) {
@@ -299,6 +305,7 @@ export default {
                         ) {
                         items {
                             id
+                            div
                             title
                             type
                             URL
