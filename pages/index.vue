@@ -138,14 +138,13 @@ export default {
             overlay: false,
             showDialog: false,
             dialogMessage: "",
-            flagLoad: false,
             postObjs: [],
             nextToken: null,
-            nextTokens: [],
+            nextTokens: [null],
             page: 1,
             totalPages: 1,
             postCount: 0,
-            postsPerPage: 15,
+            postsPerPage: 20,
             date: null,
             startDate: null,
             query: {
@@ -198,16 +197,12 @@ export default {
         const now = new Date()
         const date = (query.date !== "")? new Date(Number(query.date.substring(0, 4)), Number(query.date.substring(5, 7))-1, Number(query.date.substring(8))) : new Date(now.getFullYear(), now.getMonth(), now.getDate())
         const startDate = new Date(2020, 1, 1)
-        const nextTokenObj = {
-            date: date.toISOString(),
-            nextToken: null
-        }
         return { 
             query: query,
             typeName: typeName,
             date: date,
             startDate: startDate,
-            nextTokens: [nextTokenObj]
+            nextTokens: [null]
         }
     },
     watchQuery: ['type', 'title', 'tag', 'URL', 'userID', 'date'],
@@ -251,16 +246,12 @@ export default {
             this.page--
             this.postCount = 0
             this.postObjs = []
-            this.nextToken = this.nextTokens[this.page-1].nextToken
-            this.date = new Date(this.nextTokens[this.page-1].date)
+            this.nextToken = this.nextTokens[this.page-1]
             this.getPosts()
         },
         nextBtn () {
             if (this.page === this.totalPages) {
-                this.nextTokens.push({
-                    date: this.date.toISOString(),
-                    nextToken: this.nextToken
-                })
+                this.nextTokens.push(this.nextToken)
                 this.totalPages++
             }
             this.page++
@@ -276,87 +267,82 @@ export default {
         },
         async getPosts () {
             this.overlay = true
-            this.flagLoad = true
-            do {
-                let nextToken = null
-                if (this.nextToken) {
-                    nextToken = `"${this.nextToken}"`
-                }
-                const filterTitle = (this.query.title !== "")? `{title: {contains: "${this.query.title}"}},`: ''
-                const filterTagTitle = (this.query.title !== "")? `{tag: {contains: "${this.query.title}"}},`: ''
-                const filterTag = (this.query.tag !== "")? `{tag: {contains: "${this.query.tag}"}},`: ''
-                const filterURL = (this.query.URL !== "")? `{URL: {contains: "${this.query.URL}"}},` : ''
-                const filterSubURLs = (this.query.URL !== "")? `{subURLs: {contains: "${this.query.URL}"}}` : ''
-                const filterOR = ( filterTitle !== '' || filterTagTitle !== '' || filterURL !== '' || filterSubURLs !== '' || filterTag !== '')? 'or: [' + filterTitle + filterTagTitle + filterTag + filterURL + filterSubURLs + '],' : ''
-                
-                const filterType = (this.query.type !== "")? `{type: {eq: "${this.query.type}"}},`: ''
-                const filterUserID = (this.query.userID !== "")? `{userID: {eq: "${this.query.userID}"}},` : ''
-                const filterAnd = ( filterType !== '' || filterUserID !== '')? 'and: [' + filterType + filterURL + filterUserID + ']' : ''
-                
-                const filter = ( filterOR !== '' || filterAnd !== '')? 'filter: {' + filterOR + filterAnd + '}' : ''
-                const postByDate = `
-                    query PostByDate {
-                        postByDate (
-                            date: "${Common.toISO8601DateString(this.date)}"
-                            sortDirection: DESC
-                            ${filter}
-                            limit: ${this.postsPerPage}
-                            nextToken: ${nextToken}
-                        ) {
-                        items {
+            let nextToken = null
+            if (this.nextToken) {
+                nextToken = `"${this.nextToken}"`
+            }
+            const filterTitle = (this.query.title !== "")? `{title: {contains: "${this.query.title}"}},`: ''
+            const filterTagTitle = (this.query.title !== "")? `{tag: {contains: "${this.query.title}"}},`: ''
+            const filterTag = (this.query.tag !== "")? `{tag: {contains: "${this.query.tag}"}},`: ''
+            const filterURL = (this.query.URL !== "")? `{URL: {contains: "${this.query.URL}"}},` : ''
+            const filterSubURLs = (this.query.URL !== "")? `{subURLs: {contains: "${this.query.URL}"}}` : ''
+            const filterOR = ( filterTitle !== '' || filterTagTitle !== '' || filterURL !== '' || filterSubURLs !== '' || filterTag !== '')? 'or: [' + filterTitle + filterTagTitle + filterTag + filterURL + filterSubURLs + '],' : ''
+            
+            const filterType = (this.query.type !== "")? `{type: {eq: "${this.query.type}"}},`: ''
+            const filterUserID = (this.query.userID !== "")? `{userID: {eq: "${this.query.userID}"}},` : ''
+            const filterAnd = ( filterType !== '' || filterUserID !== '')? 'and: [' + filterType + filterURL + filterUserID + ']' : ''
+            
+            const filter = ( filterOR !== '' || filterAnd !== '')? 'filter: {' + filterOR + filterAnd + '}' : ''
+            const postByDivDate = `
+                query PostByDivDate {
+                    postByDivDate (
+                        div: "1"
+                        date: {le: "${Common.toISO8601DateString(this.date)}"}
+                        sortDirection: DESC
+                        ${filter}
+                        limit: ${this.postsPerPage}
+                        nextToken: ${nextToken}
+                    ) {
+                    items {
+                        id
+                        div
+                        title
+                        type
+                        URL
+                        tag
+                        date
+                        imgUrl
+                        imgIdentityID
+                        createdAt
+                        updatedAt
+                        userID
+                        user {
                             id
-                            div
-                            title
-                            type
-                            URL
-                            tag
-                            date
-                            imgUrl
-                            imgIdentityID
-                            createdAt
-                            updatedAt
-                            userID
-                            user {
-                                id
-                                identityID
-                                name
-                                viewName
-                                iconUrl
-                            }
-                            _version
-                            _deleted
+                            identityID
+                            name
+                            viewName
+                            iconUrl
                         }
-                        nextToken
-                        }
+                        _version
+                        _deleted
                     }
-                `
-                try {
-                    await API.graphql(graphqlOperation(postByDate))
-                        .then((res) => {
-                            const items = res.data.postByDate.items.filter(obj => !obj._deleted)
-                            this.nextToken = res.data.postByDate.nextToken
-                            if (items.length > 0) {
-                                this.postObjs.push({
-                                    date: this.date.toISOString(),
-                                    posts: items
-                                })
-                                this.postCount += items.length
-                            }
-                            if (this.postCount >= this.postsPerPage
-                            || this.date.getTime() <= this.startDate.getTime()
-                            ) {
-                                this.flagLoad = false
-                            } else if (this.postCount < this.postsPerPage) {
-                                this.nextToken = null
-                                this.date.setDate(this.date.getDate() - 1)
-                            }
-                            this.overlay = false
-                        })
-                } catch (e) {
-                    Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
-                    this.overlay = false
+                    nextToken
+                    }
                 }
-            } while (this.flagLoad)
+            `
+            try {
+                await API.graphql(graphqlOperation(postByDivDate))
+                    .then((res) => {
+                        const items = res.data.postByDivDate.items.filter(obj => !obj._deleted)
+                        this.nextToken = res.data.postByDivDate.nextToken
+                        if (items.length > 0) {
+                            let dateList = items.map(item => item.date)
+                            dateList = [...new Set(dateList)]
+                            const itemsByDate = dateList.map(date => {
+                                return {
+                                    date: date,
+                                    posts: items.filter(item => item.date === date)
+                                }
+                            })
+                            this.postObjs = this.postObjs.concat(itemsByDate)
+                            this.postCount += items.length
+                        }
+                        this.overlay = false
+                    })
+            } catch (e) {
+                Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
+                this.overlay = false
+            }
             console.log("Loading done") 
         },
         async getUser() {
