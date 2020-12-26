@@ -169,7 +169,8 @@ export default {
                 {name: "ソースの日付順", value: "date"},
                 {name: "記事作成日時順", value: "createdAt"},
                 {name: "記事更新日時順", value: "updatedAt"}
-            ]
+            ],
+            loadflag: true
         }
     },
     asyncData (context) {
@@ -230,6 +231,9 @@ export default {
     },
     watch: {
         query: function(newVal) {
+            this.nextToken = null
+            this.nextTokens = [null]
+            this.$store.commit("setupNextToken")
             this.startLoading()
         },
     },
@@ -283,82 +287,87 @@ export default {
         async getPosts () {
             this.overlay = true
             let nextToken = null
-            if (this.nextToken) {
-                nextToken = `"${this.nextToken}"`
-            }
-            const filterTitle = (this.query.title !== "")? `{title: {contains: "${this.query.title}"}},`: ''
-            const filterTagTitle = (this.query.title !== "")? `{tag: {contains: "${this.query.title}"}},`: ''
-            const filterTag = (this.query.tag !== "")? `{tag: {contains: "${this.query.tag}"}},`: ''
-            const filterURL = (this.query.URL !== "")? `{URL: {contains: "${this.query.URL}"}},` : ''
-            const filterSubURLs = (this.query.URL !== "")? `{subURLs: {contains: "${this.query.URL}"}}` : ''
-            const filterOR = ( filterTitle !== '' || filterTagTitle !== '' || filterURL !== '' || filterSubURLs !== '' || filterTag !== '')? 'or: [' + filterTitle + filterTagTitle + filterTag + filterURL + filterSubURLs + '],' : ''
-            
-            const filterType = (this.query.type !== "")? `{type: {eq: "${this.query.type}"}},`: ''
-            const filterUserID = (this.query.userID !== "")? `{userID: {eq: "${this.query.userID}"}},` : ''
-            const filterAnd = ( filterType !== '' || filterUserID !== '')? 'and: [' + filterType + filterURL + filterUserID + ']' : ''
-            
-            const filter = ( filterOR !== '' || filterAnd !== '')? 'filter: {' + filterOR + filterAnd + '}' : ''
-            const postByDivDate = `
-                query PostByDivDate {
-                    postByDivDate (
-                        div: "1"
-                        date: {le: "${Common.toISO8601DateString(this.date)}"}
-                        sortDirection: DESC
-                        ${filter}
-                        limit: ${this.postsPerPage}
-                        nextToken: ${nextToken}
-                    ) {
-                    items {
-                        id
-                        div
-                        title
-                        type
-                        URL
-                        tag
-                        date
-                        imgUrl
-                        imgIdentityID
-                        createdAt
-                        updatedAt
-                        userID
-                        user {
-                            id
-                            identityID
-                            name
-                            viewName
-                            iconUrl
-                        }
-                        _version
-                        _deleted
-                    }
-                    nextToken
-                    }
+            do {
+                if (this.nextToken) {
+                    nextToken = `"${this.nextToken}"`
                 }
-            `
-            try {
-                await API.graphql(graphqlOperation(postByDivDate))
-                    .then((res) => {
-                        const items = res.data.postByDivDate.items.filter(obj => !obj._deleted)
-                        this.$store.commit("setNextToken", this.nextToken)
-                        this.nextToken = res.data.postByDivDate.nextToken
-                        if (items.length > 0) {
-                            let dateList = items.map(item => item.date)
-                            dateList = [...new Set(dateList)]
-                            const itemsByDate = dateList.map(date => {
-                                return {
-                                    date: date,
-                                    posts: items.filter(item => item.date === date)
-                                }
-                            })
-                            this.postObjs = this.postObjs.concat(itemsByDate)
-                            this.postCount += items.length
+                const filterTitle = (this.query.title !== "")? `{title: {contains: "${this.query.title}"}},`: ''
+                const filterTagTitle = (this.query.title !== "")? `{tag: {contains: "${this.query.title}"}},`: ''
+                const filterTag = (this.query.tag !== "")? `{tag: {contains: "${this.query.tag}"}},`: ''
+                const filterURL = (this.query.URL !== "")? `{URL: {contains: "${this.query.URL}"}},` : ''
+                const filterSubURLs = (this.query.URL !== "")? `{subURLs: {contains: "${this.query.URL}"}}` : ''
+                const filterOR = ( filterTitle !== '' || filterTagTitle !== '' || filterURL !== '' || filterSubURLs !== '' || filterTag !== '')? 'or: [' + filterTitle + filterTagTitle + filterTag + filterURL + filterSubURLs + '],' : ''
+                
+                const filterType = (this.query.type !== "")? `{type: {eq: "${this.query.type}"}},`: ''
+                const filterUserID = (this.query.userID !== "")? `{userID: {eq: "${this.query.userID}"}},` : ''
+                const filterAnd = ( filterType !== '' || filterUserID !== '')? 'and: [' + filterType + filterURL + filterUserID + ']' : ''
+                
+                const filter = ( filterOR !== '' || filterAnd !== '')? 'filter: {' + filterOR + filterAnd + '}' : ''
+                const postByDivDate = `
+                    query PostByDivDate {
+                        postByDivDate (
+                            div: "1"
+                            date: {le: "${Common.toISO8601DateString(this.date)}"}
+                            sortDirection: DESC
+                            ${filter}
+                            limit: ${this.postsPerPage}
+                            nextToken: ${nextToken}
+                        ) {
+                        items {
+                            id
+                            div
+                            title
+                            type
+                            URL
+                            tag
+                            date
+                            imgUrl
+                            imgIdentityID
+                            createdAt
+                            updatedAt
+                            userID
+                            user {
+                                id
+                                identityID
+                                name
+                                viewName
+                                iconUrl
+                            }
+                            _version
+                            _deleted
                         }
-                        this.overlay = false
-                    })
-            } catch (e) {
-                Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
-                this.overlay = false
-            }
+                        nextToken
+                        }
+                    }
+                `
+                try {
+                    await API.graphql(graphqlOperation(postByDivDate))
+                        .then((res) => {
+                            const items = res.data.postByDivDate.items.filter(obj => !obj._deleted)
+                            this.$store.commit("setNextToken", this.nextToken)
+                            this.nextToken = res.data.postByDivDate.nextToken
+                            if (items.length > 0) {
+                                let dateList = items.map(item => item.date)
+                                dateList = [...new Set(dateList)]
+                                const itemsByDate = dateList.map(date => {
+                                    return {
+                                        date: date,
+                                        posts: items.filter(item => item.date === date)
+                                    }
+                                })
+                                this.postObjs = this.postObjs.concat(itemsByDate)
+                                this.postCount += items.length
+                            }
+                            if (this.postCount >= this.postsPerPage || this.nextToken === null) {
+                                this.loadflag = false
+                            }
+                            this.overlay = false
+                        })
+                } catch (e) {
+                    Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
+                    this.overlay = false
+                }
+            } while (this.loadflag)
             console.log("Loading done") 
         },
         async getUser() {
