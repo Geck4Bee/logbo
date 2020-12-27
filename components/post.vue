@@ -1,59 +1,65 @@
 <template>
-    <div v-if="showPost" class="postRow" :style="(isNew)? 'background:linear-gradient(-45deg, rgba(2, 119, 189, .6),  rgba(255, 238, 88, .6))' : ''">
-        <v-row class="px-4" align="center">
-            <span v-if="isNew"  style="color: red;font-size: 0.9em;font-weight: bold;" class="mx-1">NEW!</span>
-            <span :class="(isNew)? 'topIsNew mx-1' : 'topIsNotNew mx-1'">投稿者: </span>
-            <user-card-row :user="post.user" :isNew="isNew"/>
-            <span :class="(isNew)? 'topIsNew mx-1' : 'topIsNotNew mx-1'">投稿: {{ new Date(post.createdAt).toLocaleString() }}</span>
-            <span :class="(isNew)? 'topIsNew mx-1' : 'topIsNotNew mx-1'">更新: {{ new Date(post.updatedAt).toLocaleString() }}</span>
-        </v-row>
-        <v-row justify="start" align="center" class="px-4 pb-1">
-            <div class="mx-2 my-2">
-                <v-btn
-                icon
-                :href="post.URL"
-                :disabled="post.URL === ''"
-                target="_blank"
-                rel="noopener noreferrer"
-                >
-                    <v-avatar tile>
-                        <v-img
-                        :src="image.imgPreview"
-                        alt="画像のプレビュー"
-                        @error="Common.resetImgURL(icon)"
-                        class="user-image-minimum"
-                        max-width="80"
-                        />
-                    </v-avatar>
-                </v-btn>
-            </div>
-            <div class="mx-4" style="max-width: 90%;">
-                <v-row class="px-2">
-                    <nuxt-link
-                    :class="(isNew)? 'postTitleIsNew': 'postTitleIsNotNew'"
-                    :to="'/post/' + post.id"
+    <div
+    v-if="showPost"
+    class="postRow"
+    :style="parentStyle"
+    >
+        <div :style="childStyle">
+            <v-row class="px-4" align="center">
+                <span v-if="isNew"  style="color: red;font-size: 0.9em;font-weight: bold;" class="mx-1">NEW!</span>
+                <span :class="(isNew)? 'topIsNew mx-1' : 'topIsNotNew mx-1'">投稿者: </span>
+                <user-card-row :user="post.user" :isNew="isNew"/>
+                <span :class="(isNew)? 'topIsNew mx-1' : 'topIsNotNew mx-1'">投稿: {{ new Date(post.createdAt).toLocaleString() }}</span>
+                <span :class="(isNew)? 'topIsNew mx-1' : 'topIsNotNew mx-1'">更新: {{ new Date(post.updatedAt).toLocaleString() }}</span>
+            </v-row>
+            <v-row justify="start" align="center" class="px-4 pb-1">
+                <div class="mx-2 my-2">
+                    <v-btn
+                    icon
+                    :href="post.URL"
+                    :disabled="post.URL === ''"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     >
-                        <h3 class="my-0">{{ post.title }}</h3>
-                    </nuxt-link>
-                </v-row>
-                <v-row>
-                    <button
-                    :class="(isNew)? 'mx-2 tag-link-isNew' : 'mx-2 tag-link-isNotNew'"
-                    @click="redirectWithType"
-                    >
-                        <span>{{ typeName }}</span>
-                    </button>
-                    <div v-for="(tag, index) in JSON.parse(post.tag)" :key="index">
+                        <v-avatar tile>
+                            <v-img
+                            :src="image.imgPreview"
+                            alt="画像のプレビュー"
+                            @error="Common.resetImgURL(icon)"
+                            class="user-image-minimum"
+                            max-width="80"
+                            />
+                        </v-avatar>
+                    </v-btn>
+                </div>
+                <div class="mx-4" style="max-width: 90%;">
+                    <v-row class="px-2">
+                        <nuxt-link
+                        :class="(isNew)? 'postTitleIsNew': 'postTitleIsNotNew'"
+                        :to="'/post/' + post.id"
+                        >
+                            <h3 class="my-0">{{ post.title }}</h3>
+                        </nuxt-link>
+                    </v-row>
+                    <v-row>
                         <button
                         :class="(isNew)? 'mx-2 tag-link-isNew' : 'mx-2 tag-link-isNotNew'"
-                        @click="redirectWithTag(tag)"
+                        @click="redirectWithType"
                         >
-                            <span>#{{ tag }}</span>
+                            <span>{{ typeName }}</span>
                         </button>
-                    </div>
-                </v-row>
-            </div>
-        </v-row>
+                        <div v-for="(tag, index) in JSON.parse(post.tag)" :key="index">
+                            <button
+                            :class="(isNew)? 'mx-2 tag-link-isNew' : 'mx-2 tag-link-isNotNew'"
+                            @click="redirectWithTag(tag)"
+                            >
+                                <span>#{{ tag }}</span>
+                            </button>
+                        </div>
+                    </v-row>
+                </div>
+            </v-row>
+        </div>
     </div>
 </template>
 
@@ -103,7 +109,10 @@ export default {
                         name: "",
                         viewName: "",
                         iconUrl: ""
-                    }
+                    },
+                    backgroundImg: null,
+                    parentStyle: "",
+                    childStyle: ""
                 }
             }
         }
@@ -122,9 +131,28 @@ export default {
     mounted () {
         this.postTypes = this.$store.state.postType
         this.isNew = this.judgeIsNew()
+        this.selectBackgroundImg()
+        this.setupParentStyle()
         this.showPost = true
     },
     methods: {
+        setupParentStyle () {
+            this.parentStyle = (this.isNew)? 'background:linear-gradient(-45deg, rgba(2, 119, 189, .6),  rgba(255, 238, 88, .6));' : ''
+            if (this.isNew && [null, undefined, ""].indexOf(this.backgroundImg) === -1) {
+                this.parentStyle = this.parentStyle + 'background-image: url(' + this.backgroundImg + ');'
+                this.childStyle = 'background-color: rgba(0, 0, 0, 0.6);'
+            }
+        },
+        selectBackgroundImg () {
+            const USKeywords = ['不正選挙', '大統領', 'アメリカ', 'トランプ', 'US']
+            let isUS = false
+            USKeywords.map(keyword => {
+                isUS = (isUS || this.post.tag.includes(keyword))? true : false
+            })
+            if (isUS) {
+                this.backgroundImg = '/us-flag.jpg'
+            }
+        },
         judgeIsNew () {
             const createdAtDate = new Date(this.post.createdAt).getTime()
             const nowDate = new Date().getTime()
