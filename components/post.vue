@@ -139,7 +139,7 @@ export default {
         setupParentStyle () {
             this.parentStyle = (this.isNew)? 'background:linear-gradient(-45deg, rgba(2, 119, 189, .6),  rgba(255, 238, 88, .6));' : ''
             if (this.isNew && [null, undefined, ""].indexOf(this.backgroundImg) === -1) {
-                this.parentStyle = this.parentStyle + 'background-image: url(' + this.backgroundImg + ');'
+                this.parentStyle = this.parentStyle + 'background-image: url(' + this.backgroundImg + ');background-position: center center;background-size: cover;background-repeat: no-repeat;'
                 this.childStyle = 'background-color: rgba(0, 0, 0, 0.6);'
             }
         },
@@ -149,9 +149,13 @@ export default {
             USKeywords.map(keyword => {
                 isUS = (isUS || this.post.tag.includes(keyword))? true : false
             })
-            if (isUS) {
-                this.backgroundImg = '/us-flag.jpg'
-            }
+            const JAKeywords = ['日本', '内閣', 'Japan']
+            let isJA = false
+            JAKeywords.map(keyword => {
+                isJA = (isJA || this.post.tag.includes(keyword))? true : false
+            })
+            if (isJA) this.backgroundImg = '/ja-flag.jpg'
+            else if (isUS) this.backgroundImg = '/us-flag.jpg'
         },
         judgeIsNew () {
             const createdAtDate = new Date(this.post.createdAt).getTime()
