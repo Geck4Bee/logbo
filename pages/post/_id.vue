@@ -276,7 +276,8 @@ export default {
                 tag: e,
                 URL: "",
                 userID: "",
-                date: ""
+                date: "",
+                sort: "date"
             }
             this.$router.push({ path: "/", query: query})
         },

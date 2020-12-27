@@ -121,13 +121,15 @@ export default {
             const URL = (this.$route.query.URL !== undefined)? this.$route.query.URL : ""
             const userID = (this.$route.query.userID !== undefined)? this.$route.query.userID : ""
             const date = (this.$route.query.date !== undefined)? this.$route.query.date : ""
+            const sort = (this.$route.query.sort !== undefined)? this.$route.query.sort : ""
             const query = {
                 type: type,
                 title: title,
                 tag: e,
                 URL: URL,
                 userID: userID,
-                date: date
+                date: date,
+                sort: sort
             }
             this.$router.push({ path: "/", query: query})
         }

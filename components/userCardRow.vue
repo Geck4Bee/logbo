@@ -61,7 +61,8 @@ export default {
             const URL = (this.$route.query.URL !== undefined)? 'URL=' + this.$route.query.URL : ""
             const userID ='userID=' + this.user.id
             const date = (this.$route.query.date !== undefined)? 'date=' + this.$route.query.date : ""
-            const query = [type, title, tag, URL, userID, date].filter(val => val !== "")
+            const sort = (this.$route.query.sort !== undefined)? 'sort=' + this.$route.query.sort : ""
+            const query = [type, title, tag, URL, userID, date, sort].filter(val => val !== "")
             return '?' + query.join('&')
         }
     }

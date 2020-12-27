@@ -11,7 +11,19 @@
         <v-row v-if="query.title !== '' || query.tag !== '' || query.URL !== '' || showQueryUser">
             <h4>検索条件: </h4>
         </v-row>
-        <v-row justify="end">
+        <v-row justify="end" class="mt-4">
+            <v-select
+            class="mr-4"
+            v-model="query.sort"
+            :items="sortTypes"
+            item-text="name"
+            item-value="value"
+            label="並び替え"
+            style="max-width: 200px;"
+            outlined
+            dense
+            @change="changeSort"
+            />
             <v-btn
             color="grey darken-4"
             dark
@@ -80,6 +92,9 @@
             </v-btn>
             <h4>ユーザー:<span class="mx-1"></span></h4>
             <user-card-row :user="queryUser" />
+        </v-row>
+        <v-row align="center">
+            <h4>並び順:<span class="mx-1"></span>{{ sortName }}</h4>
         </v-row>
         <div v-for="(postObj, indexParent) in postObjs" :key="indexParent">
             <div class="mb-4">
@@ -170,6 +185,7 @@ export default {
                 {name: "記事作成日時順", value: "createdAt"},
                 {name: "記事更新日時順", value: "updatedAt"}
             ],
+            sortName: "ソースの日付順",
             loadflag: true
         }
     },
@@ -180,7 +196,8 @@ export default {
             tag: "",
             URL: "",
             userID: "",
-            date: ""
+            date: "",
+            sort: "date"
         }
         const queryKey = Object.keys(context.query)
         queryKey.map((key) => {
@@ -193,20 +210,28 @@ export default {
             {name: "リーク", value: "leak"},
             {name: "民間情報全般", value: "civilian"},
         ]
+        const sortTypes = [
+            {name: "ソースの日付順", value: "date"},
+            {name: "記事作成日時順", value: "createdAt"},
+            {name: "記事更新日時順", value: "updatedAt"}
+        ]
         const typeObj = postTypes.find(obj => obj.value === query.type)
+        const sortObj = sortTypes.find(obj => obj.value === query.sort)
         const typeName = ([null, undefined, "", {}].indexOf(typeObj) === -1)? typeObj.name : "null"
+        const sortName = ([null, undefined, "", {}].indexOf(sortObj) === -1)? sortObj.name : "null"
         const now = new Date()
         const date = (query.date !== "")? new Date(Number(query.date.substring(0, 4)), Number(query.date.substring(5, 7))-1, Number(query.date.substring(8))) : new Date(now.getFullYear(), now.getMonth(), now.getDate())
         const startDate = new Date(2020, 1, 1)
         return { 
             query: query,
             typeName: typeName,
+            sortName: sortName,
             date: date,
             startDate: startDate,
             nextTokens: [null]
         }
     },
-    watchQuery: ['type', 'title', 'tag', 'URL', 'userID', 'date'],
+    watchQuery: ['type', 'title', 'tag', 'URL', 'userID', 'date', 'sort'],
     created () {
         if (this.$store.state.page === undefined || this.$store.state.nextToken === undefined || this.$store.state.nextTokens === undefined) {
             this.$store.commit("setupNextToken")
@@ -231,6 +256,7 @@ export default {
     },
     watch: {
         query: function(newVal) {
+            console.log(newVal)
             this.nextToken = null
             this.nextTokens = [null]
             this.$store.commit("setupNextToken")
@@ -238,6 +264,9 @@ export default {
         },
     },
     methods: {
+        changeSort () {
+            this.$router.push({path: "/", query: this.query})
+        },
         downloadTxt () {
             let content = ''
             this.postObjs.map(postObj => {
@@ -284,6 +313,196 @@ export default {
             }
             this.getPosts()
         },
+        resultGetPostsByDate (items) {
+            if (items.length > 0) {
+                let dateList = items.map(item => item.date)
+                dateList = [...new Set(dateList)]
+                const itemsByDate = dateList.map(date => {
+                    return {
+                        date: date,
+                        posts: items.filter(item => item.date === date)
+                    }
+                })
+                this.postObjs = this.postObjs.concat(itemsByDate)
+                this.postCount += items.length
+            }
+            if (this.postCount >= this.postsPerPage || this.nextToken === null) {
+                this.loadflag = false
+            }
+            this.overlay = false
+        },
+        resultGetPostsByDateTime (items, type) {
+            if (items.length > 0) {
+                let dateList = (type === "createdAt")? items.map(item => item.createdAt.substring(0, 10)) : items.map(item => item.updatedAt.substring(0, 10))
+                dateList = [...new Set(dateList)]
+                const itemsByDate = dateList.map(date => {
+                    const posts = (type === "createdAt")? items.filter(item => item.createdAt.substring(0, 10) === date) : items.filter(item => item.updatedAt.substring(0, 10) === date)
+                    return {
+                        date: date,
+                        posts: posts
+                    }
+                })
+                this.postObjs = this.postObjs.concat(itemsByDate)
+                this.postCount += items.length
+            }
+            if (this.postCount >= this.postsPerPage || this.nextToken === null) {
+                this.loadflag = false
+            }
+            this.overlay = false
+        },
+        async getPostsDiVDate (nextToken, filter) {
+            const postByDivDate = `
+                query PostByDivDate {
+                    postByDivDate (
+                        div: "1"
+                        date: {le: "${Common.toISO8601DateString(this.date)}"}
+                        sortDirection: DESC
+                        ${filter}
+                        limit: ${this.postsPerPage - this.postCount}
+                        nextToken: ${nextToken}
+                    ) {
+                    items {
+                        id
+                        div
+                        title
+                        type
+                        URL
+                        tag
+                        date
+                        imgUrl
+                        imgIdentityID
+                        createdAt
+                        updatedAt
+                        userID
+                        user {
+                            id
+                            identityID
+                            name
+                            viewName
+                            iconUrl
+                        }
+                        _version
+                        _deleted
+                    }
+                    nextToken
+                    }
+                }
+            `
+            try {
+                await API.graphql(graphqlOperation(postByDivDate))
+                    .then((res) => {
+                        const items = res.data.postByDivDate.items.filter(obj => !obj._deleted)
+                        this.$store.commit("setNextToken", this.nextToken)
+                        this.nextToken = res.data.postByDivDate.nextToken
+                        this.resultGetPostsByDate(items)
+                    })
+            } catch (e) {
+                Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
+                this.overlay = false
+            }
+        },
+        async getPostsCreatedAt (nextToken, filter) {
+            const postByCreatedAt = `
+                query PostByCreatedAt {
+                    postByCreatedAt (
+                        div: "1"
+                        createdAt: {le: "${Common.toISO8601DateString(this.date)}"}
+                        sortDirection: DESC
+                        ${filter}
+                        limit: ${this.postsPerPage - this.postCount}
+                        nextToken: ${nextToken}
+                    ) {
+                    items {
+                        id
+                        div
+                        title
+                        type
+                        URL
+                        tag
+                        date
+                        imgUrl
+                        imgIdentityID
+                        createdAt
+                        updatedAt
+                        userID
+                        user {
+                            id
+                            identityID
+                            name
+                            viewName
+                            iconUrl
+                        }
+                        _version
+                        _deleted
+                    }
+                    nextToken
+                    }
+                }
+            `
+            try {
+                await API.graphql(graphqlOperation(postByCreatedAt))
+                    .then((res) => {
+                        const items = res.data.postByCreatedAt.items.filter(obj => !obj._deleted)
+                        this.$store.commit("setNextToken", this.nextToken)
+                        this.nextToken = res.data.postByCreatedAt.nextToken
+                        this.resultGetPostsByDateTime(items, "createdAt")
+                    })
+            } catch (e) {
+                Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
+                this.overlay = false
+            }
+        },
+        async getPostsUpdatedAt (nextToken, filter) {
+            const postByUpdatedAt = `
+                query PostByUpdatedAt {
+                    postByUpdatedAt (
+                        div: "1"
+                        updatedAt: {le: "${Common.toISO8601DateString(this.date)}"}
+                        sortDirection: DESC
+                        ${filter}
+                        limit: ${this.postsPerPage - this.postCount}
+                        nextToken: ${nextToken}
+                    ) {
+                    items {
+                        id
+                        div
+                        title
+                        type
+                        URL
+                        tag
+                        date
+                        imgUrl
+                        imgIdentityID
+                        createdAt
+                        updatedAt
+                        userID
+                        user {
+                            id
+                            identityID
+                            name
+                            viewName
+                            iconUrl
+                        }
+                        _version
+                        _deleted
+                    }
+                    nextToken
+                    }
+                }
+            `
+            try {
+                await API.graphql(graphqlOperation(postByUpdatedAt))
+                    .then((res) => {
+                        const items = res.data.postByUpdatedAt.items.filter(obj => !obj._deleted)
+                        this.$store.commit("setNextToken", this.nextToken)
+                        this.nextToken = res.data.postByUpdatedAt.nextToken
+                        this.resultGetPostsByDateTime(items, "updatedAt")
+                    })
+            } catch (e) {
+                Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
+                this.overlay = false
+            }
+        },
         async getPosts () {
             this.overlay = true
             let nextToken = null
@@ -304,69 +523,14 @@ export default {
                 const filterAnd = ( filterType !== '' || filterUserID !== '')? 'and: [' + filterType + filterURL + filterUserID + ']' : ''
                 
                 const filter = ( filterOR !== '' || filterAnd !== '')? 'filter: {' + filterOR + filterAnd + '}' : ''
-                const postByDivDate = `
-                    query PostByDivDate {
-                        postByDivDate (
-                            div: "1"
-                            date: {le: "${Common.toISO8601DateString(this.date)}"}
-                            sortDirection: DESC
-                            ${filter}
-                            limit: ${this.postsPerPage - this.postCount}
-                            nextToken: ${nextToken}
-                        ) {
-                        items {
-                            id
-                            div
-                            title
-                            type
-                            URL
-                            tag
-                            date
-                            imgUrl
-                            imgIdentityID
-                            createdAt
-                            updatedAt
-                            userID
-                            user {
-                                id
-                                identityID
-                                name
-                                viewName
-                                iconUrl
-                            }
-                            _version
-                            _deleted
-                        }
-                        nextToken
-                        }
-                    }
-                `
-                try {
-                    await API.graphql(graphqlOperation(postByDivDate))
-                        .then((res) => {
-                            const items = res.data.postByDivDate.items.filter(obj => !obj._deleted)
-                            this.$store.commit("setNextToken", this.nextToken)
-                            this.nextToken = res.data.postByDivDate.nextToken
-                            if (items.length > 0) {
-                                let dateList = items.map(item => item.date)
-                                dateList = [...new Set(dateList)]
-                                const itemsByDate = dateList.map(date => {
-                                    return {
-                                        date: date,
-                                        posts: items.filter(item => item.date === date)
-                                    }
-                                })
-                                this.postObjs = this.postObjs.concat(itemsByDate)
-                                this.postCount += items.length
-                            }
-                            if (this.postCount >= this.postsPerPage || this.nextToken === null) {
-                                this.loadflag = false
-                            }
-                            this.overlay = false
-                        })
-                } catch (e) {
-                    Common.failed(e, "投稿の読み込みに失敗しました", this.overlay)
-                    this.overlay = false
+                if (this.query.sort === "date"){
+                    await this.getPostsDiVDate(nextToken, filter)
+                } else if (this.query.sort === "createdAt") {
+                    await this.getPostsCreatedAt(nextToken, filter)
+                } else if (this.query.sort === "updatedAt") {
+                    await this.getPostsUpdatedAt(nextToken, filter)
+                } else {
+                    this.loadflag = false
                 }
             } while (this.loadflag)
             console.log("Loading done") 
