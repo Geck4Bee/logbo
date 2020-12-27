@@ -331,12 +331,16 @@ export default {
             }
             this.overlay = false
         },
+        getDateByDateTime(datetime) {
+            const obj = new Date(datetime)
+            return obj.toLocaleDateString()
+        },
         resultGetPostsByDateTime (items, type) {
             if (items.length > 0) {
-                let dateList = (type === "createdAt")? items.map(item => item.createdAt.substring(0, 10)) : items.map(item => item.updatedAt.substring(0, 10))
+                let dateList = (type === "createdAt")? items.map(item => this.getDateByDateTime(item.createdAt)) : items.map(item => this.getDateByDateTime(item.updatedAt))
                 dateList = [...new Set(dateList)]
                 const itemsByDate = dateList.map(date => {
-                    const posts = (type === "createdAt")? items.filter(item => item.createdAt.substring(0, 10) === date) : items.filter(item => item.updatedAt.substring(0, 10) === date)
+                    const posts = (type === "createdAt")? items.filter(item => this.getDateByDateTime(item.createdAt) === date) : items.filter(item => this.getDateByDateTime(item.updatedAt) === date)
                     return {
                         date: date,
                         posts: posts
