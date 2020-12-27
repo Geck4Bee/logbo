@@ -149,6 +149,16 @@ export default {
             CHKeywords.map(keyword => {
                 isCH = (isCH || this.post.tag.includes(keyword))? true : false
             })
+            const UKKeywords = ['イギリス', '英国', 'UK']
+            let isUK = false
+            UKKeywords.map(keyword => {
+                isUK = (isUK || this.post.tag.includes(keyword))? true : false
+            })
+            const BOKeywords = ['ボリス', 'Boris', 'boris']
+            let isBO = false
+            BOKeywords.map(keyword => {
+                isBO = (isBO || this.post.tag.includes(keyword))? true : false
+            })
             const USKeywords = ['不正選挙', '大統領', 'アメリカ', 'トランプ', 'US']
             let isUS = false
             USKeywords.map(keyword => {
@@ -161,6 +171,8 @@ export default {
             })
             if (isJA) this.backgroundImg = '/ja-flag.jpg'
             else if (isUS) this.backgroundImg = '/us-flag.jpg'
+            else if (isBO) this.backgroundImg = '/boris.jpg'
+            else if (isUK) this.backgroundImg = '/uk-flag.jpg'
             else if (isCH) this.backgroundImg = '/ch-flag.jpg'
         },
         judgeIsNew () {
