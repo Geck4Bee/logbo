@@ -203,6 +203,7 @@ export default {
         queryKey.map((key) => {
             query[key] = context.query[key]
         })
+        if([null, undefined, ""].indexOf(query.sort) !== -1) query.sort = "date"
         const postTypes = [
             {name: "政府またはそれに準ずる組織・個人", value: "primary"},
             {name: "民間報道", value: "secondary"},
@@ -256,7 +257,6 @@ export default {
     },
     watch: {
         query: function(newVal) {
-            console.log(newVal)
             this.nextToken = null
             this.nextTokens = [null]
             this.$store.commit("setupNextToken")
