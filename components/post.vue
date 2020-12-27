@@ -144,6 +144,11 @@ export default {
             }
         },
         selectBackgroundImg () {
+            const CHKeywords = ['中国', 'China', '中華']
+            let isCH = false
+            CHKeywords.map(keyword => {
+                isCH = (isCH || this.post.tag.includes(keyword))? true : false
+            })
             const USKeywords = ['不正選挙', '大統領', 'アメリカ', 'トランプ', 'US']
             let isUS = false
             USKeywords.map(keyword => {
@@ -156,6 +161,7 @@ export default {
             })
             if (isJA) this.backgroundImg = '/ja-flag.jpg'
             else if (isUS) this.backgroundImg = '/us-flag.jpg'
+            else if (isCH) this.backgroundImg = '/ch-flag.jpg'
         },
         judgeIsNew () {
             const createdAtDate = new Date(this.post.createdAt).getTime()
