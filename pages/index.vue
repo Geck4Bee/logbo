@@ -318,9 +318,13 @@ export default {
                 let dateList = items.map(item => item.date)
                 dateList = [...new Set(dateList)]
                 const itemsByDate = dateList.map(date => {
+                    let posts = items.filter(item => item.date === date)
+                    posts.sort((a, b) => {
+                        return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0)
+                    })
                     return {
                         date: date,
-                        posts: items.filter(item => item.date === date)
+                        posts: posts
                     }
                 })
                 this.postObjs = this.postObjs.concat(itemsByDate)
