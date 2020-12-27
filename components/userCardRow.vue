@@ -9,7 +9,7 @@
             max-width="20"
             />
         </div>
-        <div class="user-link-small">
+        <div :class="(isNew)? 'user-link-small-isNew' : 'user-link-small-isNotNew'">
             <div class="user-name-box-small">
                 <nuxt-link :to="'/' + query">{{ user.viewName }}</nuxt-link>
                 <nuxt-link :to="'/' + query">@{{ user.name }}</nuxt-link><br/>
@@ -47,6 +47,10 @@ export default {
                     iconUrl: '',
                 }
             }
+        },
+        isNew: {
+            type: Boolean,
+            default: false
         }
     },
     mounted () {
@@ -81,7 +85,21 @@ export default {
     color: white;
 }
 
-.user-link-small a {
+.user-link-small-isNew a {
+    color: white !important;
+    font-size: 0.9em;
+    width: 14em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+}
+
+.user-link-small-isNew a:hover {
+    color: black !important;
+}
+
+.user-link-small-isNotNew a {
     color: gray !important;
     font-size: 0.9em;
     width: 14em;
@@ -91,7 +109,7 @@ export default {
     text-decoration: none;
 }
 
-.user-link-small a:hover {
+.user-link-small-isNotNew a:hover {
     color: white !important;
 }
 </style>
