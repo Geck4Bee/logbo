@@ -84,7 +84,9 @@ export default {
                 imgType: null,
                 imgPreview: null,
                 showPreviewImg: false,
-            }
+            },
+            parentStyle: "",
+            childStyle: ""
         }
     },
     props: {
@@ -111,8 +113,6 @@ export default {
                         iconUrl: ""
                     },
                     backgroundImg: null,
-                    parentStyle: "",
-                    childStyle: ""
                 }
             }
         }

@@ -138,7 +138,7 @@
                                 </div>
                                 <h4>コメント:</h4>
                                 <div class="ml-2">
-                                    <span class="textbox">{{ reply.content }}</span>
+                                    <span class="textbox" v-html="linkedText"></span>
                                 </div>
                             </div>
                         </div>
@@ -191,6 +191,7 @@ import CustomOverlay from '~/components/overlay.vue'
 import CustomDialog from '~/components/dialog.vue'
 import UserCardRow from '~/components/userCardRow.vue'
 import DelBtn from '~/components/delBtn.vue'
+import Autolinker from 'autolinker'
 
 export default {
     name: "Reply",
@@ -318,6 +319,13 @@ export default {
         },
         identityAndIsRequest () {
             return (this.post.user.identityID === this.currentCredentials.identityId && this.reply.type === 'request')? true : false
+        },
+        linkedText () {
+            return Autolinker.link(this.reply.content, {
+                sanitizeHtml: true,
+                stripPrefix: false,
+                stripTrailingSlash: false,
+            })
         }
     },
     methods: {
