@@ -36,7 +36,12 @@
                     </nuxt-link>
                 </v-row>
                 <v-row>
-                    <span class="mx-2" style="color: gray;">{{ typeName }}</span>
+                    <button
+                    class="mx-2 tag-link"
+                    @click="redirectWithType"
+                    >
+                        <span>{{ typeName }}</span>
+                    </button>
                     <div v-for="(tag, index) in JSON.parse(post.tag)" :key="index">
                         <button
                         class="mx-2 tag-link"
@@ -126,6 +131,24 @@ export default {
                 type: type,
                 title: title,
                 tag: e,
+                URL: URL,
+                userID: userID,
+                date: date,
+                sort: sort
+            }
+            this.$router.push({ path: "/", query: query})
+        },
+        redirectWithType (e) {
+            const tag = (this.$route.query.tag !== undefined)? this.$route.query.tag : ""
+            const title = (this.$route.query.title !== undefined)? this.$route.query.title : ""
+            const URL = (this.$route.query.URL !== undefined)? this.$route.query.URL : ""
+            const userID = (this.$route.query.userID !== undefined)? this.$route.query.userID : ""
+            const date = (this.$route.query.date !== undefined)? this.$route.query.date : ""
+            const sort = (this.$route.query.sort !== undefined)? this.$route.query.sort : ""
+            const query = {
+                type: this.post.type,
+                title: title,
+                tag: tag,
                 URL: URL,
                 userID: userID,
                 date: date,
