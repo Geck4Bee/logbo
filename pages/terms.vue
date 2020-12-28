@@ -98,4 +98,9 @@
   margin-bottom: 20px;
   box-shadow: 5px 5px 20px var(--border-dark), -5px -5px 20px var(--border-dark);
 }
+
+.border {
+    border-top: 1px solid #616161;
+    margin: 16px 0;
+}
 </style>

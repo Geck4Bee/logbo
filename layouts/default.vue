@@ -159,6 +159,12 @@ export default {
                     title: "利用規約",
                     to: "/terms",
                     status: ['loggedIn', 'loggedOut']
+                },
+                {
+                    icon: "mdi-book-open-variant",
+                    title: "プライバシーポリシー",
+                    to: "/pp",
+                    status: ['loggedIn', 'loggedOut']
                 }
             ],
             title: 'GESONTACLE(β)',
