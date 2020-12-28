@@ -153,6 +153,12 @@ export default {
                     title: "ワヤクラーケン",
                     to: "/wayakraken",
                     status: ['loggedIn', 'loggedOut']
+                },
+                {
+                    icon: "mdi-book-open-variant",
+                    title: "利用規約",
+                    to: "/terms",
+                    status: ['loggedIn', 'loggedOut']
                 }
             ],
             title: 'GESONTACLE(β)',
