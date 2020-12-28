@@ -293,6 +293,7 @@ export default {
                 `
                 API.graphql(graphqlOperation(createUser))
                     .then((res)=> {
+                        this.$store.commit('setUserID', id)
                         console.log("プロフィールを作成しました")
                     })
             } catch (e) {
