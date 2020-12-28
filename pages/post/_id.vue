@@ -55,9 +55,9 @@
                                         <span class="ml-2" style="color: gray;">{{ post.date }}</span>
                                     </div>
                                     <div class="my-2">
-                                        <span style="font-weight: bold;">URL:</span>
+                                        <span style="font-weight: bold;" class="mr-2">URL:</span>
                                         <a
-                                        class="post-url ml-2"
+                                        class="post-url"
                                         :href="post.URL"
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -67,8 +67,8 @@
                                         </a>
                                     </div>
                                     <div class="my-2 wrap-box" v-if="[null, undefined, '[]'].indexOf(post.subURLs) === -1">
-                                        <h4 class="mr-2">URL(オプション):</h4>
-                                        <div v-for="(subURL, index) in JSON.parse(post.subURLs)" :key="index">
+                                        <span style="font-weight: bold;" class="mr-2">URL(オプション):</span>
+                                        <div v-for="(subURL, index) in JSON.parse(post.subURLs)" :key="index" style="max-width: 100%;display: inline-block;">
                                             <a
                                             class="post-url"
                                             :href="subURL"

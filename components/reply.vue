@@ -94,14 +94,14 @@
                                         <h4>URL(オプション):</h4>
                                         <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更前:</span>
-                                            <div v-for="(URL, index) in reply.pastPost.subURLs" :key="index">
+                                            <div v-for="(URL, index) in reply.pastPost.subURLs" :key="index" style="max-width: 100%;">
                                                 <span>{{ URL }}</span>
                                                 <span v-if="index !== reply.pastPost.subURLs.length -1" class="mr-1">,</span>
                                             </div>
                                         </div>
                                         <div class="ml-2 wrap-box">
                                             <span class="mr-2">変更後:</span>
-                                            <div v-for="(URL, index) in reply.request.subURLs" :key="index">
+                                            <div v-for="(URL, index) in reply.request.subURLs" :key="index" style="max-width: 100%;">
                                                 <span>{{ URL }}</span>
                                                 <span v-if="index !== reply.request.subURLs.length -1" class="mr-1">,</span>
                                             </div>
