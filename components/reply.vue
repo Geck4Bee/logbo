@@ -144,7 +144,7 @@
                         </div>
                         <v-row justify="center" class="my-2" v-if="$store.state.isLoggedIn">
                             <v-btn
-                            v-if="identityAndNotJudged && identityAndIsRequest"
+                            v-if="identityAndIsRequest"
                             color="teal"
                             class="mx-1"
                             dark
@@ -154,7 +154,7 @@
                                 承認
                             </v-btn>
                             <v-btn
-                            v-if="identityAndNotJudged && identityAndIsRequest"
+                            v-if="identityAndIsRequest"
                             color="red"
                             class="mx-1"
                             dark
