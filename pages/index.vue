@@ -414,7 +414,7 @@ export default {
                 query PostByCreatedAt {
                     postByCreatedAt (
                         div: "1"
-                        createdAt: {le: "${Common.toISO8601DateString(this.date)}"}
+                        createdAt: {le: "${new Date().toISOString()}"}
                         sortDirection: DESC
                         ${filter}
                         limit: ${this.postsPerPage - this.postCount}
@@ -465,7 +465,7 @@ export default {
                 query PostByUpdatedAt {
                     postByUpdatedAt (
                         div: "1"
-                        updatedAt: {le: "${Common.toISO8601DateString(this.date)}"}
+                        updatedAt: {le: "${new Date().toISOString()}"}
                         sortDirection: DESC
                         ${filter}
                         limit: ${this.postsPerPage - this.postCount}
