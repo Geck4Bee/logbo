@@ -75,7 +75,7 @@
                 <span :style="'color:' + noticeColor + ';'" >{{ noticeCount }}</span>
             </v-btn>
         </v-app-bar>
-        <v-main>
+        <v-main :class="indexColor">
             <v-container>
                 <nuxt />
             </v-container>
@@ -114,6 +114,25 @@
                     <v-icon class="mr-1" color="grey">mdi-discord</v-icon>
                     Discord
                 </v-btn>
+                <div>
+                    <v-btn
+                    class="px-1 elevation-0 indexColorBtn"
+                    color="red darken-4"
+                    @click="changeIndexColor('indexRed')"
+                    />
+                    <v-btn
+                    class="mx-1 px-1 elevation-0 indexColorBtn"
+                    color="indigo"
+                    @click="changeIndexColor('indexBlue')"
+                    />
+                    <!--
+                    <v-btn
+                    class="px-1 elevation-0 indexColorBtn"
+                    color="teal darken-4"
+                    @click="changeIndexColor('indexTeal')"
+                    />
+                    -->
+                </div>
             </v-row>
         </v-footer>
     </v-app>
@@ -180,7 +199,8 @@ export default {
             },
             noticeCount: 0,
             noticeColor: "grey",
-            subscription: null
+            subscription: null,
+            indexColor: ""
         }
     },
     async beforeCreate() {
@@ -198,6 +218,8 @@ export default {
         const localDark = localStorage.getItem('dark')
         this.theme = ([null, undefined, "", "0"].indexOf(localDark) === -1)? true : false
         this.$vuetify.theme.dark = this.theme
+        const localIndexColor = localStorage.getItem('indexColor')
+        this.indexColor = localIndexColor
         this.$store.commit("setPostType")
         this.$store.commit("setReplyType")
         this.$store.commit("setDelType")
@@ -234,6 +256,10 @@ export default {
         }
     },
     methods: {
+        changeIndexColor (cls) {
+            this.indexColor = cls
+            localStorage.setItem('indexColor', cls)
+        },
         async getUserInfo () {
             this.currentUserInfo = this.$store.state.currentUserInfo || await this.$Amplify.Auth.currentUserInfo()
             if (this.currentUserInfo) {
@@ -400,5 +426,18 @@ export default {
 }
 .footerLight {
     background-color: #f5f5f5 !important;
+}
+.indexRed {
+    background-color: #B71C1C;
+}
+.indexBlue {
+    background-color: #3F5185;
+}
+.indexTeal {
+    background-color: #004D40;
+}
+.indexColorBtn {
+    min-width: 1.2rem !important;
+    width: 1.2rem;
 }
 </style>
