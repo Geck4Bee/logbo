@@ -51,6 +51,10 @@ export default {
         isNew: {
             type: Boolean,
             default: false
+        },
+        isBackground: {
+            type: Boolean,
+            default: false
         }
     },
     mounted () {
@@ -73,7 +77,11 @@ export default {
             let cls = ""
             if (this.isNew) {
                 cls += "user-link-small-isNew "
-                cls += (this.$vuetify.theme.dark)? "textDarkIsNew" : "textLightIsNew"
+                if (this.isBackground) {
+                    cls += "textDarkIsNew textStroke "
+                } else {
+                    cls += (this.$vuetify.theme.dark)? "textDarkIsNew" : "textLightIsNew"
+                }
             } else {
                 cls += 'user-link-small-isNotNew '
                 cls += (this.$vuetify.theme.dark)? "textDarkIsNotNew" : "textLightIsNotNew"
@@ -84,6 +92,9 @@ export default {
 }
 </script>
 <style>
+.textStroke {
+    text-shadow:1px 1px 5px #212121;
+}
 .textDarkIsNew a {
     color: white !important;
 }

@@ -8,7 +8,7 @@
             <v-row class="px-4" align="center">
                 <span v-if="isNew"  style="color: red;font-size: 0.9em;font-weight: bold;" class="mx-1">NEW!</span>
                 <span :class="textStyleTop">投稿者: </span>
-                <user-card-row :user="post.user" :isNew="isNew"/>
+                <user-card-row :user="post.user" :isNew="isNew" :isBackground="([null, undefined, ''].indexOf(this.backgroundImg) === -1)? true : false"/>
                 <span :class="textStyleTop">投稿: {{ new Date(post.createdAt).toLocaleString() }}</span>
                 <span :class="textStyleTop">更新: {{ new Date(post.updatedAt).toLocaleString() }}</span>
             </v-row>
@@ -74,6 +74,7 @@ export default {
     },
     data () {
         return {
+            backgroundImg: null,
             showPost: false,
             isNew: false,
             postTypes: [],
@@ -143,7 +144,11 @@ export default {
         textStyleTop () {
             let cls = "mx-1 "
             if (this.isNew) {
-                cls += (this.$vuetify.theme.dark)? 'topIsNewDark' : 'topIsNewLight'
+                if ([null, undefined, ""].indexOf(this.backgroundImg) === -1) {
+                    cls += "topIsNewDark textStroke"
+                } else {
+                    cls += (this.$vuetify.theme.dark)? 'topIsNewDark' : 'topIsNewLight'
+                }
             } else {
                 cls += (this.$vuetify.theme.dark)? 'topIsNotNewDark' : 'topIsNotNewLight'
             }
@@ -152,7 +157,11 @@ export default {
         textStyleTitle () {
             let cls = ""
             if (this.isNew) {
-                cls += (this.$vuetify.theme.dark)? 'postTitleIsNewDark' : 'postTitleIsNewLight'
+                if ([null, undefined, ""].indexOf(this.backgroundImg) === -1) {
+                    cls += 'postTitleIsNewDark textStroke'
+                } else {
+                    cls += (this.$vuetify.theme.dark)? 'postTitleIsNewDark' : 'postTitleIsNewLight'
+                }
             } else {
                 cls += (this.$vuetify.theme.dark)? 'postTitleIsNotNewDark' : 'postTitleIsNotNewLight'
             }
@@ -161,7 +170,11 @@ export default {
         textStyleTag () {
             let cls = "mx-2"
             if (this.isNew) {
-                cls += (this.$vuetify.theme.dark)? ' tag-link-isNewDark' : ' tag-link-isNewLight'
+                if ([null, undefined, ""].indexOf(this.backgroundImg) === -1) {
+                    cls += " tag-link-isNewDark textStroke"
+                } else {
+                    cls += (this.$vuetify.theme.dark)? ' tag-link-isNewDark' : ' tag-link-isNewLight'
+                }
             } else {
                 cls += (this.$vuetify.theme.dark)? ' tag-link-isNotNewDark' : ' tag-link-isNotNewLight'
             }
@@ -258,12 +271,15 @@ export default {
 </script>
 
 <style>
+.textStroke {
+    text-shadow:1px 1px 5px #212121;
+}
 .postRowDark {
     box-shadow: 3px 3px 10px #000, -3px -3px 10px #000;
 }
 .postRowLight {
     border-radius: 12px;
-    border: 1px solid #212121;
+    border: 1px solid black;
 }
 .v-btn__content {
     width: 100%;
