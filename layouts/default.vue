@@ -47,11 +47,8 @@
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
-        <v-app-bar :clipped-left="clipped" fixed app>
+        <v-app-bar :clipped-left="clipped" fixed app :class="(theme)? '' : 'headerLight'">
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-            <v-btn icon @click.stop="clipped = !clipped">
-                <v-icon>mdi-application</v-icon>
-            </v-btn>
             <nuxt-link
             style="text-decoration: none;color: white;"
             to="/">
@@ -59,9 +56,15 @@
                 src="/GESOTITLE_WHITELINE.png"
                 alt="タイトル"
                 max-width="180"
+                :class="(theme)? '' : 'imgInvert'"
                 />
             </nuxt-link>
             <v-spacer />
+            <v-switch
+            class="my-0 pt-6"
+            v-model="theme"
+            :prepend-icon="themeIcon"
+            />
             <v-btn
             v-if="isLoggedIn"
             icon
@@ -77,12 +80,12 @@
                 <nuxt />
             </v-container>
         </v-main>
-        <v-footer fixed app>
+        <v-footer fixed app :class="(theme)? '' : 'footerLight'">
             <v-row justify="center">
                 <v-btn
                 class="mx-1 px-1"
                 text
-                dark
+                :dark="theme"
                 href="https://twitter.com/gesontacle"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -93,7 +96,7 @@
                 <v-btn
                 class="mx-1 px-1"
                 text
-                dark
+                :dark="theme"
                 href="https://twitter.com/gesontacle/status/1340649470380265476"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -103,7 +106,7 @@
                 <v-btn
                 class="mx-1 px-1"
                 text
-                dark
+                :dark="theme"
                 href="https://discord.gg/Y9RDUuKfUN"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -125,6 +128,7 @@ import { nanoid } from 'nanoid'
 export default {
     data() {
         return {
+            theme: true,
             clipped: false,
             drawer: false,
             fixed: false,
@@ -216,6 +220,14 @@ export default {
                 }
             })
         },
+        themeIcon () {
+            return this.theme ? 'mdi-weather-night' : 'mdi-weather-sunny'
+        }
+    },
+    watch: {
+        theme () {
+            this.$vuetify.theme.dark = this.theme
+        }
     },
     methods: {
         async getUserInfo () {
@@ -367,14 +379,22 @@ export default {
 </script>
 
 <style>
-.main-footer {
-    background-color: #616161;
-    box-shadow: 5px 5px 20px black;
+:root {
+    --background-dark: #121212;
+    --background-light: #ffffff;
+    --text-dark: #ffffff;
+    --text-dark-hover: #9E9E9E;
+    --text-light: #212121;
+    --text-light-hover: #9E9E9E;
 }
-#openConnectList {
-    position: fixed;
-    z-index: 90;
-    right: 30px;
-    bottom: 40px;
+.imgInvert {
+    filter: invert();
+}
+.headerLight {
+    background-color: white !important;
+    box-shadow: 0px 3px #212121 !important;
+}
+.footerLight {
+    background-color: #f5f5f5 !important;
 }
 </style>

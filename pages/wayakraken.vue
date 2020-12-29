@@ -5,10 +5,11 @@
         <v-card
         class="my-2"
         max-width="400"
-        dark
+        :dark="$vuetify.theme.dark"
+        :class="($vuetify.theme.dark)? '' : 'lightBox'"
         >
             <v-expansion-panels>
-                <v-expansion-panel>
+                <v-expansion-panel :class="($vuetify.theme.dark)? '' : 'lightBox'">
                     <v-expansion-panel-header>検索フォーム</v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-form ref="formSearch" @submit.prevent @submit="search">
@@ -193,3 +194,13 @@ export default {
     }
 }
 </script>
+
+<style>
+.lightBox {
+    box-shadow: none !important;
+    border: 1px solid #BDBDBD;
+}
+.v-expansion-panel::before {
+  box-shadow: none;
+}
+</style>

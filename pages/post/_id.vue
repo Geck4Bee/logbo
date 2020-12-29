@@ -21,7 +21,7 @@
             :cancel="false"
             @agree="$router.push('/')"
             />
-            <v-card dark>
+            <v-card :dark="$vuetify.theme.dark">
                 <v-card-subtitle class="pb-0">
                     <v-row align="center">
                         <span style="color: gray; font-size: 0.9em;" class="mx-1">投稿者: </span>
@@ -58,7 +58,7 @@
                                     <div class="my-2">
                                         <span style="font-weight: bold;" class="mr-2">URL:</span>
                                         <a
-                                        class="post-url"
+                                        :class="($vuetify.theme.dark)? 'post-url-dark' : 'post-url-light'"
                                         :href="post.URL"
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -71,7 +71,7 @@
                                         <span style="font-weight: bold;" class="mr-2">URL(オプション):</span>
                                         <div v-for="(subURL, index) in JSON.parse(post.subURLs)" :key="index" style="max-width: 100%;display: inline-block;">
                                             <a
-                                            class="post-url"
+                                            :class="($vuetify.theme.dark)? 'post-url-dark' : 'post-url-light'"
                                             :href="subURL"
                                             target="_blank"
                                             rel="noopener noreferrer"
@@ -89,7 +89,7 @@
                                             class="mx-2"
                                             @click="redirectWithTag(tag)"
                                             >
-                                                <span class="tag-link">#{{ tag }}</span>
+                                                <span :class="($vuetify.theme.dark)? 'tag-link-dark' : 'tag-link-light'">#{{ tag }}</span>
                                             </button>
                                         </div>
                                     </div>
@@ -545,18 +545,31 @@ export default {
 </script>
 
 <style>
-.post-url {
+.post-url-dark {
     text-decoration: none;
     color: gray !important;
 }
-.post-url:hover {
+.post-url-dark:hover {
     color: white !important;
 }
-.tag-link {
+.post-url-light {
+    text-decoration: none;
+    color: gray !important;
+}
+.post-url-light:hover {
+    color: black !important;
+}
+.tag-link-dark {
     color: gray;
 }
-.tag-link:hover {
+.tag-link-dark:hover {
     color: white;
+}
+.tag-link-light {
+    color: gray;
+}
+.tag-link-light:hover {
+    color: black;
 }
 .wrap-box {
     max-width: 100%;

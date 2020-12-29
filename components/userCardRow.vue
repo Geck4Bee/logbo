@@ -9,7 +9,7 @@
             max-width="20"
             />
         </div>
-        <div :class="(isNew)? 'user-link-small-isNew' : 'user-link-small-isNotNew'">
+        <div :class="textStyleName">
             <div class="user-name-box-small">
                 <nuxt-link :to="'/' + query">{{ user.viewName }}</nuxt-link>
                 <nuxt-link :to="'/' + query">@{{ user.name }}</nuxt-link><br/>
@@ -68,11 +68,47 @@ export default {
             const sort = (this.$route.query.sort !== undefined)? 'sort=' + this.$route.query.sort : ""
             const query = [type, title, tag, URL, userID, date, sort].filter(val => val !== "")
             return '?' + query.join('&')
+        },
+        textStyleName () {
+            let cls = ""
+            if (this.isNew) {
+                cls += "user-link-small-isNew "
+                cls += (this.$vuetify.theme.dark)? "textDarkIsNew" : "textLightIsNew"
+            } else {
+                cls += 'user-link-small-isNotNew '
+                cls += (this.$vuetify.theme.dark)? "textDarkIsNotNew" : "textLightIsNotNew"
+            }
+            return cls
         }
     }
 }
 </script>
 <style>
+.textDarkIsNew a {
+    color: white !important;
+}
+.textDarkIsNew a:hover {
+    color: black !important;
+}
+.textDarkIsNotNew a {
+    color: gray !important;
+}
+.textDarkIsNotNew a:hover {
+    color: white !important;
+}
+.textLightIsNew a {
+    color: #212121 !important;
+}
+.textLightIsNew a:hover {
+    color:gray !important;
+}
+.textLightIsNotNew a {
+    color: gray !important;
+}
+.textLightIsNotNew a:hover {
+    color: black !important;
+}
+
 .user-info-first-small {
     display: flex;
     align-items: center;
@@ -82,34 +118,23 @@ export default {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    color: white;
 }
 
 .user-link-small-isNew a {
-    color: white !important;
     font-size: 0.9em;
     width: 14em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-decoration: none;
-}
-
-.user-link-small-isNew a:hover {
-    color: black !important;
 }
 
 .user-link-small-isNotNew a {
-    color: gray !important;
     font-size: 0.9em;
     width: 14em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-decoration: none;
-}
-
-.user-link-small-isNotNew a:hover {
-    color: white !important;
 }
 </style>

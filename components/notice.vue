@@ -1,5 +1,5 @@
 <template>
-    <div class="noticeRow">
+    <div :class="($vuetify.theme.dark)? 'noticeRowDark' : 'noticeRowLight'">
         <v-row class="px-4" align="center">
             <span style="color: gray; font-size: 0.9em;" class="mx-1">投稿者: </span>
             <user-card-row :user="notice.fromUser"/>
@@ -68,8 +68,12 @@ export default {
 </script>
 
 <style>
-.noticeRow {
+.noticeRowDark {
     box-shadow: 3px 3px 10px #000, -3px -3px 10px #000;
+}
+.noticeRowLight {
+    border-radius: 12px;
+    border: 1px solid #212121;
 }
 .v-btn__content {
     width: 100%;

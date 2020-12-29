@@ -27,7 +27,7 @@
         :cancel="false"
         @agree="reject()"
         />
-        <v-card dark>
+        <v-card :dark="$vuetify.theme.dark">
             <v-card-subtitle class="pt-1 pb-0">
                 <v-row align="center">
                     <span style="color: gray; font-size: 0.9em;" class="mx-1">投稿者: </span>

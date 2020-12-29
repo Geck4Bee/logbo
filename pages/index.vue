@@ -25,9 +25,8 @@
             @change="changeSort"
             />
             <v-btn
-            color="grey darken-4"
-            dark
             @click="downloadTxt"
+            :class="($vuetify.theme.dark)? '' : 'lightBox'"
             >
             一覧出力
             </v-btn>
@@ -571,3 +570,11 @@ export default {
     }
 }
 </script>
+
+<style>
+.lightBox {
+    background-color: white !important;
+    box-shadow: none !important;
+    border: 1px solid #BDBDBD;
+}
+</style>

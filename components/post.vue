@@ -1,16 +1,16 @@
 <template>
     <div
     v-if="showPost"
-    class="postRow"
+    :class="($vuetify.theme.dark)? 'postRowDark' : 'postRowLight'"
     :style="parentStyle"
     >
         <div :style="childStyle">
             <v-row class="px-4" align="center">
                 <span v-if="isNew"  style="color: red;font-size: 0.9em;font-weight: bold;" class="mx-1">NEW!</span>
-                <span :class="(isNew)? 'topIsNew mx-1' : 'topIsNotNew mx-1'">投稿者: </span>
+                <span :class="textStyleTop">投稿者: </span>
                 <user-card-row :user="post.user" :isNew="isNew"/>
-                <span :class="(isNew)? 'topIsNew mx-1' : 'topIsNotNew mx-1'">投稿: {{ new Date(post.createdAt).toLocaleString() }}</span>
-                <span :class="(isNew)? 'topIsNew mx-1' : 'topIsNotNew mx-1'">更新: {{ new Date(post.updatedAt).toLocaleString() }}</span>
+                <span :class="textStyleTop">投稿: {{ new Date(post.createdAt).toLocaleString() }}</span>
+                <span :class="textStyleTop">更新: {{ new Date(post.updatedAt).toLocaleString() }}</span>
             </v-row>
             <v-row justify="start" align="center" class="px-4 pb-1">
                 <div class="mx-2 my-2">
@@ -35,7 +35,7 @@
                 <div class="mx-4" style="max-width: 90%;">
                     <v-row class="px-2">
                         <nuxt-link
-                        :class="(isNew)? 'postTitleIsNew': 'postTitleIsNotNew'"
+                        :class="textStyleTitle"
                         :to="'/post/' + post.id"
                         >
                             <h3 class="my-0">{{ post.title }}</h3>
@@ -43,14 +43,14 @@
                     </v-row>
                     <v-row>
                         <button
-                        :class="(isNew)? 'mx-2 tag-link-isNew' : 'mx-2 tag-link-isNotNew'"
+                        :class="textStyleTag"
                         @click="redirectWithType"
                         >
                             <span>{{ typeName }}</span>
                         </button>
                         <div v-for="(tag, index) in JSON.parse(post.tag)" :key="index">
                             <button
-                            :class="(isNew)? 'mx-2 tag-link-isNew' : 'mx-2 tag-link-isNotNew'"
+                            :class="textStyleTag"
                             @click="redirectWithTag(tag)"
                             >
                                 <span>#{{ tag }}</span>
@@ -84,9 +84,7 @@ export default {
                 imgType: null,
                 imgPreview: null,
                 showPreviewImg: false,
-            },
-            parentStyle: "",
-            childStyle: ""
+            }
         }
     },
     props: {
@@ -121,6 +119,50 @@ export default {
         typeName () {
             const typeObj = this.postTypes.find(obj => obj.value === this.post.type)
             return ([null, undefined, "", {}].indexOf(typeObj) === -1)? typeObj.name : "null"
+        },
+        childStyle () {
+            let style = ""
+            if (this.isNew && ([null, undefined, ""].indexOf(this.backgroundImg) === -1)) {
+                style = (this.$vuetify.theme.dark)? 'background-color: rgba(0, 0, 0, 0.6);' : 'background-color: rgba(0, 0, 0, 0.2);border-radius: 12px;'
+            }
+            return style
+        },
+        parentStyle () {
+            let style = ""
+            if (this.isNew) {
+                const blue = (this.$vuetify.theme.dark)? 'rgba(2, 119, 189, .6)' : 'rgba(2, 119, 189, .6)'
+                const yellow = (this.$vuetify.theme.dark)? 'rgba(255, 238, 88, .6)' : 'rgba(255, 252, 77, .6)'
+                style = 'background:linear-gradient(-45deg, ' + blue + ', ' + yellow + ');'
+                style += ([null, undefined, ""].indexOf(this.backgroundImg) === -1)? 'background-image: url(' + this.backgroundImg + ');background-position: center center;background-size: cover;background-repeat: no-repeat;' : ''
+            }
+            return style
+        },
+        textStyleTop () {
+            let cls = "mx-1 "
+            if (this.isNew) {
+                cls += (this.$vuetify.theme.dark)? 'topIsNewDark' : 'topIsNewLight'
+            } else {
+                cls += (this.$vuetify.theme.dark)? 'topIsNotNewDark' : 'topIsNotNewLight'
+            }
+            return cls
+        },
+        textStyleTitle () {
+            let cls = ""
+            if (this.isNew) {
+                cls += (this.$vuetify.theme.dark)? 'postTitleIsNewDark' : 'postTitleIsNewLight'
+            } else {
+                cls += (this.$vuetify.theme.dark)? 'postTitleIsNotNewDark' : 'postTitleIsNotNewLight'
+            }
+            return cls
+        },
+        textStyleTag () {
+            let cls = "mx-2"
+            if (this.isNew) {
+                cls += (this.$vuetify.theme.dark)? ' tag-link-isNewDark' : ' tag-link-isNewLight'
+            } else {
+                cls += (this.$vuetify.theme.dark)? ' tag-link-isNotNewDark' : ' tag-link-isNotNewLight'
+            }
+            return cls
         }
     },
     created () {
@@ -132,17 +174,9 @@ export default {
         this.postTypes = this.$store.state.postType
         this.isNew = this.judgeIsNew()
         this.selectBackgroundImg()
-        this.setupParentStyle()
         this.showPost = true
     },
     methods: {
-        setupParentStyle () {
-            this.parentStyle = (this.isNew)? 'background:linear-gradient(-45deg, rgba(2, 119, 189, .6),  rgba(255, 238, 88, .6));' : ''
-            if (this.isNew && [null, undefined, ""].indexOf(this.backgroundImg) === -1) {
-                this.parentStyle = this.parentStyle + 'background-image: url(' + this.backgroundImg + ');background-position: center center;background-size: cover;background-repeat: no-repeat;'
-                this.childStyle = 'background-color: rgba(0, 0, 0, 0.6);'
-            }
-        },
         selectBackgroundImg () {
             const CHKeywords = ['中国', 'China', '中華']
             let isCH = false
@@ -221,45 +255,85 @@ export default {
 </script>
 
 <style>
-.postRow {
+.postRowDark {
     box-shadow: 3px 3px 10px #000, -3px -3px 10px #000;
+}
+.postRowLight {
+    border-radius: 12px;
+    border: 1px solid #212121;
 }
 .v-btn__content {
     width: 100%;
     white-space: normal;
 }
-.postTitleIsNew {
+.postTitleIsNewDark {
     color: white !important;
     text-decoration: none !important;
 }
-.postTitleIsNew:hover {
+.postTitleIsNewDark:hover {
     color: black !important;
 }
-.postTitleIsNotNew {
+.postTitleIsNewLight {
+    color: black !important;
+    text-decoration: none !important;
+}
+.postTitleIsNewLight:hover {
+    color: gray !important;
+}
+.postTitleIsNotNewDark {
     color: white !important;
     text-decoration: none !important;
 }
-.postTitleIsNotNew:hover {
+.postTitleIsNotNewDark:hover {
     color: gray !important;
 }
-.tag-link-isNew {
+.postTitleIsNotNewLight {
+    color: black !important;
+    text-decoration: none !important;
+}
+.postTitleIsNotNewLight:hover {
+    color: gray !important;
+}
+.tag-link-isNewDark {
     color: white;
 }
-.tag-link-isNew:hover {
+.tag-link-isNewDark:hover {
     color: black;
 }
-.tag-link-isNotNew {
+.tag-link-isNewLight {
+    color: #212121;
+}
+.tag-link-isNewLight:hover {
     color: gray;
 }
-.tag-link-isNotNew:hover {
+.tag-link-isNotNewDark {
+    color: gray;
+}
+.tag-link-isNotNewDark:hover {
     color: white;
 }
-.topIsNotNew {
+.tag-link-isNotNewLight {
+    color: gray;
+}
+.tag-link-isNotNewLight:hover {
+    color: black;
+}
+.topIsNotNewDark {
     color: gray;
     font-size: 0.9em;
 }
-.topIsNew {
+.topIsNotNewLight {
+    color: #212121;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+.topIsNewDark {
     color: white;
+    font-size: 0.9em;
+}
+.topIsNewLight {
+    color: #212121;
+    font-weight: bold;
     font-size: 0.9em;
 }
 </style>
