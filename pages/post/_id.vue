@@ -1,6 +1,7 @@
 <template>
     <v-container fluid style="max-width:950px;">
         <custom-overlay :overlay="overlay" />
+        <img-modal ref="imgModal" :image="image" :identityID="post.user.identityID" />
         <div v-if="showPost" class="my-2">
             <custom-dialog
             :dialog="showDialog"
@@ -36,7 +37,7 @@
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             <div style="display:flex;flex-wrap:wrap;">
-                                <div v-if="image.showPreviewImg" class="mx-2">
+                                <button v-if="image.showPreviewImg" class="mx-2" @click="showImgModal">
                                     <v-img
                                     :src="image.imgPreview"
                                     alt="画像のプレビュー"
@@ -44,7 +45,7 @@
                                     class="user-image-minimum"
                                     max-width="200"
                                     />
-                                </div>
+                                </button>
                                 <div class="mx-4" style="max-width: 100%;">
                                     <div class="my-2 wrap-box">
                                         <h4>情報の種類: </h4>
@@ -170,6 +171,7 @@ import UserCardRow from '~/components/userCardRow.vue'
 import FormReply from '~/components/formReply.vue'
 import Reply from '~/components/reply.vue'
 import DelBtn from '~/components/delBtn.vue'
+import ImgModal from '~/components/imgModal.vue'
 
 export default {
     components: {
@@ -178,7 +180,8 @@ export default {
         UserCardRow,
         FormReply,
         Reply,
-        DelBtn
+        DelBtn,
+        ImgModal
     },
     data () {
         return {
@@ -256,6 +259,9 @@ export default {
         }
     },
     methods: {
+        showImgModal () {
+            this.$refs.imgModal.setImage()
+        },
         delPostDialog () {
             this.dialogMessageDelete = "投稿を削除します。よろしいでしょうか？"
             this.showDialogDelete = true

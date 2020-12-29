@@ -1,6 +1,8 @@
 <template>
     <div v-if="showReply">
         <custom-overlay :overlay="overlay" />
+        <img-modal ref="imgModalPast" :image="pastImage" :identityID="reply.pastPost.identityID" />
+        <img-modal ref="imgModal" :image="image" :identityID="reply.user.identityID" />
         <custom-dialog
         :dialog="showDialog"
         :message="dialogMessage"
@@ -41,7 +43,10 @@
                     <v-expansion-panel-content>
                         <div>
                             <div class="ml-2 mr-4">
-                                <div v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1 && pastImage.showPreviewImg && image.showPreviewImg">
+                                <button
+                                v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1 && pastImage.showPreviewImg && image.showPreviewImg"
+                                @click="showImgModalPast"
+                                >
                                     <v-img
                                     :src="pastImage.imgPreview"
                                     alt="画像のプレビュー"
@@ -49,14 +54,17 @@
                                     class="user-image-minimum"
                                     max-width="200"
                                     />
-                                </div>
+                                </button>
                                 <div
                                 v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1 && pastImage.showPreviewImg && image.showPreviewImg"
-                                class="my-2 wrap-bo"
+                                class="my-2 wrap-box"
                                 >
                                     <v-icon>mdi-arrow-down-bold-outline</v-icon>
                                 </div>
-                                <div v-if="image.showPreviewImg">
+                                <button
+                                v-if="image.showPreviewImg"
+                                @click="showImgModal"
+                                >
                                     <v-img
                                     :src="image.imgPreview"
                                     alt="画像のプレビュー"
@@ -64,7 +72,7 @@
                                     class="user-image-minimum"
                                     max-width="200"
                                     />
-                                </div>
+                                </button>
                             </div>
                             <div class="mx-4">
                                 <div v-if="['request', 'accept', 'reject'].indexOf(reply.type) !== -1">
@@ -192,6 +200,7 @@ import CustomDialog from '~/components/dialog.vue'
 import UserCardRow from '~/components/userCardRow.vue'
 import DelBtn from '~/components/delBtn.vue'
 import Autolinker from 'autolinker'
+import ImgModal from '~/components/imgModal.vue'
 
 export default {
     name: "Reply",
@@ -199,7 +208,8 @@ export default {
         CustomOverlay,
         CustomDialog,
         UserCardRow,
-        DelBtn
+        DelBtn,
+        ImgModal
     },
     data () {
         return {
@@ -329,6 +339,12 @@ export default {
         }
     },
     methods: {
+        showImgModal () {
+            this.$refs.imgModal.setImage()
+        },
+        showImgModalPast () {
+            this.$refs.imgModalPast.setImage()
+        },
         reload () {
             this.$emit("reload")
         },
