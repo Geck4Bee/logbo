@@ -197,6 +197,7 @@ export default {
     async created () {
         const localDark = localStorage.getItem('dark')
         this.theme = ([null, undefined, "", "0"].indexOf(localDark) === -1)? true : false
+        this.$vuetify.theme.dark = this.theme
         this.$store.commit("setPostType")
         this.$store.commit("setReplyType")
         this.$store.commit("setDelType")
