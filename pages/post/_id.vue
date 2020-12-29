@@ -1,8 +1,8 @@
 <template>
     <v-container fluid style="max-width:950px;">
         <custom-overlay :overlay="overlay" />
-        <img-modal ref="imgModal" :image="image" :identityID="post.user.identityID" />
         <div v-if="showPost" class="my-2">
+            <img-modal ref="imgModal" :image="image" :identityID="post.user.identityID" />
             <custom-dialog
             :dialog="showDialog"
             :message="dialogMessage"
