@@ -8,9 +8,6 @@
         @agree="showDialog = !showDialog"
         />
         <search-form class="my-1" />
-        <v-row v-if="query.title !== '' || query.tag !== '' || query.URL !== '' || showQueryUser">
-            <h4>検索条件: </h4>
-        </v-row>
         <v-row justify="end" class="mt-4">
             <v-select
             class="mr-4"
