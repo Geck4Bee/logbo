@@ -257,8 +257,13 @@ export default {
     },
     methods: {
         changeIndexColor (cls) {
-            this.indexColor = cls
-            localStorage.setItem('indexColor', cls)
+            if (this.indexColor === cls) {
+                this.indexColor = ""
+                localStorage.setItem('indexColor', "")
+            } else {
+                this.indexColor = cls
+                localStorage.setItem('indexColor', cls)
+            }
         },
         async getUserInfo () {
             this.currentUserInfo = this.$store.state.currentUserInfo || await this.$Amplify.Auth.currentUserInfo()
