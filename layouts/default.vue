@@ -195,6 +195,8 @@ export default {
         })
     },
     async created () {
+        const localDark = localStorage.getItem('dark')
+        this.theme = ([null, undefined, "", "0"].indexOf(localDark) === -1)? true : false
         this.$store.commit("setPostType")
         this.$store.commit("setReplyType")
         this.$store.commit("setDelType")
@@ -227,6 +229,7 @@ export default {
     watch: {
         theme () {
             this.$vuetify.theme.dark = this.theme
+            localStorage.setItem('dark', (this.theme)? '1' : '0')
         }
     },
     methods: {
