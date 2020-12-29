@@ -132,8 +132,11 @@ export default {
             if (this.isNew) {
                 const blue = (this.$vuetify.theme.dark)? 'rgba(2, 119, 189, .6)' : 'rgba(2, 119, 189, .6)'
                 const yellow = (this.$vuetify.theme.dark)? 'rgba(255, 238, 88, .6)' : 'rgba(255, 252, 77, .6)'
-                style = 'background:linear-gradient(-45deg, ' + blue + ', ' + yellow + ');'
-                style += ([null, undefined, ""].indexOf(this.backgroundImg) === -1)? 'background-image: url(' + this.backgroundImg + ');background-position: center center;background-size: cover;background-repeat: no-repeat;' : ''
+                if ([null, undefined, ""].indexOf(this.backgroundImg) === -1) {
+                    style += 'background-image: url(' + this.backgroundImg + ');background-position: center center;background-size: cover;background-repeat: no-repeat;'
+                } else {
+                    style += 'background:linear-gradient(-45deg, ' + blue + ', ' + yellow + ');'
+                }
             }
             return style
         },
