@@ -269,7 +269,7 @@ export default {
                 const dateLocale = new Date(postObj.date).toLocaleDateString().replace(new RegExp(/(\/)/gi), '-')
                 content = content + '●' + dateLocale + '\n'
                 postObj.posts.map(post => {
-                    content = content + '・' + post.title + '\n' + post.URL + '\n'
+                    content = content + '・' + post.title + '\n' + '<' + post.URL + '>' + '\n'
                 })
                 content = content + '\n'
             })
